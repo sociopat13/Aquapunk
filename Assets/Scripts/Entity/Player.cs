@@ -5,14 +5,13 @@ using UnityEngine;
 
 namespace Aquapunk
 {
-    public class Player : MonoBehaviour
+    public class Player : Entity
     {
         #region Fields
         public Joystick joystick;
-        public Camera camera;
+        public new Camera camera;
 
-        [SerializeField] private Rigidbody _rigidbody;
-        [SerializeField] private float speed = 5.5f;
+        
         [SerializeField] private Vector3 offsetCamera;
         #endregion
         #region Methods
@@ -22,13 +21,6 @@ namespace Aquapunk
             camera.transform.position = transform.position + offsetCamera;
         }
 
-        private void Movement(Vector3 moveTo)
-        {
-            _rigidbody.velocity = (moveTo * speed * Time.fixedDeltaTime);
-            Vector3 dir = moveTo.normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
-            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 1);
-        }
         #endregion
         #region Unity Methods
         private void FixedUpdate()
@@ -40,13 +32,25 @@ namespace Aquapunk
         }
         private void Update()
         {
-            BindPositionCamera();
+            if(timeStanCoolDown <= 0)
+            {
+                BindPositionCamera();
+                if (timeAttackCoolDown > 0)
+                {
+                    timeAttackCoolDown -= Time.deltaTime;
+                }
+            }
+            else
+            {
+                timeStanCoolDown -= Time.deltaTime;
+            }
         }
-
         private void Start()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            camera = Camera.main;
         }
+
         #endregion
         #endregion
         #region enums
