@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Jobs.LowLevel.Unsafe;
 using UnityEngine;
 
@@ -10,9 +11,30 @@ namespace Aquapunk
         #region Fields
         public Joystick joystick;
         public new Camera camera;
-
+        public TextMeshProUGUI textWaterCounter;
         
+        
+        [SerializeField] private List<Item> items;
+        [SerializeField] private float waterCounter;
         [SerializeField] private Vector3 offsetCamera;
+        #endregion
+        #region Properties
+        public Item Item
+        {
+            get { return items[-1]; }
+            set { 
+                items.Add(value); 
+            }
+        }
+        public float WaterCounter
+        {
+            get { return waterCounter; }
+            set 
+            { 
+                waterCounter += value;
+                textWaterCounter.text = waterCounter.ToString();
+            }
+        }
         #endregion
         #region Methods
         #region Class Methods

@@ -6,8 +6,11 @@ namespace Aquapunk
 {
     public class MobsArea : MonoBehaviour
     {
+        #region Fields
         [SerializeField] private List<Mob> mobs;
-
+        #endregion
+        #region Methods
+        #region Unity Methods
         private void OnTriggerEnter(Collider other)
         {
             if (other.GetComponent<Mob>() && !mobs.Contains(other.GetComponent<Mob>()))
@@ -24,5 +27,7 @@ namespace Aquapunk
                 other.GetComponent<Mob>().returnToTheArea();
             }
         }
+        #endregion
+        #endregion
     }
 }

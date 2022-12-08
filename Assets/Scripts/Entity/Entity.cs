@@ -7,6 +7,7 @@ namespace Aquapunk
 {
     public class Entity : MonoBehaviour
     {
+        #region Fields
         public GameObject HPbarPrefab;
         public Canvas canvas;
         [SerializeField] protected GameObject hpbar;
@@ -23,8 +24,11 @@ namespace Aquapunk
         [SerializeField] protected float timeStanCoolDown, stanCollDown = 0.5f;
         [SerializeField] protected Vector3 attackOffset;
         [SerializeField] protected Vector3 HPBarOffset;
-
-        public virtual void Attacked(float damage)
+        [SerializeField] protected List<GameObject> enemys;
+        #endregion
+        #region Methods
+        #region Class Methods
+        public virtual void Attacked(float damage, Entity entity)
         {
             healthCurrent -= damage;
             timeStanCoolDown = stanCollDown;
@@ -45,9 +49,9 @@ namespace Aquapunk
                 // damage
                 foreach (Collider collider in colliders)
                 {
-                    if (collider.gameObject != gameObject)
+                    if (collider.gameObject != gameObject && !collider.isTrigger)
                     {
-                        collider.GetComponent<Entity>().Attacked(attackDamage);
+                        collider.GetComponent<Entity>().Attacked(attackDamage, this);
                         timeAttackCoolDown = attackCollDown;
                     }
                 }
@@ -67,8 +71,11 @@ namespace Aquapunk
 
         protected virtual void DeathObject()
         {
+            Destroy(hpbar);
             Destroy(gameObject);
         }
+        #endregion
+        #region Unity Methods
 
         private void Awake()
         {
@@ -81,5 +88,7 @@ namespace Aquapunk
         {
             hpbar.transform.position = gameObject.transform.position + HPBarOffset;
         }
+        #endregion
+        #endregion
     }
 }
