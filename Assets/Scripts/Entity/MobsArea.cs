@@ -16,7 +16,6 @@ namespace Aquapunk
             if (other.GetComponent<Mob>() && !mobs.Contains(other.GetComponent<Mob>()))
             {
                 mobs.Add(other.GetComponent<Mob>());
-                //other.GetComponent<Mob>().Agreed = true;
             }
         }
 

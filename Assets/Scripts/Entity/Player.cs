@@ -10,9 +10,9 @@ namespace Aquapunk
     {
         #region Fields
         public Joystick joystick;
-        public new Camera camera;
         public TextMeshProUGUI textWaterCounter;
-        
+        public new Camera camera;
+        public LayerMask layerMask;
         
         [SerializeField] private List<Item> items;
         [SerializeField] private float waterCounter;
@@ -38,25 +38,29 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region Class Methods
-        private void BindPositionCamera()
-        {
-            camera.transform.position = transform.position + offsetCamera;
-        }
-
         #endregion
         #region Unity Methods
         private void FixedUpdate()
         {
             if(joystick != null && joystick.Direction != Vector2.zero)
             {
-                Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
+                entityMovenent.Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
             }
         }
         private void Update()
         {
+            if (Input.GetMouseButton(0) && joystick.Direction == Vector2.zero)
+            {
+                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                
+                if(Physics.Raycast(ray, out hit, 300, layerMask))
+                {
+                    entityMovenent.MoveToPoint(hit.point);
+                }
+            }
             if(timeStanCoolDown <= 0)
             {
-                BindPositionCamera();
                 if (timeAttackCoolDown > 0)
                 {
                     timeAttackCoolDown -= Time.deltaTime;

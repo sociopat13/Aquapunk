@@ -45,6 +45,7 @@ namespace Aquapunk
             agreed = false;
             enemys.Clear();
             trigger = null;
+            MovementInTheArea();
         }
 
         private void SelectTrigger()
@@ -57,6 +58,14 @@ namespace Aquapunk
                         trigger = entity;
                         break;
                 }
+            }
+        }
+
+        private void MovementInTheArea()
+        {
+            if (!agreed)
+            {
+                entityMovenent.MoveToPoint(startPos);
             }
         }
 
@@ -91,11 +100,7 @@ namespace Aquapunk
 
         private void FixedUpdate()
         {
-            if(!agreed && transform.position != startPos)
-            {
-                Movement(startPos - transform.position);
-            }
-            if(!agreed && (transform.position - startPos).magnitude <= minMagnitudeStartPos)
+            if (!agreed && (transform.position - startPos).magnitude <= minMagnitudeStartPos)
             {
                 agreed = true;
             }
@@ -103,7 +108,7 @@ namespace Aquapunk
             {
                 if (trigger != null)
                 {
-                    Movement(trigger.transform.position - transform.position);
+                    entityMovenent.MoveToPoint(trigger.transform.position);
 
                     float distance = (trigger.transform.position - transform.position).magnitude;
                     if (distance < attackRange)

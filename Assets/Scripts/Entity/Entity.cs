@@ -10,12 +10,13 @@ namespace Aquapunk
         #region Fields
         public GameObject HPbarPrefab;
         public Canvas canvas;
+        public EntityMovenent entityMovenent;
+
         [SerializeField] protected GameObject hpbar;
         [SerializeField] protected Image hpBarImage;
 
         [SerializeField] protected LayerMask layer;
         [SerializeField] protected Rigidbody _rigidbody;
-        [SerializeField] protected float speed = 5.5f;
         [SerializeField] protected float healthMax = 100f;
         [SerializeField] protected float healthCurrent;
         [SerializeField] protected float attackRange = 0.5f;
@@ -30,12 +31,14 @@ namespace Aquapunk
         #region Class Methods
         public virtual void Attacked(float damage, Entity entity)
         {
-            healthCurrent -= damage;
-            timeStanCoolDown = stanCollDown;
-            if(damage >= healthCurrent)
+            if (damage >= healthCurrent)
             {
                 DeathObject();
+                return;
             }
+            healthCurrent -= damage;
+            timeStanCoolDown = stanCollDown;
+            
             hpBarImage.fillAmount = healthCurrent / healthMax;
         }
 
@@ -58,17 +61,6 @@ namespace Aquapunk
             }
         }
 
-        protected virtual void Movement(Vector3 moveToDirection)
-        {
-            //move to directional on joistick
-            moveToDirection = new Vector3(moveToDirection.x,0,moveToDirection.z);
-            Vector3 dir = moveToDirection.normalized;
-            _rigidbody.velocity = (moveToDirection * speed * Time.fixedDeltaTime);
-            //rotate to directional movement
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
-            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 1);
-        }
-
         protected virtual void DeathObject()
         {
             Destroy(hpbar);
@@ -82,6 +74,7 @@ namespace Aquapunk
             hpbar = Instantiate(HPbarPrefab, canvas.transform);
             hpBarImage = hpbar.transform.GetChild(0).GetComponent<Image>();
             healthCurrent = healthMax;
+            entityMovenent = GetComponent<EntityMovenent>();
         }
 
         private void LateUpdate()
