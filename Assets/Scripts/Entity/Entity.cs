@@ -10,7 +10,6 @@ namespace Aquapunk
         #region Fields
         public GameObject HPbarPrefab;
         public Canvas canvas;
-        public EntityMovenent entityMovenent;
 
         [SerializeField] protected GameObject hpbar;
         [SerializeField] protected Image hpBarImage;
@@ -74,7 +73,6 @@ namespace Aquapunk
             hpbar = Instantiate(HPbarPrefab, canvas.transform);
             hpBarImage = hpbar.transform.GetChild(0).GetComponent<Image>();
             healthCurrent = healthMax;
-            entityMovenent = GetComponent<EntityMovenent>();
         }
 
         private void LateUpdate()

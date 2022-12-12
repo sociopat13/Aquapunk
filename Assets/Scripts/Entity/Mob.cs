@@ -12,6 +12,7 @@ namespace Aquapunk
         #region fields
         public GameObject Area;
         public GameObject WaterItem;
+        public MobMovement mobMovement;
         [SerializeField] private bool agreed = true;
         [SerializeField] private GameObject trigger;
         [SerializeField] private Vector3 startPos;
@@ -65,7 +66,7 @@ namespace Aquapunk
         {
             if (!agreed)
             {
-                entityMovenent.MoveToPoint(startPos);
+                mobMovement.MoveToPoint(startPos);
             }
         }
 
@@ -98,7 +99,7 @@ namespace Aquapunk
             
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             if (!agreed && (transform.position - startPos).magnitude <= minMagnitudeStartPos)
             {
@@ -108,7 +109,7 @@ namespace Aquapunk
             {
                 if (trigger != null)
                 {
-                    entityMovenent.MoveToPoint(trigger.transform.position);
+                    mobMovement.Movement(trigger.transform.position - transform.position);
 
                     float distance = (trigger.transform.position - transform.position).magnitude;
                     if (distance < attackRange)
@@ -130,6 +131,7 @@ namespace Aquapunk
         private void Start()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            mobMovement = GetComponent<MobMovement>();
             startPos = Area.transform.position;
         }
         #endregion

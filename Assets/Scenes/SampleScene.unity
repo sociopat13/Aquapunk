@@ -1145,13 +1145,13 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1676089970}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: 
+        - m_Target: {fileID: 1676089975}
+          m_TargetAssemblyTypeName: Aquapunk.Entity, Assembly-CSharp
+          m_MethodName: Attack
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -1840,7 +1840,6 @@ GameObject:
   - component: {fileID: 1676089972}
   - component: {fileID: 1676089976}
   - component: {fileID: 1676089975}
-  - component: {fileID: 1676089978}
   - component: {fileID: 1676089977}
   m_Layer: 6
   m_Name: Player
@@ -1941,7 +1940,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HPbarPrefab: {fileID: 8214830115922944676, guid: 0ec7b9c835c779841a0963d8ddc22cb1, type: 3}
   canvas: {fileID: 1014471328}
-  entityMovenent: {fileID: 0}
   hpbar: {fileID: 0}
   hpBarImage: {fileID: 0}
   layer:
@@ -1961,10 +1959,7 @@ MonoBehaviour:
   enemys: []
   joystick: {fileID: 1804391265}
   textWaterCounter: {fileID: 1745371157}
-  camera: {fileID: 0}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 128
+  entityMovenent: {fileID: 0}
   items: []
   waterCounter: 0
   offsetCamera: {x: 0, y: 20, z: -22.2}
@@ -1997,28 +1992,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 120
---- !u!195 &1676089978
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1676089970}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 2
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 1
-  m_BaseOffset: 0.5
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!1 &1739380784
 GameObject:
   m_ObjectHideFlags: 0
@@ -2670,7 +2643,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HPbarPrefab: {fileID: 8214830115922944676, guid: 0ec7b9c835c779841a0963d8ddc22cb1, type: 3}
   canvas: {fileID: 1014471328}
-  entityMovenent: {fileID: 0}
   hpbar: {fileID: 0}
   hpBarImage: {fileID: 0}
   layer:
@@ -2690,6 +2662,7 @@ MonoBehaviour:
   enemys: []
   Area: {fileID: 1739380784}
   WaterItem: {fileID: 3496542695886593609, guid: c33aa782953866b46b301a171a8ea30d, type: 3}
+  mobMovement: {fileID: 0}
   agreed: 1
   trigger: {fileID: 0}
   startPos: {x: -10, y: 0.6, z: 0}
@@ -2731,7 +2704,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1952317541}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -20.82, y: 0.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2759,7 +2732,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &1952317549
@@ -2771,10 +2744,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1952317541}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f43b562ea27d774e874419e874c9641, type: 3}
+  m_Script: {fileID: 11500000, guid: de30acdbc74c0e84982123dcbbd820c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 120
+  speed: 5.5
 --- !u!1 &2105402058
 GameObject:
   m_ObjectHideFlags: 0

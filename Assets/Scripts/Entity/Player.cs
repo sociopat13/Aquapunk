@@ -11,9 +11,8 @@ namespace Aquapunk
         #region Fields
         public Joystick joystick;
         public TextMeshProUGUI textWaterCounter;
-        public new Camera camera;
-        public LayerMask layerMask;
-        
+        public EntityMovement entityMovenent;
+
         [SerializeField] private List<Item> items;
         [SerializeField] private float waterCounter;
         [SerializeField] private Vector3 offsetCamera;
@@ -49,16 +48,6 @@ namespace Aquapunk
         }
         private void Update()
         {
-            if (Input.GetMouseButton(0) && joystick.Direction == Vector2.zero)
-            {
-                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                
-                if(Physics.Raycast(ray, out hit, 300, layerMask))
-                {
-                    entityMovenent.MoveToPoint(hit.point);
-                }
-            }
             if(timeStanCoolDown <= 0)
             {
                 if (timeAttackCoolDown > 0)
@@ -74,7 +63,7 @@ namespace Aquapunk
         private void Start()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            camera = Camera.main;
+            entityMovenent = GetComponent<EntityMovement>();
         }
 
         #endregion
