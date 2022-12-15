@@ -63,11 +63,8 @@ namespace Aquapunk
         }
 
         private void MovementInTheArea()
-        {
-            if (!agreed)
-            {
-                mobMovement.MoveToPoint(startPos);
-            }
+        { 
+            mobMovement.MoveToPoint(startPos);
         }
 
         protected override void DeathObject()

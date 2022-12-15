@@ -12,15 +12,16 @@ namespace Aquapunk
 
         public void MoveToPoint(Vector3 point)
         {
+            _agent.ResetPath();
             _agent.SetDestination(point);
         }
 
         public override void Movement(Vector3 moveToDirection)
         {
-            _agent.isStopped = true;
+            _agent.isStopped = !_agent.isStopped;
             _agent.ResetPath();
             base.Movement(moveToDirection);
-            _agent.isStopped = false;
+            _agent.isStopped = !_agent.isStopped;
         }
 
         private void Start()

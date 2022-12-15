@@ -41,7 +41,7 @@ namespace Aquapunk
         #region Unity Methods
         private void FixedUpdate()
         {
-            if(joystick != null && joystick.Direction != Vector2.zero)
+            if(joystick != null && joystick.Direction != Vector2.zero && timeStanCoolDown <= 0)
             {
                 entityMovenent.Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
             }
