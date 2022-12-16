@@ -12,19 +12,12 @@ namespace Aquapunk
         public Joystick joystick;
         public TextMeshProUGUI textWaterCounter;
         public EntityMovement entityMovenent;
+        public List<Item> items;
 
-        [SerializeField] private List<Item> items;
         [SerializeField] private float waterCounter;
         [SerializeField] private Vector3 offsetCamera;
         #endregion
         #region Properties
-        public Item Item
-        {
-            get { return items[-1]; }
-            set { 
-                items.Add(value); 
-            }
-        }
         public float WaterCounter
         {
             get { return waterCounter; }
@@ -48,12 +41,9 @@ namespace Aquapunk
         }
         private void Update()
         {
-            if(timeStanCoolDown <= 0)
+            if (timeAttackCoolDown > 0)
             {
-                if (timeAttackCoolDown > 0)
-                {
-                    timeAttackCoolDown -= Time.deltaTime;
-                }
+                timeAttackCoolDown -= Time.deltaTime;
             }
             else
             {

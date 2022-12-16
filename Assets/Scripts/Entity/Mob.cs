@@ -17,7 +17,6 @@ namespace Aquapunk
         [SerializeField] private GameObject trigger;
         [SerializeField] private Vector3 startPos;
         [SerializeField] private float minMagnitudeStartPos;
-        [SerializeField] private float waterCount;
         #endregion
         #region Properties
         public bool Agreed
@@ -69,8 +68,7 @@ namespace Aquapunk
 
         protected override void DeathObject()
         {
-            Consumable water = Instantiate(WaterItem, transform.position, WaterItem.transform.rotation).GetComponent<Consumable>();
-            water.Count = waterCount;
+            Item water = Instantiate(WaterItem, transform.position, WaterItem.transform.rotation).GetComponent<ItemController>().item;
             base.DeathObject();
         }
         #endregion
@@ -102,24 +100,21 @@ namespace Aquapunk
             {
                 agreed = true;
             }
-            if (timeStanCoolDown <= 0)
+            if (timeAttackCoolDown > 0)
             {
-                if (trigger != null)
-                {
-                    mobMovement.Movement(trigger.transform.position - transform.position);
+                timeAttackCoolDown -= Time.deltaTime;
+            }
+            if (trigger != null && timeStanCoolDown <= 0)
+            {
+                mobMovement.Movement(trigger.transform.position - transform.position);
 
-                    float distance = (trigger.transform.position - transform.position).magnitude;
-                    if (distance < attackRange)
-                    {
-                        Attack();
-                    }
-                }
-                if (timeAttackCoolDown > 0)
+                float distance = (trigger.transform.position - transform.position).magnitude;
+                if (distance < attackRange)
                 {
-                    timeAttackCoolDown -= Time.deltaTime;
+                    Attack();
                 }
             }
-            else
+            if (timeStanCoolDown > 0)
             {
                 timeStanCoolDown -= Time.deltaTime;
             }

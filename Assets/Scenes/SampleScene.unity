@@ -2423,6 +2423,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1823867501}
+        m_TargetAssemblyTypeName: Aquapunk.InventoryPanel, Assembly-CSharp
+        m_MethodName: LoadItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &886802615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2615,7 +2627,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.35341692, y: -0.03590749, z: 0.013577366, w: 0.93467796}
-  m_LocalPosition: {x: -1.03, y: 1.98, z: 0}
+  m_LocalPosition: {x: -12.13, y: 1.98, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2740,7 +2752,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 997701331}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1676089975}
+        m_TargetAssemblyTypeName: Aquapunk.Entity, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &997701331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2791,23 +2815,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 8
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1676089975}
-          m_TargetAssemblyTypeName: Aquapunk.Entity, Assembly-CSharp
-          m_MethodName: Attack
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  m_Delegates: []
 --- !u!1 &1006099230
 GameObject:
   m_ObjectHideFlags: 0
@@ -3011,7 +3019,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1072038091}
   m_LocalRotation: {x: 0.35341692, y: -0.03590749, z: 0.013577366, w: 0.93467796}
-  m_LocalPosition: {x: -1.03, y: 1.98, z: 0}
+  m_LocalPosition: {x: -12.13, y: 1.98, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3955,7 +3963,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 935}
+  m_SizeDelta: {x: 0, y: 5}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1534631734
 MonoBehaviour:
@@ -4330,7 +4338,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1676089970}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.03, y: 1.98, z: 0}
+  m_LocalPosition: {x: -12.13, y: 1.98, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5155,6 +5163,7 @@ GameObject:
   - component: {fileID: 1823867498}
   - component: {fileID: 1823867500}
   - component: {fileID: 1823867499}
+  - component: {fileID: 1823867501}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -5223,6 +5232,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823867497}
   m_CullTransparentMesh: 1
+--- !u!114 &1823867501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823867497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b086172ca0555ee4babbc4e631d845cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1676089975}
+  ItemCell: {fileID: 2948086713684977505, guid: 9bfb86ec7e39c8b4eae9507ae18e2733, type: 3}
+  context: {fileID: 1534631732}
 --- !u!1 &1836984699
 GameObject:
   m_ObjectHideFlags: 0
@@ -5784,13 +5808,12 @@ MonoBehaviour:
   HPBarOffset: {x: 0, y: 1.1, z: 0}
   enemys: []
   Area: {fileID: 1739380784}
-  WaterItem: {fileID: 3496542695886593609, guid: c33aa782953866b46b301a171a8ea30d, type: 3}
+  WaterItem: {fileID: 1419392032361333036, guid: 2854b64a802e66543bd73fc71df6f386, type: 3}
   mobMovement: {fileID: 0}
   agreed: 1
   trigger: {fileID: 0}
   startPos: {x: -10, y: 0.6, z: 0}
   minMagnitudeStartPos: 2
-  waterCount: 5
 --- !u!54 &1952317544
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6069,7 +6092,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -5}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2102435993
 MonoBehaviour:

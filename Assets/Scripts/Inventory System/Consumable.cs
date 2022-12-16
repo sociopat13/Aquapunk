@@ -2,26 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static Aquapunk.Consumable;
 
 namespace Aquapunk
 {
+    [CreateAssetMenu(fileName = "New Item", menuName = "Item/Create New Consumable")]
     public class Consumable : Item
     {
         #region Fields
         public ConsumableType consumableType;
         #endregion
         #region Methods
-        protected override void Obtaining(GameObject game)
+        #region ClassMethods
+        public override void PickUp(Player player)
         {
             switch (consumableType)
             {
                 case ConsumableType.water:
-                    game.GetComponent<Player>().WaterCounter = _count;
+                    player.WaterCounter = value;
                     break;
             }
-            Destroy(gameObject);
         }
+        #endregion
         #endregion
         #region Enums
         public enum ConsumableType
