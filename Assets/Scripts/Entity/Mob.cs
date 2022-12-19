@@ -96,10 +96,6 @@ namespace Aquapunk
 
         private void Update()
         {
-            if(timeStanCoolDown <= 0)
-            {
-                _rigidbody.isKinematic = false;
-            }
             if (!agreed && (transform.position - startPos).magnitude <= minMagnitudeStartPos)
             {
                 agreed = true;
@@ -126,6 +122,7 @@ namespace Aquapunk
 
         private void Start()
         {
+            _rigidbody = GetComponent<Rigidbody>();
             mobMovement = GetComponent<MobMovement>();
             startPos = Area.transform.position;
         }
