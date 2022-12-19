@@ -39,6 +39,8 @@ namespace Aquapunk
             timeStanCoolDown = stanCollDown;
             
             hpBarImage.fillAmount = healthCurrent / healthMax;
+
+            _rigidbody.isKinematic = true;
         }
 
         public virtual void Attack()
@@ -73,6 +75,7 @@ namespace Aquapunk
             hpbar = Instantiate(HPbarPrefab, canvas.transform);
             hpBarImage = hpbar.transform.GetChild(0).GetComponent<Image>();
             healthCurrent = healthMax;
+            _rigidbody = GetComponent<Rigidbody>();
         }
 
         private void LateUpdate()
