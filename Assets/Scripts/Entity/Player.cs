@@ -42,15 +42,15 @@ namespace Aquapunk
         }
         private void Update()
         {
-            if (timeAttackCoolDown > 0)
+            if (timeAttackCoolDown > 0f)
             {
                 timeAttackCoolDown -= Time.deltaTime;
             }
-            if(timeStanCoolDown > 0)
+            if(timeStanCoolDown > 0f)
             {
                 timeStanCoolDown -= Time.deltaTime;
             }
-            if (timeStanCoolDown <= 0 && state == StateEntity.Stan || _rigidbody.velocity == Vector3.zero)
+            if (timeStanCoolDown <= 0f && state == StateEntity.Stan || state != StateEntity.Stan && _rigidbody.velocity == Vector3.zero)
             {
                 Idle();
             }

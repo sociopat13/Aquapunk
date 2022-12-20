@@ -5368,6 +5368,7 @@ MonoBehaviour:
   attackOffset: {x: 0, y: 0, z: 1}
   HPBarOffset: {x: 0, y: 2.5, z: 0}
   enemys: []
+  state: 1
   joystick: {fileID: 1804391265}
   textWaterCounter: {fileID: 1745371157}
   entityMovenent: {fileID: 0}
@@ -5813,12 +5814,13 @@ MonoBehaviour:
   attackRange: 1.5
   attackDamage: 5
   timeAttackCoolDown: 0
-  attackCollDown: 0.7
+  attackCollDown: 2
   timeStanCoolDown: 0
-  stanCollDown: 0.7
+  stanCollDown: 2
   attackOffset: {x: 0, y: 0, z: 0.5}
   HPBarOffset: {x: 0, y: 1.1, z: 0}
   enemys: []
+  state: 1
   Area: {fileID: 1739380784}
   WaterItem: {fileID: 1419392032361333036, guid: 2854b64a802e66543bd73fc71df6f386, type: 3}
   mobMovement: {fileID: 0}
