@@ -34,9 +34,10 @@ namespace Aquapunk
         #region Unity Methods
         private void FixedUpdate()
         {
-            if(joystick != null && joystick.Direction != Vector2.zero && timeStanCoolDown <= 0)
+            if(joystick != null && joystick.Direction != Vector2.zero)
             {
-                entityMovenent.Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
+                GoToDir(entityMovenent.Movement, new Vector3(joystick.Horizontal, 0, joystick.Vertical));
+                //entityMovenent.Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
             }
         }
         private void Update()
@@ -45,9 +46,13 @@ namespace Aquapunk
             {
                 timeAttackCoolDown -= Time.deltaTime;
             }
-            else
+            if(timeStanCoolDown > 0)
             {
                 timeStanCoolDown -= Time.deltaTime;
+            }
+            if (timeStanCoolDown <= 0 && state == StateEntity.Stan || _rigidbody.velocity == Vector3.zero)
+            {
+                Idle();
             }
         }
         private void Start()

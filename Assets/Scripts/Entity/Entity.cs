@@ -20,11 +20,12 @@ namespace Aquapunk
         [SerializeField] protected float healthCurrent;
         [SerializeField] protected float attackRange = 0.5f;
         [SerializeField] protected float attackDamage = 5f;
-        [SerializeField] protected float timeAttackCoolDown, attackCollDown = 0.5f;
-        [SerializeField] protected float timeStanCoolDown, stanCollDown = 0.5f;
+        [SerializeField] protected float timeAttackCoolDown, attackCollDown = 0.5f, 
+            timeStanCoolDown, stanCollDown = 0.5f;
         [SerializeField] protected Vector3 attackOffset;
         [SerializeField] protected Vector3 HPBarOffset;
         [SerializeField] protected List<GameObject> enemys;
+        [SerializeField] protected StateEntity state = StateEntity.Idle;
         #endregion
         #region Methods
         #region Class Methods
@@ -36,14 +37,14 @@ namespace Aquapunk
                 return;
             }
             healthCurrent -= damage;
-            timeStanCoolDown = stanCollDown;
-            
+            Stan();
+
             hpBarImage.fillAmount = healthCurrent / healthMax;
         }
 
         public virtual void Attack()
         {
-            if(timeAttackCoolDown <= 0)
+            if(timeAttackCoolDown <= 0 && state != StateEntity.Stan)
             {
                 // animate
                 //detected hit enemys in range of attack
@@ -58,6 +59,31 @@ namespace Aquapunk
                     }
                 }
             }
+        }
+
+        protected virtual void GoToDir(MoveFunk moveFunk,Vector3 dir)
+        {
+            
+            if(state != StateEntity.Stan)
+            {
+                state = StateEntity.Move;
+                //anim movement
+
+                moveFunk(dir);
+            }
+        }
+
+        protected virtual void Stan()
+        {
+            timeStanCoolDown = stanCollDown;
+            state = StateEntity.Stan;
+            //animation stan
+        }
+
+        protected virtual void Idle()
+        {
+            state = StateEntity.Idle;
+            //anim state
         }
 
         protected virtual void DeathObject()
@@ -81,5 +107,15 @@ namespace Aquapunk
         }
         #endregion
         #endregion
+
+        public enum StateEntity
+        {
+            Stan,
+            Idle,
+            Move,
+            Sprint
+        }
+
+        public delegate void MoveFunk(Vector3 dir);
     }
 }

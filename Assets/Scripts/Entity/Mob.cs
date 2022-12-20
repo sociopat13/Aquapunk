@@ -95,18 +95,15 @@ namespace Aquapunk
         }
 
         private void Update()
-        {
+        { 
             if (!agreed && (transform.position - startPos).magnitude <= minMagnitudeStartPos)
             {
                 agreed = true;
             }
-            if (timeAttackCoolDown > 0)
+            if (trigger != null)
             {
-                timeAttackCoolDown -= Time.deltaTime;
-            }
-            if (trigger != null && timeStanCoolDown <= 0)
-            {
-                mobMovement.Movement(trigger.transform.position - transform.position);
+                GoToDir(mobMovement.Movement, trigger.transform.position - transform.position);
+                //mobMovement.Movement(trigger.transform.position - transform.position);
 
                 float distance = (trigger.transform.position - transform.position).magnitude;
                 if (distance < attackRange)
@@ -114,9 +111,17 @@ namespace Aquapunk
                     Attack();
                 }
             }
+            if (timeAttackCoolDown > 0)
+            {
+                timeAttackCoolDown -= Time.deltaTime;
+            }
             if (timeStanCoolDown > 0)
             {
                 timeStanCoolDown -= Time.deltaTime;
+            }
+            if (timeStanCoolDown <= 0 && state == StateEntity.Stan || _rigidbody.velocity == Vector3.zero)
+            {
+                Idle();
             }
         }
 
