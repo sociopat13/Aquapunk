@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Jobs.LowLevel.Unsafe;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 namespace Aquapunk
@@ -12,7 +13,11 @@ namespace Aquapunk
         public Joystick joystick;
         public TextMeshProUGUI textWaterCounter;
         public EntityMovement entityMovenent;
+        [Header("Inventory")]
         public List<Item> items;
+        public Item armor;
+        public Item weapon;
+        public Item artefact;
 
         [SerializeField] private float waterCounter;
         [SerializeField] private Vector3 offsetCamera;
@@ -30,6 +35,23 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region Class Methods
+        public void SetItem(Item item)
+        {
+            switch (item.typeItem)
+            {
+                case Item.TypeItem.Armor:
+                    armor = item;
+                    break;
+                case Item.TypeItem.Weapon:
+                    weapon = item;
+                    break;
+                case Item.TypeItem.Tool:
+                    goto case Item.TypeItem.Weapon;
+                case Item.TypeItem.Artefact:
+                    artefact = item;
+                    break;
+            }
+        }
         #endregion
         #region Unity Methods
         private void FixedUpdate()

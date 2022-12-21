@@ -11,10 +11,20 @@ namespace Aquapunk
         public int value;
         public string itemName;
         public Sprite iconItem;
+        public TypeItem typeItem = default;
 
         public virtual void PickUp(Player player)
         {
             player.items.Add(this);
+        }
+
+        public enum TypeItem
+        {
+            Default,
+            Armor,
+            Tool,
+            Weapon,
+            Artefact
         }
     }
 }

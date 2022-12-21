@@ -25,6 +25,7 @@ namespace Aquapunk
 
                 cell.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = item.itemName;
                 cell.transform.Find("Icon").GetComponent<Image>().sprite = item.iconItem;
+                cell.GetComponent<Button>().onClick.AddListener(() => player.SetItem(item));
             }
         }
     }
