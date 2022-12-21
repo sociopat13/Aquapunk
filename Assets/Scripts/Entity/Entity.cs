@@ -10,22 +10,23 @@ namespace Aquapunk
         #region Fields
         public GameObject HPbarPrefab;
         public Canvas canvas;
+        protected Rigidbody _rigidbody;
 
+        protected StateEntity state = StateEntity.Idle;
+
+        [Header("Attack")]
+        [SerializeField] protected float attackRange = 1.5f;
+        [SerializeField] protected float attackDamage = 20f;
+        [SerializeField] protected float timeAttackCoolDown, attackCollDown = 0.5f, timeStanCoolDown, stanCollDown = 0.5f;
+        [SerializeField] protected Vector3 attackOffset;
+        [SerializeField] protected List<GameObject> enemys;
+        [SerializeField] protected LayerMask layer;
+        [Header("HP bar")]
         [SerializeField] protected GameObject hpbar;
         [SerializeField] protected Image hpBarImage;
-
-        [SerializeField] protected LayerMask layer;
-        [SerializeField] protected Rigidbody _rigidbody;
         [SerializeField] protected float healthMax = 100f;
         [SerializeField] protected float healthCurrent;
-        [SerializeField] protected float attackRange = 0.5f;
-        [SerializeField] protected float attackDamage = 5f;
-        [SerializeField] protected float timeAttackCoolDown, attackCollDown = 0.5f, 
-            timeStanCoolDown, stanCollDown = 0.5f;
-        [SerializeField] protected Vector3 attackOffset;
         [SerializeField] protected Vector3 HPBarOffset;
-        [SerializeField] protected List<GameObject> enemys;
-        [SerializeField] protected StateEntity state = StateEntity.Idle;
         #endregion
         #region Methods
         #region Class Methods
