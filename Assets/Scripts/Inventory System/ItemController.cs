@@ -14,8 +14,11 @@ namespace Aquapunk
         #region ClassMethods
         private void PickUpItem(Player player)
         {
-            item.PickUp(player);
-            Destroy(gameObject);
+            if (player != null)
+            {
+                item.PickUp(player);
+                Destroy(gameObject);
+            }
         }
         #endregion
         #region UnityMethods

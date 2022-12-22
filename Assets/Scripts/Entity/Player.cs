@@ -4,6 +4,7 @@ using TMPro;
 using Unity.Jobs.LowLevel.Unsafe;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Aquapunk
 {
@@ -15,9 +16,13 @@ namespace Aquapunk
         public EntityMovement entityMovenent;
         [Header("Inventory")]
         public List<Item> items;
-        public Item armor;
-        public Item weapon;
-        public Item artefact;
+        //items
+        public List<Item> KitItems;
+        public UnityEvent setNewItem;
+        //public Item armor;
+        //public Item weapon;
+        //public Item tool;
+        //public Item artefact;
 
         [SerializeField] private float waterCounter;
         [SerializeField] private Vector3 offsetCamera;
@@ -37,20 +42,16 @@ namespace Aquapunk
         #region Class Methods
         public void SetItem(Item item)
         {
-            switch (item.typeItem)
+            foreach(Item MainItem in KitItems)
             {
-                case Item.TypeItem.Armor:
-                    armor = item;
+                if(MainItem.typeItem == item.typeItem)
+                {
+                    KitItems.Remove(MainItem);
                     break;
-                case Item.TypeItem.Weapon:
-                    weapon = item;
-                    break;
-                case Item.TypeItem.Tool:
-                    goto case Item.TypeItem.Weapon;
-                case Item.TypeItem.Artefact:
-                    artefact = item;
-                    break;
+                }
             }
+            KitItems.Add(item);
+            setNewItem?.Invoke();
         }
         #endregion
         #region Unity Methods

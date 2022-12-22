@@ -11,7 +11,7 @@ namespace Aquapunk
     {
         #region fields
         public GameObject Area;
-        public GameObject WaterItem;
+        public List<GameObject> DropItems;
         public MobMovement mobMovement;
         [SerializeField] private bool agreed = true;
         [SerializeField] private GameObject trigger;
@@ -68,7 +68,10 @@ namespace Aquapunk
 
         protected override void DeathObject()
         {
-            Item water = Instantiate(WaterItem, transform.position, WaterItem.transform.rotation).GetComponent<ItemController>().item;
+            foreach(GameObject item in DropItems)
+            {
+                Instantiate(item, transform.position, item.transform.rotation);
+            }
             base.DeathObject();
         }
         #endregion
