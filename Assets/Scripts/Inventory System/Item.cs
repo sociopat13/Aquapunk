@@ -7,6 +7,7 @@ namespace Aquapunk
     [CreateAssetMenu(fileName = "New Item", menuName = "Item/Create New Item")]
     public class Item : ScriptableObject
     {
+        #region Fields
         public int id;
         public int value;
         public string itemName;
@@ -15,7 +16,9 @@ namespace Aquapunk
         public Player owner;
         [Header("boos parameters")]
         public float MaxHealth;
-
+        #endregion
+        #region Methods
+        #region Class Methods
         public virtual void PickUp(Player player)
         {
             player.items.Add(this);
@@ -32,7 +35,8 @@ namespace Aquapunk
             owner.healthMax -= MaxHealth;
             
         }
-
+        #endregion
+        #endregion
         public enum TypeItem
         {
             Default,

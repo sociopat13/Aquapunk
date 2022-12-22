@@ -9,10 +9,13 @@ namespace Aquapunk
 {
     public class InventoryPanel : MonoBehaviour
     {
+        #region Fields
         public Player player;
         public GameObject ItemCell;
         public GameObject context;
-
+        #endregion
+        #region Methods
+        #region Class Methods
         public void LoadItem()
         {
             foreach(Transform child in context.transform)
@@ -28,5 +31,7 @@ namespace Aquapunk
                 cell.GetComponent<Button>().onClick.AddListener(() => player.SetItem(item));
             }
         }
+        #endregion
+        #endregion
     }
 }
