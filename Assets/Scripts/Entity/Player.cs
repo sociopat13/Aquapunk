@@ -46,10 +46,13 @@ namespace Aquapunk
             {
                 if(MainItem.typeItem == item.typeItem)
                 {
+                    MainItem.ResetParameters();
                     KitItems.Remove(MainItem);
+
                     break;
                 }
             }
+            item.SetParameters();
             KitItems.Add(item);
             setNewItem?.Invoke();
         }

@@ -5419,6 +5419,7 @@ MonoBehaviour:
   - {fileID: 1419392032361333036, guid: 4cb148e2a8bcea44793fa6f42554beef, type: 3}
   - {fileID: 1419392032361333036, guid: a275000b3c50cd4489cc31707b009770, type: 3}
   - {fileID: 1419392032361333036, guid: bbfb03b6a35dd53469126a8ce463483f, type: 3}
+  - {fileID: 1419392032361333036, guid: b45757d7289619f40b9738fe0d4e16e6, type: 3}
   mobMovement: {fileID: 0}
   agreed: 1
   trigger: {fileID: 0}

@@ -7,6 +7,7 @@ namespace Aquapunk
 {
     public class KitInventory : MonoBehaviour
     {
+        #region Fields
         [Header("Main settings")]
         public Player player;
         [Header("Inventory main kit and player model")]
@@ -15,7 +16,10 @@ namespace Aquapunk
         public Image toolIcon;
         public Image armorIcon;
         public Image artefactIcon;
+        #endregion
 
+        #region Methods
+        #region Class Methods
         public void UpdateInventoryKit()
         {
             foreach(Item item in player.KitItems)
@@ -37,10 +41,14 @@ namespace Aquapunk
                 }
             }
         }
+        #endregion
+        #region Unity Methods
 
         private void Awake()
         {
             player.setNewItem.AddListener(() =>UpdateInventoryKit());
         }
+        #endregion
+        #endregion
     }
 }

@@ -12,10 +12,25 @@ namespace Aquapunk
         public string itemName;
         public Sprite iconItem;
         public TypeItem typeItem = default;
+        public Player owner;
+        [Header("boos parameters")]
+        public float MaxHealth;
 
         public virtual void PickUp(Player player)
         {
             player.items.Add(this);
+            owner = player;
+        }
+
+        public void SetParameters()
+        {
+            owner.healthMax += MaxHealth;
+        }
+
+        public void ResetParameters()
+        {
+            owner.healthMax -= MaxHealth;
+            
         }
 
         public enum TypeItem

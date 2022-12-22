@@ -24,7 +24,7 @@ namespace Aquapunk
         [Header("HP bar")]
         [SerializeField] protected GameObject hpbar;
         [SerializeField] protected Image hpBarImage;
-        [SerializeField] protected float healthMax = 100f;
+        public float healthMax = 100f;
         [SerializeField] protected float healthCurrent;
         [SerializeField] protected Vector3 HPBarOffset;
         #endregion
