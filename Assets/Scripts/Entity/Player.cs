@@ -1,8 +1,8 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Jobs.LowLevel.Unsafe;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,17 +13,13 @@ namespace Aquapunk
         #region Fields
         public Joystick joystick;
         public TextMeshProUGUI textWaterCounter;
+        public new CinemachineVirtualCamera camera;
         public EntityMovement entityMovenent;
         [Header("Inventory")]
         public List<Item> items;
         //items
         public List<Item> KitItems;
-        public UnityEvent setNewItem;
-        //public Item armor;
-        //public Item weapon;
-        //public Item tool;
-        //public Item artefact;
-
+        public SetPostItem setNewItem;
         [SerializeField] private float waterCounter;
         [SerializeField] private Vector3 offsetCamera;
         #endregion
@@ -54,7 +50,7 @@ namespace Aquapunk
             }
             item.SetParameters();
             KitItems.Add(item);
-            setNewItem?.Invoke();
+            setNewItem?.Invoke(item);
         }
         #endregion
         #region Unity Methods
@@ -83,8 +79,17 @@ namespace Aquapunk
         }
         private void Start()
         {
-            _rigidbody = GetComponent<Rigidbody>();
-            entityMovenent = GetComponent<EntityMovement>();
+            if (isLocalPlayer)
+            {
+                canvas = FindObjectOfType<Canvas>();
+                joystick = FindObjectOfType<FixedJoystick>();
+                textWaterCounter = FindObjectOfType<PlayerUI>().waterCounter;
+                FindObjectOfType<PlayerUI>().attackButton.onClick.AddListener(() => Attack());
+                camera = FindObjectOfType<CinemachineVirtualCamera>();
+                camera.Follow = gameObject.transform;
+                camera.LookAt = gameObject.transform;
+                FindObjectOfType<PlayerInfo>().player = this;
+            }
         }
 
         #endregion
@@ -95,6 +100,8 @@ namespace Aquapunk
             Idle,
             Move
         }
+
+        public delegate void SetPostItem(Item item);
         #endregion
     }
 }

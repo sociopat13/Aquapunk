@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Purchasing;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,9 +9,11 @@ namespace Aquapunk
     public class InventoryPanel : MonoBehaviour
     {
         #region Fields
-        public Player player;
+        public PlayerInfo playerInfo;
         public GameObject ItemCell;
         public GameObject context;
+        public ItemInfoCard info;
+
         #endregion
         #region Methods
         #region Class Methods
@@ -22,13 +23,13 @@ namespace Aquapunk
             {
                 Destroy(child.gameObject);
             }
-            foreach(Item item in player.items)
+            foreach(Item item in playerInfo.player.items)
             {
                 GameObject cell = Instantiate(ItemCell, context.transform);
 
                 cell.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = item.itemName;
                 cell.transform.Find("Icon").GetComponent<Image>().sprite = item.iconItem;
-                cell.GetComponent<Button>().onClick.AddListener(() => player.SetItem(item));
+                cell.GetComponent<Button>().onClick.AddListener(() => info.GetItemInfo(item));
             }
         }
         #endregion

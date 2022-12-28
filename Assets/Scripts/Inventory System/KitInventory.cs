@@ -9,7 +9,7 @@ namespace Aquapunk
     {
         #region Fields
         [Header("Main settings")]
-        public Player player;
+        public PlayerInfo playerInfo;
         [Header("Inventory main kit and player model")]
         public GameObject playerModel;
         public Image weaponIcon;
@@ -20,25 +20,22 @@ namespace Aquapunk
 
         #region Methods
         #region Class Methods
-        public void UpdateInventoryKit()
+        public void UpdateInventoryKit(Item item)
         {
-            foreach(Item item in player.KitItems)
+            switch (item.typeItem)
             {
-                switch (item.typeItem)
-                {
-                    case Item.TypeItem.Weapon:
-                        weaponIcon.sprite = item.iconItem;
-                        break;
-                    case Item.TypeItem.Tool:
-                        toolIcon.sprite = item.iconItem;
-                        break;
-                    case Item.TypeItem.Armor:
-                        armorIcon.sprite = item.iconItem;
-                        break;
-                    case Item.TypeItem.Artefact:
-                        artefactIcon.sprite = item.iconItem;
-                        break;
-                }
+                case Item.TypeItem.Weapon:
+                    weaponIcon.sprite = item.iconItem;
+                    break;
+                case Item.TypeItem.Tool:
+                    toolIcon.sprite = item.iconItem;
+                    break;
+                case Item.TypeItem.Armor:
+                    armorIcon.sprite = item.iconItem;
+                    break;
+                case Item.TypeItem.Artefact:
+                    artefactIcon.sprite = item.iconItem;
+                    break;
             }
         }
         #endregion
@@ -46,7 +43,7 @@ namespace Aquapunk
 
         private void Awake()
         {
-            player.setNewItem.AddListener(() =>UpdateInventoryKit());
+            playerInfo.player.setNewItem += UpdateInventoryKit;
         }
         #endregion
         #endregion

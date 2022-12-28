@@ -1,3 +1,4 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,11 @@ using UnityEngine.UI;
 
 namespace Aquapunk
 {
-    public class Entity : MonoBehaviour
+    public class Entity : NetworkBehaviour
     {
         #region Fields
-        public GameObject HPbarPrefab;
         public Canvas canvas;
-        protected Rigidbody _rigidbody;
+        public Rigidbody _rigidbody;
 
         protected StateEntity state = StateEntity.Idle;
 
@@ -22,14 +22,18 @@ namespace Aquapunk
         [SerializeField] protected List<GameObject> enemys;
         [SerializeField] protected LayerMask layer;
         [Header("HP bar")]
-        [SerializeField] protected GameObject hpbar;
-        [SerializeField] protected Image hpBarImage;
         public float healthMax = 100f;
+        [SyncVar(hook = nameof(SyncHP))]
         [SerializeField] protected float healthCurrent;
         [SerializeField] protected Vector3 HPBarOffset;
         #endregion
         #region Methods
         #region Class Methods
+        public void SyncHP(float oldValue, float newValue)
+        {
+            healthCurrent = newValue;
+        }
+        [Server]
         public virtual void Attacked(float damage, Entity entity)
         {
             if (damage >= healthCurrent)
@@ -39,10 +43,8 @@ namespace Aquapunk
             }
             healthCurrent -= damage;
             Stan();
-
-            hpBarImage.fillAmount = healthCurrent / healthMax;
         }
-
+        
         public virtual void Attack()
         {
             if(timeAttackCoolDown <= 0 && state != StateEntity.Stan)
@@ -55,11 +57,23 @@ namespace Aquapunk
                 {
                     if (collider.gameObject != gameObject && !collider.isTrigger)
                     {
-                        collider.GetComponent<Entity>().Attacked(attackDamage, this);
+                        if (isServer)
+                        {
+                            collider.GetComponent<Entity>().Attacked(attackDamage, this);
+                        }
+                        else
+                        {
+                            AttackFromClient(collider.GetComponent<Entity>(), attackDamage, this);
+                        }
                         timeAttackCoolDown = attackCollDown;
                     }
                 }
             }
+        }
+        [Command]
+        public void AttackFromClient(Entity enemy, float damage, Entity entity)
+        {
+            enemy.Attacked(damage, entity);
         }
 
         protected virtual void GoToDir(MoveFunk moveFunk,Vector3 dir)
@@ -89,7 +103,6 @@ namespace Aquapunk
 
         protected virtual void DeathObject()
         {
-            Destroy(hpbar);
             Destroy(gameObject);
         }
         #endregion
@@ -97,14 +110,7 @@ namespace Aquapunk
 
         private void Awake()
         {
-            hpbar = Instantiate(HPbarPrefab, canvas.transform);
-            hpBarImage = hpbar.transform.GetChild(0).GetComponent<Image>();
             healthCurrent = healthMax;
-        }
-
-        private void LateUpdate()
-        {
-            hpbar.transform.position = gameObject.transform.position + HPBarOffset;
         }
         #endregion
         #endregion

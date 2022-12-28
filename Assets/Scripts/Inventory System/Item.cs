@@ -11,6 +11,7 @@ namespace Aquapunk
         public int id;
         public int value;
         public string itemName;
+        public string itemInfo;
         public Sprite iconItem;
         public TypeItem typeItem = default;
         public Player owner;
