@@ -687,6 +687,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8303451968315097040, guid: 84db216e52f541749803b57abd8823bb, type: 3}
+      propertyPath: m_XDamping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8303451968315097040, guid: 84db216e52f541749803b57abd8823bb, type: 3}
+      propertyPath: m_YDamping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8303451968315097040, guid: 84db216e52f541749803b57abd8823bb, type: 3}
       propertyPath: m_FollowOffset.y
       value: 2
       objectReference: {fileID: 0}
@@ -709,7 +717,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1078960553816656496, guid: 39cadd8419a3e8f418a0fa66d4d7926e, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1078960553816656496, guid: 39cadd8419a3e8f418a0fa66d4d7926e, type: 3}
       propertyPath: m_StaticEditorFlags

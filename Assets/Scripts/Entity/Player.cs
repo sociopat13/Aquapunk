@@ -1,4 +1,5 @@
 using Cinemachine;
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -36,6 +37,24 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region Class Methods
+
+        [Server]
+        public virtual void setExp(float exp)
+        {
+            experienceLevel += exp;
+            if (experienceLevel >= maxExpLevel)
+            {
+                level++;
+                experienceLevel = 0 + experienceLevel - maxExpLevel;
+                if (level % 5 == 0)
+                {
+                    procentExp++;
+                }
+                maxExpLevel += maxExpLevel / 100 * procentExp;
+                ExpDeathSet();
+            }
+        }
+
         public void SetItem(Item item)
         {
             foreach(Item MainItem in KitItems)
@@ -51,6 +70,11 @@ namespace Aquapunk
             item.SetParameters();
             KitItems.Add(item);
             setNewItem?.Invoke(item);
+        }
+
+        private void ExpDeathSet()
+        {
+            experienceDeath = maxExpLevel / 4;
         }
         #endregion
         #region Unity Methods
@@ -89,6 +113,7 @@ namespace Aquapunk
                 camera.Follow = gameObject.transform;
                 camera.LookAt = gameObject.transform;
                 FindObjectOfType<PlayerInfo>().player = this;
+                ExpDeathSet();
             }
         }
 
