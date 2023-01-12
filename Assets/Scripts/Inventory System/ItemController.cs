@@ -1,23 +1,25 @@
 
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Aquapunk
 {
-    public class ItemController : MonoBehaviour
+    public class ItemController : NetworkBehaviour
     {
         #region Fields
         public Item item;
         #endregion
         #region Methods
         #region ClassMethods
+        [Server]
         private void PickUpItem(Player player)
         {
             if (player != null)
             {
                 item.PickUp(player);
-                Destroy(gameObject);
+                NetworkServer.Destroy(gameObject);
             }
         }
         #endregion

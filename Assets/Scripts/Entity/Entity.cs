@@ -81,7 +81,6 @@ namespace Aquapunk
                 // damage
                 foreach (Collider collider in colliders)
                 {
-                    print(collider.name);
                     if (collider.gameObject != gameObject && !collider.isTrigger)
                     {
                         if (isServer)
@@ -98,6 +97,7 @@ namespace Aquapunk
             }
         }
 
+        [Server]
         protected virtual void DeathObject()
         {
             List<Collider> expColliders = Physics.OverlapSphere(transform.position, expRange, layerXP).ToList();
@@ -114,9 +114,8 @@ namespace Aquapunk
                         CmdSetExp(experienceDeath / expColliders.Count, expColliders[c].GetComponent<Player>());
                     }
                 }
-                print(expColliders[c].name);
             }
-            Destroy(gameObject);
+            NetworkServer.Destroy(gameObject);
         }
 
         protected virtual void GoToDir(MoveFunk moveFunk,Vector3 dir)

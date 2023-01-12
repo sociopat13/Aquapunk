@@ -1,3 +1,4 @@
+using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -66,11 +67,13 @@ namespace Aquapunk
             mobMovement.MoveToPoint(startPos);
         }
 
+        [Server]
         protected override void DeathObject()
         {
             foreach(GameObject item in DropItems)
             {
-                Instantiate(item, transform.position, item.transform.rotation);
+                GameObject itemObject = Instantiate(item, transform.position, item.transform.rotation);
+                NetworkServer.Spawn(itemObject);
             }
             base.DeathObject();
         }

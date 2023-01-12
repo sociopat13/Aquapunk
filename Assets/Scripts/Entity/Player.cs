@@ -14,7 +14,7 @@ namespace Aquapunk
         #region Fields
         public Joystick joystick;
         public TextMeshProUGUI textWaterCounter;
-        public new CinemachineVirtualCamera camera;
+        public CinemachineVirtualCamera camera;
         public EntityMovement entityMovenent;
         [Header("Inventory")]
         public List<Item> items;
