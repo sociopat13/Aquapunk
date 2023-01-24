@@ -10,7 +10,7 @@ namespace Aquapunk
     {
         #region Fields
         public PlayerInfo playerInfo;
-        public GameObject ItemCell;
+        public GameObject itemCell;
         public GameObject context;
         public ItemInfoCard info;
 
@@ -25,7 +25,7 @@ namespace Aquapunk
             }
             foreach(Item item in playerInfo.player.items)
             {
-                GameObject cell = Instantiate(ItemCell, context.transform);
+                GameObject cell = Instantiate(itemCell, context.transform);
 
                 cell.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = item.itemName;
                 cell.transform.Find("Icon").GetComponent<Image>().sprite = item.iconItem;

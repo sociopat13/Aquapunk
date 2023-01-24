@@ -10,6 +10,7 @@ namespace Aquapunk
         #region Fields
         [Header("Main settings")]
         public PlayerInfo playerInfo;
+
         [Header("Inventory main kit and player model")]
         public GameObject playerModel;
         public Image weaponIcon;

@@ -69,39 +69,30 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  canvas: {fileID: 0}
-  _rigidbody: {fileID: 4452891666028492738}
-  attackRange: 1.5
-  attackDamage: 20
-  timeAttackCoolDown: 0
-  attackCollDown: 0.5
-  timeStanCoolDown: 0
-  stanCollDown: 0.5
-  attackOffset: {x: 0, y: 0, z: 0.5}
-  enemys: []
+  canvasWorld: {fileID: 0}
   layer:
     serializedVersion: 2
     m_Bits: 192
+  enemys: []
+  _attackRange: 1.5
+  _attackDamage: 20
+  _timeAttackCoolDown: 0
+  _attackCollDown: 0.5
+  _timeStanCoolDown: 0
+  _stanCollDown: 0.5
+  _attackOffset: {x: 0, y: 0, z: 0}
   healthMax: 100
   healthCurrent: 0
-  HPBarOffset: {x: 0, y: 2.9, z: 0}
   level: 0
   experienceLevel: 0
-  maxExpLevel: 100
-  experienceDeath: 0
-  procentExp: 10
-  expRange: 0
-  layerXP:
-    serializedVersion: 2
-    m_Bits: 128
   joystick: {fileID: 0}
-  textWaterCounter: {fileID: 0}
   camera: {fileID: 0}
   entityMovenent: {fileID: 4452891666028492741}
+  offsetCamera: {x: 0, y: 20, z: -22.2}
   items: []
   KitItems: []
+  textWaterCounter: {fileID: 0}
   waterCounter: 0
-  offsetCamera: {x: 0, y: 20, z: -22.2}
 --- !u!114 &4452891666028492741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f43b562ea27d774e874419e874c9641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 120
+  _speed: 100
 --- !u!136 &4452891666028492740
 CapsuleCollider:
   m_ObjectHideFlags: 0

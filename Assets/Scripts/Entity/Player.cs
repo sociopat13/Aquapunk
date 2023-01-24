@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Jobs.LowLevel.Unsafe;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,16 +14,17 @@ namespace Aquapunk
     {
         #region Fields
         public Joystick joystick;
-        public TextMeshProUGUI textWaterCounter;
         public CinemachineVirtualCamera camera;
         public EntityMovement entityMovenent;
+        [SerializeField] private Vector3 offsetCamera;
+
         [Header("Inventory")]
         public List<Item> items;
-        //items
         public List<Item> KitItems;
         public SetPostItem setNewItem;
+
+        public TextMeshProUGUI textWaterCounter;
         [SerializeField] private float waterCounter;
-        [SerializeField] private Vector3 offsetCamera;
         #endregion
         #region Properties
         public float WaterCounter
@@ -39,7 +41,7 @@ namespace Aquapunk
         #region Class Methods
 
         [Server]
-        public virtual void setExp(float exp)
+        public virtual void SetExp(float exp)
         {
             experienceLevel += exp;
             if (experienceLevel >= maxExpLevel)
@@ -82,21 +84,24 @@ namespace Aquapunk
         {
             if(joystick != null && joystick.Direction != Vector2.zero)
             {
-                GoToDir(entityMovenent.Movement, new Vector3(joystick.Horizontal, 0, joystick.Vertical));
-                //entityMovenent.Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
+                GoToDirection(entityMovenent.Movement, new Vector3(joystick.Horizontal, 0, joystick.Vertical));
             }
         }
         private void Update()
         {
-            if (timeAttackCoolDown > 0f)
-            {
-                timeAttackCoolDown -= Time.deltaTime;
-            }
-            if(timeStanCoolDown > 0f)
-            {
-                timeStanCoolDown -= Time.deltaTime;
-            }
-            if (timeStanCoolDown <= 0f && state == StateEntity.Stan || state != StateEntity.Stan && _rigidbody.velocity == Vector3.zero)
+            //if (_timeAttackCoolDown > 0f)
+            //{
+            //    _timeAttackCoolDown -= Time.deltaTime;
+            //}
+            CoolDown(out _timeAttackCoolDown, _timeAttackCoolDown);
+
+            //if(_timeStanCoolDown > 0f)
+            //{
+            //    _timeStanCoolDown -= Time.deltaTime;
+            //}
+            CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
+
+            if (_timeStanCoolDown <= 0f && _state == StateEntity.Stan || _state != StateEntity.Stan && _rigidbody.velocity == Vector3.zero)
             {
                 Idle();
             }
@@ -105,7 +110,7 @@ namespace Aquapunk
         {
             if (isLocalPlayer)
             {
-                canvas = FindObjectOfType<Canvas>();
+                _rigidbody = GetComponent<Rigidbody>();
                 joystick = FindObjectOfType<FixedJoystick>();
                 textWaterCounter = FindObjectOfType<PlayerUI>().waterCounter;
                 FindObjectOfType<PlayerUI>().attackButton.onClick.AddListener(() => Attack());
@@ -119,7 +124,7 @@ namespace Aquapunk
 
         #endregion
         #endregion
-        #region enums
+        #region enums and delegates
         public enum StateMovement
         {
             Idle,

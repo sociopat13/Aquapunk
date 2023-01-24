@@ -8,8 +8,12 @@ namespace Aquapunk
     [RequireComponent(typeof(NavMeshAgent))]
     public class MobMovement : EntityMovement
     {
+        #region Fields
         private NavMeshAgent _agent;
+        #endregion
 
+        #region methods
+        #region class methods
         public void MoveToPoint(Vector3 point)
         {
             _agent.ResetPath();
@@ -29,5 +33,7 @@ namespace Aquapunk
             _agent = GetComponent<NavMeshAgent>(); 
             _rigidbody = GetComponent<Rigidbody>();
         }
+        #endregion
+        #endregion
     }
 }

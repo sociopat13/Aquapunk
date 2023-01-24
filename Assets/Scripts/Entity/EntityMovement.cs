@@ -9,8 +9,7 @@ namespace Aquapunk
     {
         #region Fields
         protected Rigidbody _rigidbody;
-
-        [SerializeField] protected float speed = 5.5f;
+        [SerializeField] protected float _speed = 5.5f;
         #endregion
         #region Methods
         #region Class Methods
@@ -19,7 +18,7 @@ namespace Aquapunk
             //move to directional on joistick
             moveToDirection = new Vector3(moveToDirection.x, 0, moveToDirection.z);
             Vector3 dir = moveToDirection.normalized;
-            _rigidbody.velocity = (moveToDirection * speed * Time.fixedDeltaTime);
+            _rigidbody.velocity = (moveToDirection * _speed * Time.fixedDeltaTime);
             //rotate to directional movement
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
             transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 1);

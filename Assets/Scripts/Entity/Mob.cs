@@ -14,6 +14,7 @@ namespace Aquapunk
         public GameObject Area;
         public List<GameObject> DropItems;
         public MobMovement mobMovement;
+
         [SerializeField] private bool agreed = true;
         [SerializeField] private GameObject trigger;
         [SerializeField] private Vector3 startPos;
@@ -29,7 +30,7 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region Class Methods
-        public void returnToTheArea()
+        public void ReturnToTheArea()
         {
             NoTrigger();
         }
@@ -41,6 +42,7 @@ namespace Aquapunk
 
         }
 
+        //clears all triggers and returns the object to the region
         private void NoTrigger()
         {
             agreed = false;
@@ -49,7 +51,7 @@ namespace Aquapunk
             MovementInTheArea();
         }
 
-        private void SelectTrigger()
+        private void SortTrigger()
         {
             foreach (GameObject entity in enemys)
             {
@@ -95,7 +97,7 @@ namespace Aquapunk
             {
                 enemys.Remove(trigger);
                 trigger = null;
-                SelectTrigger();
+                SortTrigger();
             }
             
         }
@@ -108,24 +110,28 @@ namespace Aquapunk
             }
             if (trigger != null)
             {
-                GoToDir(mobMovement.Movement, trigger.transform.position - transform.position);
-                //mobMovement.Movement(trigger.transform.position - transform.position);
+                GoToDirection(mobMovement.Movement, trigger.transform.position - transform.position);
 
                 float distance = (trigger.transform.position - transform.position).magnitude;
-                if (distance < attackRange)
+                if (distance < _attackRange)
                 {
                     Attack();
                 }
             }
-            if (timeAttackCoolDown > 0f)
-            {
-                timeAttackCoolDown -= Time.deltaTime;
-            }
-            if (timeStanCoolDown > 0f)
-            {
-                timeStanCoolDown -= Time.deltaTime;
-            }
-            if (timeStanCoolDown <= 0f && state == StateEntity.Stan || state != StateEntity.Stan && _rigidbody.velocity == Vector3.zero)
+
+            //if (_timeAttackCoolDown > 0f)
+            //{
+            //    _timeAttackCoolDown -= Time.deltaTime;
+            //}
+            CoolDown(out _timeAttackCoolDown, _timeAttackCoolDown);
+
+            //if (_timeStanCoolDown > 0f)
+            //{
+            //    _timeStanCoolDown -= Time.deltaTime;
+            //}
+            CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
+            
+            if (_timeStanCoolDown <= 0f && _state == StateEntity.Stan || _state != StateEntity.Stan && _rigidbody.velocity == Vector3.zero)
             {
                 Idle();
             }

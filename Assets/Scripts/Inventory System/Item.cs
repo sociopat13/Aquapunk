@@ -11,11 +11,14 @@ namespace Aquapunk
         #region Fields
         public int id;
         public int value;
+
         public string itemName;
         public string itemInfo;
+
         public Sprite iconItem;
         public TypeItem typeItem = default;
         public Player owner;
+
         [Header("boos parameters")]
         public float MaxHealth;
         #endregion

@@ -23,7 +23,7 @@ namespace Aquapunk
         {
             if (mobs.Contains(other.GetComponent<Mob>()))
             {
-                other.GetComponent<Mob>().returnToTheArea();
+                other.GetComponent<Mob>().ReturnToTheArea();
             }
         }
         #endregion

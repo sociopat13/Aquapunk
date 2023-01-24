@@ -15,7 +15,8 @@ namespace Aquapunk
         public Button applyItemButton;
         public PlayerInfo playerInfo;
         #endregion
-
+        #region Methods
+        #region ClassMethods
         public void GetItemInfo(Item item)
         {
             applyItemButton.onClick.RemoveAllListeners();
@@ -32,5 +33,7 @@ namespace Aquapunk
                 applyItemButton.gameObject.SetActive(false);
             }
         }
+        #endregion
+        #endregion
     }
 }
