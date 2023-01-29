@@ -19,6 +19,7 @@ namespace Aquapunk
         [SerializeField] private Vector3 offsetCamera;
 
         [Header("Inventory")]
+        [SyncVar]
         public List<Item> items;
         public List<Item> KitItems;
         public SetPostItem setNewItem;
@@ -89,22 +90,26 @@ namespace Aquapunk
         }
         private void Update()
         {
-            //if (_timeAttackCoolDown > 0f)
-            //{
-            //    _timeAttackCoolDown -= Time.deltaTime;
-            //}
-            CoolDown(out _timeAttackCoolDown, _timeAttackCoolDown);
-
-            //if(_timeStanCoolDown > 0f)
-            //{
-            //    _timeStanCoolDown -= Time.deltaTime;
-            //}
-            CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
-
-            if (_timeStanCoolDown <= 0f && _state == StateEntity.Stan || _state != StateEntity.Stan && _rigidbody.velocity == Vector3.zero)
+            if (isLocalPlayer)
             {
-                Idle();
+                //if (_timeAttackCoolDown > 0f)
+                //{
+                //    _timeAttackCoolDown -= Time.deltaTime;
+                //}
+                CoolDown(out _timeAttackCoolDown, _timeAttackCoolDown);
+
+                //if(_timeStanCoolDown > 0f)
+                //{
+                //    _timeStanCoolDown -= Time.deltaTime;
+                //}
+                CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
+
+                if (_timeStanCoolDown <= 0f && _state == StateEntity.Stan || _state != StateEntity.Stan && _rigidbody.velocity == Vector3.zero)
+                {
+                    Idle();
+                }
             }
+            
         }
         private void Start()
         {

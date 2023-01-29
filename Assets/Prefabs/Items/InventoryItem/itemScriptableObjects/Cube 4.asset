@@ -15,7 +15,8 @@ MonoBehaviour:
   id: 5
   value: 1
   itemName: Cube
-  iconItem: {fileID: 21300000, guid: d98fbe17966d8ef449b25b99024bf36f, type: 3}
+  itemInfo: 
+  iconItem: {fileID: 21300000, guid: a0d3de57391ce48479d7cf1a260eb6d8, type: 3}
   typeItem: 1
   owner: {fileID: 0}
   MaxHealth: 0

@@ -13,7 +13,6 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region ClassMethods
-        [Server]
         private void PickUpItem(Player player)
         {
             if (player != null)

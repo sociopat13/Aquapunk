@@ -18,7 +18,7 @@ namespace Aquapunk
             //move to directional on joistick
             moveToDirection = new Vector3(moveToDirection.x, 0, moveToDirection.z);
             Vector3 dir = moveToDirection.normalized;
-            _rigidbody.velocity = (moveToDirection * _speed * Time.fixedDeltaTime);
+            _rigidbody.velocity = (dir * _speed * Time.fixedDeltaTime);
             //rotate to directional movement
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
             transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 1);

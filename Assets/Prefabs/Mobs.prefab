@@ -164,34 +164,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc39b4930732f97479b858527b41c268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
+  syncDirection: 1
   syncMode: 0
   syncInterval: 0.1
-  canvas: {fileID: 0}
-  _rigidbody: {fileID: 0}
-  attackRange: 1.5
-  attackDamage: 20
-  timeAttackCoolDown: 0
-  attackCollDown: 2
-  timeStanCoolDown: 0
-  stanCollDown: 2
-  attackOffset: {x: 0, y: 0, z: 0.5}
-  enemys: []
+  canvasWorld: {fileID: 0}
+  _state: 1
   layer:
     serializedVersion: 2
     m_Bits: 192
+  enemys: []
+  _attackRange: 1.5
+  _attackDamage: 20
+  _timeAttackCoolDown: 0
+  _attackCollDown: 1
+  _timeStanCoolDown: 0
+  _stanCollDown: 1
+  _attackOffset: {x: 0, y: 0, z: 0}
   healthMax: 100
   healthCurrent: 0
-  HPBarOffset: {x: 0, y: 1.5, z: 0}
   level: 0
   experienceLevel: 0
-  maxExpLevel: 100
-  experienceDeath: 25
-  procentExp: 10
-  expRange: 10
-  layerXP:
-    serializedVersion: 2
-    m_Bits: 128
   Area: {fileID: 0}
   DropItems:
   - {fileID: 1419392032361333036, guid: 2854b64a802e66543bd73fc71df6f386, type: 3}
@@ -251,7 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de30acdbc74c0e84982123dcbbd820c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
+  _speed: 80
 --- !u!114 &5546067969437243101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,7 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
+  syncDirection: 1
   syncMode: 0
   syncInterval: 0
   target: {fileID: 4154974685415177321}

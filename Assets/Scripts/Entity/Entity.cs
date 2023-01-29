@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Aquapunk
 {
@@ -13,7 +14,7 @@ namespace Aquapunk
         public Canvas canvasWorld;
 
         protected Rigidbody _rigidbody;
-        protected StateEntity _state = StateEntity.Idle;
+        [SerializeField] protected StateEntity _state = StateEntity.Idle;
 
         [Header("Attack")]
 
@@ -83,6 +84,7 @@ namespace Aquapunk
         /// <param name="enemy"></param>
         /// <param name="damage"></param>
         /// <param name="entity"></param>
+        
         [Command]
         public void CmdAttackFromClient(Entity enemy, float damage, Entity entity)
         {
@@ -95,6 +97,10 @@ namespace Aquapunk
             if (coolDown > 0f)
             {
                 coolDown -= Time.deltaTime;
+            }
+            else if(_state != StateEntity.Idle)
+            {
+                _state = StateEntity.Idle;
             }
         }
 
@@ -131,6 +137,7 @@ namespace Aquapunk
                         if (isServer)
                         {
                             collider.GetComponent<Entity>().Attacked(_attackDamage, this);
+                            //RpcAttack(collider.GetComponent<Entity>(), _attackDamage, this);
                         }
                         else
                         {
@@ -139,6 +146,7 @@ namespace Aquapunk
                     }
                 }
                 _timeAttackCoolDown = _attackCollDown;
+                _state = StateEntity.Attack;
             }
         }
 
@@ -149,14 +157,14 @@ namespace Aquapunk
             for (int c = 0; c != expColliders.Count; c++)
             {
                 if(expColliders[c].gameObject != gameObject && !expColliders[c].isTrigger)
-                {
-                    if (isServer)
+                { 
+                    if(isClient)
                     {
-                        expColliders[c].GetComponent<Player>().SetExp(experienceDeath / expColliders.Count);
+                        CmdSetExp(experienceDeath / expColliders.Count, expColliders[c].GetComponent<Player>());
                     }
                     else
                     {
-                        CmdSetExp(experienceDeath / expColliders.Count, expColliders[c].GetComponent<Player>());
+                        expColliders[c].GetComponent<Player>().SetExp(experienceDeath / expColliders.Count);
                     }
                 }
             }
@@ -202,7 +210,8 @@ namespace Aquapunk
             Stan,
             Idle,
             Move,
-            Sprint
+            Sprint,
+            Attack
         }
 
         public delegate void MoveFunk(Vector3 dir);

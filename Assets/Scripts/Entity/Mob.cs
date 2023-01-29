@@ -108,14 +108,17 @@ namespace Aquapunk
             {
                 agreed = true;
             }
-            if (trigger != null)
-            {
-                GoToDirection(mobMovement.Movement, trigger.transform.position - transform.position);
-
+            if (trigger != null && _state != StateEntity.Stan)
+            {        
                 float distance = (trigger.transform.position - transform.position).magnitude;
-                if (distance < _attackRange)
+                if (distance <= _attackRange)
                 {
                     Attack();
+                }
+
+                else if (_state != StateEntity.Attack)
+                {
+                    GoToDirection(mobMovement.Movement, trigger.transform.position - transform.position);
                 }
             }
 
@@ -131,7 +134,7 @@ namespace Aquapunk
             //}
             CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
             
-            if (_timeStanCoolDown <= 0f && _state == StateEntity.Stan || _state != StateEntity.Stan && _rigidbody.velocity == Vector3.zero)
+            if (_timeStanCoolDown <= 0f || _rigidbody.velocity == Vector3.zero && _state != StateEntity.Stan )
             {
                 Idle();
             }
