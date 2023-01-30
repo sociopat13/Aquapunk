@@ -16,6 +16,8 @@ namespace Aquapunk
             if (other.GetComponent<Mob>() && !mobs.Contains(other.GetComponent<Mob>()))
             {
                 mobs.Add(other.GetComponent<Mob>());
+
+                StartCoroutine(other.GetComponent<Mob>().TerritoryPatrol());
             }
         }
 
@@ -23,6 +25,7 @@ namespace Aquapunk
         {
             if (mobs.Contains(other.GetComponent<Mob>()))
             {
+                StopCoroutine(other.GetComponent<Mob>().TerritoryPatrol());
                 other.GetComponent<Mob>().ReturnToTheArea();
             }
         }

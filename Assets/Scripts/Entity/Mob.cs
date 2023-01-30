@@ -1,10 +1,8 @@
 using Mirror;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Aquapunk
 {
@@ -18,7 +16,9 @@ namespace Aquapunk
         [SerializeField] private bool agreed = true;
         [SerializeField] private GameObject trigger;
         [SerializeField] private Vector3 startPos;
+        [SerializeField] private float radiusPatrol;
         [SerializeField] private float minMagnitudeStartPos;
+        [SerializeField] private float timeWaitPatrol;
         #endregion
         #region Properties
         public bool Agreed
@@ -30,6 +30,17 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region Class Methods
+        public IEnumerator TerritoryPatrol()
+        {
+            while (true)
+            {
+                Vector3 point = startPos + (Random.insideUnitSphere * radiusPatrol);
+                mobMovement.MoveToPoint(point);
+                //print(point);
+                yield return new WaitForSeconds(timeWaitPatrol);
+                mobMovement.agent.ResetPath();
+            }
+        }
         public void ReturnToTheArea()
         {
             NoTrigger();

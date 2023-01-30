@@ -195,7 +195,9 @@ MonoBehaviour:
   agreed: 1
   trigger: {fileID: 0}
   startPos: {x: -10, y: 0.6, z: 0}
+  radiusPatrol: 4
   minMagnitudeStartPos: 2
+  timeWaitPatrol: 2
 --- !u!135 &4154974685415177316
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -244,6 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 80
+  agent: {fileID: 0}
 --- !u!114 &5546067969437243101
 MonoBehaviour:
   m_ObjectHideFlags: 0

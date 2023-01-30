@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,28 +10,36 @@ namespace Aquapunk
     public class MobMovement : EntityMovement
     {
         #region Fields
-        private NavMeshAgent _agent;
+        public NavMeshAgent agent;
         #endregion
 
         #region methods
         #region class methods
         public void MoveToPoint(Vector3 point)
         {
-            _agent.ResetPath();
-            _agent.SetDestination(point);
+            if(agent.path != null)
+            {
+                agent.ResetPath();
+            }
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(point.x, 0, point.z));
+            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 1);
+
+            agent.SetDestination(new Vector3(point.x, 0.5f, point.z));
+
+            //_agent.ResetPath();
         }
 
         public override void Movement(Vector3 moveToDirection)
         {
-            _agent.isStopped = !_agent.isStopped;
-            _agent.ResetPath();
+            agent.isStopped = !agent.isStopped;
+            agent.ResetPath();
             base.Movement(moveToDirection);
-            _agent.isStopped = !_agent.isStopped;
+            agent.isStopped = !agent.isStopped;
         }
 
         private void Start()
         {
-            _agent = GetComponent<NavMeshAgent>(); 
+            agent = GetComponent<NavMeshAgent>(); 
             _rigidbody = GetComponent<Rigidbody>();
         }
         #endregion
