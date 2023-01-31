@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using DG.Tweening;
 
 namespace Aquapunk
 {
@@ -21,12 +22,26 @@ namespace Aquapunk
             {
                 agent.ResetPath();
             }
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(point.x, 0, point.z));
-            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 1);
+            //Quaternion lookRotation = Quaternion.LookRotation(new Vector3(point.x, 0, point.z));
+            //transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 1);
+
+            //agent.SetDestination(new Vector3(point.x, 0.5f, point.z));
+            StartCoroutine(MoveAgent(new Vector3(point.x, 0.5f, point.z)));
+        }
+
+        public IEnumerator MoveAgent(Vector3 point)
+        {
+            Vector3 direction = (point - transform.position).normalized;
+
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            //transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 1);
+            transform.DORotateQuaternion(Quaternion.Lerp(transform.rotation, lookRotation, 1), 0.5f);
+
+            //yield return new WaitForSeconds(1);
 
             agent.SetDestination(new Vector3(point.x, 0.5f, point.z));
 
-            //_agent.ResetPath();
+            yield break;
         }
 
         public override void Movement(Vector3 moveToDirection)

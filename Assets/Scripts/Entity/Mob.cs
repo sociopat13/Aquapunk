@@ -156,6 +156,7 @@ namespace Aquapunk
             _rigidbody = GetComponent<Rigidbody>();
             mobMovement = GetComponent<MobMovement>();
             startPos = Area.transform.position;
+            radiusPatrol = Area.GetComponent<SphereCollider>().radius;
         }
         #endregion
         #endregion

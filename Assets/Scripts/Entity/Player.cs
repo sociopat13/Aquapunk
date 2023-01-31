@@ -115,6 +115,7 @@ namespace Aquapunk
         {
             if (isLocalPlayer)
             {
+                canvasWorld = FindObjectOfType<WorldCanvas>().GetComponent<Canvas>();
                 _rigidbody = GetComponent<Rigidbody>();
                 joystick = FindObjectOfType<FixedJoystick>();
                 textWaterCounter = FindObjectOfType<PlayerUI>().waterCounter;
