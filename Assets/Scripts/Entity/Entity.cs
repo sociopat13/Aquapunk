@@ -12,7 +12,7 @@ namespace Aquapunk
     {
         #region Fields
         public Canvas canvasWorld;
-
+        public Vector3 offsetHPBar;
         protected Rigidbody _rigidbody;
         [SerializeField] protected StateEntity _state = StateEntity.Idle;
 
@@ -25,12 +25,6 @@ namespace Aquapunk
         [SerializeField] protected float _timeAttackCoolDown, _attackCollDown = 0.5f, _timeStanCoolDown, _stanCollDown = 0.5f;
         [SerializeField] protected Vector3 _attackOffset;
 
-        [Header("HP bar")]
-
-        public float healthMax = 100f;
-        [SyncVar(hook = nameof(SyncHP))]
-        public float healthCurrent;
-
         [Header("Level system")]
 
         [SyncVar(hook = nameof(SyncLevel))]
@@ -42,6 +36,14 @@ namespace Aquapunk
         protected float procentExp = 10;
         protected float expRange;
         protected LayerMask layerXP;
+
+        [Header("HP system")]
+
+        public float healthMax = 100f;
+        [SyncVar(hook = nameof(SyncHP))]
+        public float healthCurrent;
+
+        public HPBar hpBar;
         #endregion
         #region Methods
         #region Class Methods
@@ -63,6 +65,10 @@ namespace Aquapunk
         public void SyncHP(float oldValue, float newValue)
         {
             healthCurrent = newValue;
+            if(hpBar != null)
+            {
+                hpBar.SetHP(healthCurrent / healthMax);
+            }
         }
 
         /// <summary>
@@ -153,6 +159,10 @@ namespace Aquapunk
         [Server]
         protected virtual void DeathObject()
         {
+            if(hpBar != null)
+            {
+                Destroy(hpBar.gameObject);
+            }
             List<Collider> expColliders = Physics.OverlapSphere(transform.position, expRange, layerXP).ToList();
             for (int c = 0; c != expColliders.Count; c++)
             {

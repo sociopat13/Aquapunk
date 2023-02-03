@@ -70,6 +70,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   canvasWorld: {fileID: 0}
+  offsetHPBar: {x: 0, y: 2.6, z: 0}
+  _state: 1
   layer:
     serializedVersion: 2
     m_Bits: 192
@@ -81,14 +83,17 @@ MonoBehaviour:
   _timeStanCoolDown: 0
   _stanCollDown: 0.5
   _attackOffset: {x: 0, y: 0, z: 0}
-  healthMax: 100
-  healthCurrent: 0
   level: 0
   experienceLevel: 0
+  healthMax: 100
+  healthCurrent: 0
+  hpBar: {fileID: 0}
+  HPBarPrefab: {fileID: 8214830115922944676, guid: 0ec7b9c835c779841a0963d8ddc22cb1, type: 3}
   joystick: {fileID: 0}
   camera: {fileID: 0}
   entityMovenent: {fileID: 4452891666028492741}
   offsetCamera: {x: 0, y: 20, z: -22.2}
+  im: {fileID: 0}
   items: []
   KitItems: []
   textWaterCounter: {fileID: 0}

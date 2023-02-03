@@ -13,10 +13,13 @@ namespace Aquapunk
     public class Player : Entity
     {
         #region Fields
+        public GameObject HPBarPrefab;
+
         public Joystick joystick;
         public CinemachineVirtualCamera camera;
         public EntityMovement entityMovenent;
         [SerializeField] private Vector3 offsetCamera;
+        public RPGInteresManager im;
 
         [Header("Inventory")]
         [SyncVar]
@@ -55,6 +58,20 @@ namespace Aquapunk
                 }
                 maxExpLevel += maxExpLevel / 100 * procentExp;
                 ExpDeathSet();
+            }
+        }
+
+        [Client]
+        public void SetHPBar(Entity entity)
+        {
+            if (isLocalPlayer && entity != this)
+            {
+                GameObject hpBar = Instantiate(HPBarPrefab, canvasWorld.gameObject.transform);
+                HPBar hpBarScript = hpBar.GetComponent<HPBar>();
+                hpBarScript.target = entity.gameObject;
+                hpBarScript.offset = entity.offsetHPBar;
+                hpBarScript.SetHP(entity.healthCurrent/entity.healthMax);
+                entity.hpBar = hpBarScript;
             }
         }
 
@@ -125,6 +142,8 @@ namespace Aquapunk
                 camera.LookAt = gameObject.transform;
                 FindObjectOfType<PlayerInfo>().player = this;
                 ExpDeathSet();
+                im = FindObjectOfType<RPGInteresManager>();
+                im.LocalPlayer = this;
             }
         }
 

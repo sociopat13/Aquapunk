@@ -85,6 +85,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   canvasWorld: {fileID: 0}
+  offsetHPBar: {x: 0, y: 1.4, z: 0}
   _state: 1
   layer:
     serializedVersion: 2
@@ -97,10 +98,11 @@ MonoBehaviour:
   _timeStanCoolDown: 0
   _stanCollDown: 1
   _attackOffset: {x: 0, y: 0, z: 0}
-  healthMax: 100
-  healthCurrent: 0
   level: 0
   experienceLevel: 0
+  healthMax: 100
+  healthCurrent: 0
+  hpBar: {fileID: 0}
   Area: {fileID: 0}
   DropItems:
   - {fileID: 1419392032361333036, guid: 2854b64a802e66543bd73fc71df6f386, type: 3}

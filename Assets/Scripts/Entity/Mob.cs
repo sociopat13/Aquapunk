@@ -88,6 +88,7 @@ namespace Aquapunk
                 GameObject itemObject = Instantiate(item, transform.position, item.transform.rotation);
                 NetworkServer.Spawn(itemObject);
             }
+            StopAllCoroutines();
             base.DeathObject();
         }
         #endregion
