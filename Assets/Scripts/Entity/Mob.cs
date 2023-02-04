@@ -34,10 +34,18 @@ namespace Aquapunk
         {
             while (true)
             {
+                
                 Vector3 point = startPos + (Random.insideUnitSphere * radiusPatrol);
-                mobMovement.MoveToPoint(point);
+                if (_state != StateEntity.Stan || _state != StateEntity.Attack)
+                {
+                    mobMovement.MoveToPoint(point);
+                }
                 //print(point);
                 yield return new WaitForSeconds(timeWaitPatrol);
+                if (mobMovement == null)
+                {
+                    break;
+                }
                 mobMovement.agent.ResetPath();
             }
         }

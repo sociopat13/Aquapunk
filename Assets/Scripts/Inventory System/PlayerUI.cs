@@ -10,6 +10,7 @@ namespace Aquapunk
     {
         public TextMeshProUGUI waterCounter;
         public Button attackButton;
+        public HPBarUI hpbar;
     }
 }
 

@@ -50,10 +50,9 @@ namespace Aquapunk
                 }
                 else
                 {
-                    if(identity.GetComponent<Entity>().hpBar != null)
+                    if(identity.GetComponent<Entity>())
                     {
-                        Destroy(identity.GetComponent<Entity>().hpBar);
-
+                        identity.GetComponent<Entity>().DeleteHPBar();
                     }
                 }
             }

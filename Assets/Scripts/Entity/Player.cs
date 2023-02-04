@@ -14,6 +14,7 @@ namespace Aquapunk
     {
         #region Fields
         public GameObject HPBarPrefab;
+        public HPBarUI hPBarUI;
 
         public Joystick joystick;
         public CinemachineVirtualCamera camera;
@@ -43,6 +44,15 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region Class Methods
+
+        public override void SyncHP(float oldValue, float newValue)
+        {
+            base.SyncHP(oldValue, newValue);
+            if(hPBarUI != null)
+            {
+                hPBarUI.SetHP(healthCurrent / healthMax);
+            }
+        }
 
         [Server]
         public virtual void SetExp(float exp)
@@ -138,6 +148,7 @@ namespace Aquapunk
                 textWaterCounter = FindObjectOfType<PlayerUI>().waterCounter;
                 FindObjectOfType<PlayerUI>().attackButton.onClick.AddListener(() => Attack());
                 camera = FindObjectOfType<CinemachineVirtualCamera>();
+                hPBarUI = FindObjectOfType<PlayerUI>().hpbar;
                 camera.Follow = gameObject.transform;
                 camera.LookAt = gameObject.transform;
                 FindObjectOfType<PlayerInfo>().player = this;

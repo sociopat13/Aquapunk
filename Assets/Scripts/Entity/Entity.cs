@@ -62,7 +62,7 @@ namespace Aquapunk
         /// </summary>
         /// <param name="oldValue"></param>
         /// <param name="newValue"></param>
-        public void SyncHP(float oldValue, float newValue)
+        public virtual void SyncHP(float oldValue, float newValue)
         {
             healthCurrent = newValue;
             if(hpBar != null)
@@ -95,6 +95,14 @@ namespace Aquapunk
         public void CmdAttackFromClient(Entity enemy, float damage, Entity entity)
         {
             enemy.Attacked(damage, entity);
+        }
+
+        public void DeleteHPBar()
+        {
+            if (hpBar != null)
+            {
+                Destroy(hpBar.gameObject);
+            }
         }
 
         protected void CoolDown(out float coolDown, float postCoolDown)

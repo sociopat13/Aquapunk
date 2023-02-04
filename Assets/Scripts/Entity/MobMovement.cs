@@ -18,6 +18,7 @@ namespace Aquapunk
         #region class methods
         public void MoveToPoint(Vector3 point)
         {
+            
             if(agent.path != null)
             {
                 agent.ResetPath();
