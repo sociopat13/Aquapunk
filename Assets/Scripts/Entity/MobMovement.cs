@@ -18,31 +18,25 @@ namespace Aquapunk
         #region class methods
         public void MoveToPoint(Vector3 point)
         {
-            
-            if(agent.path != null)
+            if(agent != null)
             {
-                agent.ResetPath();
+                if (agent.path != null)
+                {
+                    agent.ResetPath();
+                }
+                MoveAgent(new Vector3(point.x, 0.5f, point.z));
             }
-            //Quaternion lookRotation = Quaternion.LookRotation(new Vector3(point.x, 0, point.z));
-            //transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 1);
-
-            //agent.SetDestination(new Vector3(point.x, 0.5f, point.z));
-            StartCoroutine(MoveAgent(new Vector3(point.x, 0.5f, point.z)));
+            
         }
 
-        public IEnumerator MoveAgent(Vector3 point)
+        public void MoveAgent(Vector3 point)
         {
             Vector3 direction = (point - transform.position).normalized;
 
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            //transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 1);
             transform.DORotateQuaternion(Quaternion.Lerp(transform.rotation, lookRotation, 1), 0.5f);
 
-            //yield return new WaitForSeconds(1);
-
             agent.SetDestination(new Vector3(point.x, 0.5f, point.z));
-
-            yield break;
         }
 
         public override void Movement(Vector3 moveToDirection)

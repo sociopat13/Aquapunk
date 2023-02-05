@@ -187,6 +187,7 @@ namespace Aquapunk
                 }
             }
             NetworkServer.Destroy(gameObject);
+            
         }
 
         protected virtual void GoToDirection(MoveFunk moveFunk,Vector3 dir)

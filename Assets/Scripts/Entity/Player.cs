@@ -16,6 +16,8 @@ namespace Aquapunk
         public GameObject HPBarPrefab;
         public HPBarUI hPBarUI;
 
+        public RpgNetworkManager nm;
+
         public Joystick joystick;
         public CinemachineVirtualCamera camera;
         public EntityMovement entityMovenent;
@@ -69,6 +71,11 @@ namespace Aquapunk
                 maxExpLevel += maxExpLevel / 100 * procentExp;
                 ExpDeathSet();
             }
+        }
+
+        protected override void DeathObject()
+        {
+            base.DeathObject();
         }
 
         [Client]
@@ -154,6 +161,7 @@ namespace Aquapunk
                 FindObjectOfType<PlayerInfo>().player = this;
                 ExpDeathSet();
                 im = FindObjectOfType<RPGInteresManager>();
+                nm = FindObjectOfType<RpgNetworkManager>();
                 im.LocalPlayer = this;
             }
         }
