@@ -1,12 +1,8 @@
 using Cinemachine;
 using Mirror;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.Jobs.LowLevel.Unsafe;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Aquapunk
 {
@@ -47,6 +43,7 @@ namespace Aquapunk
         #region Methods
         #region Class Methods
 
+
         public override void SyncHP(float oldValue, float newValue)
         {
             base.SyncHP(oldValue, newValue);
@@ -71,11 +68,6 @@ namespace Aquapunk
                 maxExpLevel += maxExpLevel / 100 * procentExp;
                 ExpDeathSet();
             }
-        }
-
-        protected override void DeathObject()
-        {
-            base.DeathObject();
         }
 
         [Client]
