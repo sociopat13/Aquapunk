@@ -43,13 +43,11 @@ namespace Aquapunk
         #region Methods
         #region Class Methods
 
-
-        public override void SyncHP(float oldValue, float newValue)
+        public void SetUiHP(float value)
         {
-            base.SyncHP(oldValue, newValue);
-            if(hPBarUI != null)
+            if (hPBarUI != null)
             {
-                hPBarUI.SetHP(healthCurrent / healthMax);
+                hPBarUI.SetHP(value);
             }
         }
 
@@ -82,6 +80,20 @@ namespace Aquapunk
                 hpBarScript.SetHP(entity.healthCurrent/entity.healthMax);
                 entity.hpBar = hpBarScript;
             }
+        }
+
+        public override void Attacked(float damage, Entity entity)
+        {
+            base.Attacked(damage, entity);
+            SetUiHP(healthCurrent / healthMax);
+        }
+
+        [Client]
+        protected override void DeathObject()
+        {
+            print("stop");
+            OnStopClient();
+            //base.DeathObject();
         }
 
         public void SetItem(Item item)

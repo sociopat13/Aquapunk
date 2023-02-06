@@ -26,6 +26,7 @@ namespace Aquapunk
 
         [SyncVar(hook = nameof(SyncLevel))]
         public float level;
+        [SyncVar(hook = nameof(SyncExp))]
         public float experienceLevel;
 
         protected float maxExpLevel = 100;
@@ -54,11 +55,17 @@ namespace Aquapunk
             level = newValue;
         }
 
+        public void SyncExp(float oldValue, float newValue)
+        {
+            experienceLevel = newValue;
+        }
+
         /// <summary>
         /// The hook attribute can be used to specify a function to be called when the SyncVar changes value on the client.
         /// </summary>
         /// <param name="oldValue"></param>
         /// <param name="newValue"></param>
+        [Client]
         public virtual void SyncHP(float oldValue, float newValue)
         {
             healthCurrent = newValue;
@@ -121,15 +128,16 @@ namespace Aquapunk
         /// </summary>
         /// <param name="damage"></param>
         /// <param name="entity"></param>
-        [Server]
+        //[Server]
         public virtual void Attacked(float damage, Entity entity)
         {
-            if (damage >= healthCurrent)
+            healthCurrent -= damage;
+            if (healthCurrent <= 0)
             {
+                //FindObjectOfType<RpgNetworkManager>().StopClient();
                 DeathObject();
                 return;
             }
-            healthCurrent -= damage;
             Stan();
         }
 
@@ -145,15 +153,7 @@ namespace Aquapunk
                 {
                     if (collider.gameObject != gameObject && !collider.isTrigger)
                     {
-                        if (isServer)
-                        {
-                            collider.GetComponent<Entity>().Attacked(_attackDamage, this);
-                            //RpcAttack(collider.GetComponent<Entity>(), _attackDamage, this);
-                        }
-                        else
-                        {
-                            CmdAttackFromClient(collider.GetComponent<Entity>(), _attackDamage, this);
-                        }
+                        collider.GetComponent<Entity>().Attacked(_attackDamage, this);
                     }
                 }
                 _timeAttackCoolDown = _attackCollDown;
@@ -161,19 +161,31 @@ namespace Aquapunk
             }
         }
 
-        [Server]
+        [Client]
         protected virtual void DeathObject()
         {
+            print("1");
             if(hpBar != null)
             {
                 Destroy(hpBar.gameObject);
             }
+            GiveExp();
+            //if (isClient)
+            //{
+            //    FindObjectOfType<RpgNetworkManager>().OnServerDisconnect(GetComponent<NetworkIdentity>().connectionToClient);
+            //}
+            NetworkServer.Destroy(gameObject);
+            
+        }
+        [Command]
+        protected virtual void GiveExp()
+        {
             List<Collider> expColliders = Physics.OverlapSphere(transform.position, expRange, layerXP).ToList();
             for (int c = 0; c != expColliders.Count; c++)
             {
-                if(expColliders[c].gameObject != gameObject && !expColliders[c].isTrigger)
-                { 
-                    if(isClient)
+                if (expColliders[c].gameObject != gameObject && !expColliders[c].isTrigger)
+                {
+                    if (isClient)
                     {
                         CmdSetExp(experienceDeath / expColliders.Count, expColliders[c].GetComponent<Player>());
                     }
@@ -183,8 +195,6 @@ namespace Aquapunk
                     }
                 }
             }
-            NetworkServer.Destroy(gameObject);
-            
         }
 
         protected virtual void GoToDirection(MoveFunk moveFunk,Vector3 dir)
