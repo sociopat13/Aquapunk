@@ -88,13 +88,12 @@ namespace Aquapunk
             SetUiHP(healthCurrent / healthMax);
         }
 
-        [Client]
         protected override void DeathObject()
         {
             print("stop");
-            OnStopClient();
-            //base.DeathObject();
+            NetworkManager.singleton.StopClient();
         }
+
 
         public void SetItem(Item item)
         {
@@ -111,7 +110,7 @@ namespace Aquapunk
             item.SetParameters();
             KitItems.Add(item);
             setNewItem?.Invoke(item);
-        }
+        } 
 
         private void ExpDeathSet()
         {

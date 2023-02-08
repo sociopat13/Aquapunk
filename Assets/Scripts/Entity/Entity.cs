@@ -161,7 +161,6 @@ namespace Aquapunk
             }
         }
 
-        [Client]
         protected virtual void DeathObject()
         {
             print("1");
