@@ -500,7 +500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LocalPlayer: {fileID: 0}
-  visRange: 10
+  visRange: 20
   rebuildInterval: 0
 --- !u!1 &662228853
 GameObject:

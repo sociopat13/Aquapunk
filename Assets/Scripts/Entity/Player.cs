@@ -68,11 +68,13 @@ namespace Aquapunk
             }
         }
 
-        [Client]
+        //[Client]
         public void SetHPBar(Entity entity)
         {
+            print(1);
             if (isLocalPlayer && entity != this)
             {
+                print(2);
                 GameObject hpBar = Instantiate(HPBarPrefab, canvasWorld.gameObject.transform);
                 HPBar hpBarScript = hpBar.GetComponent<HPBar>();
                 hpBarScript.target = entity.gameObject;
@@ -90,7 +92,7 @@ namespace Aquapunk
 
         protected override void DeathObject()
         {
-            print("stop");
+            Destroy(hpBar);
             NetworkManager.singleton.StopClient();
         }
 
@@ -166,6 +168,23 @@ namespace Aquapunk
                 im = FindObjectOfType<RPGInteresManager>();
                 nm = FindObjectOfType<RpgNetworkManager>();
                 im.LocalPlayer = this;
+                im.hpView += SetHPBar;
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.gameObject != gameObject && other.GetComponent<Entity>() && !other.isTrigger)
+            {
+                SetHPBar(other.GetComponent<Entity>());
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject != gameObject && other.GetComponent<Entity>() && !other.isTrigger)
+            {
+                Destroy(other.GetComponent<Entity>().hpBar);
             }
         }
 

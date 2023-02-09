@@ -2,6 +2,7 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Aquapunk
 {
@@ -9,12 +10,15 @@ namespace Aquapunk
     {
         #region Fields
         public Player LocalPlayer;
+        public LocalFunc hpView;
         [Tooltip("The maximum range that objects will be visible at.")]
         public int visRange = 10;
 
         [Tooltip("Rebuild all every 'rebuildInterval' seconds.")]
         public float rebuildInterval = 1;
         private double lastRebuildTime;
+
+
         #endregion
         #region Methods
         #region Class Methods
@@ -46,7 +50,8 @@ namespace Aquapunk
             {
                 if (visible)
                 {
-                    LocalPlayer.SetHPBar(identity.GetComponent<Entity>());
+                    hpView?.Invoke(identity.GetComponent<Entity>());
+                    //LocalPlayer.SetHPBar(identity.GetComponent<Entity>());
                 }
                 else
                 {
@@ -71,6 +76,8 @@ namespace Aquapunk
         }
         #endregion
         #endregion
+
+        public delegate void LocalFunc(Entity entity);
     }
 }
 

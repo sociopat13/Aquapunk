@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4452891666028492740}
   - component: {fileID: 8793334497583894998}
   - component: {fileID: 839716397334942450}
+  - component: {fileID: 2975267738237418736}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -89,6 +90,8 @@ MonoBehaviour:
   healthCurrent: 0
   hpBar: {fileID: 0}
   HPBarPrefab: {fileID: 8214830115922944676, guid: 0ec7b9c835c779841a0963d8ddc22cb1, type: 3}
+  hPBarUI: {fileID: 0}
+  nm: {fileID: 0}
   joystick: {fileID: 0}
   camera: {fileID: 0}
   entityMovenent: {fileID: 4452891666028492741}
@@ -170,6 +173,19 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+--- !u!135 &2975267738237418736
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4452891666028492761}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 10
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &4452891666892088173
 PrefabInstance:
   m_ObjectHideFlags: 0
