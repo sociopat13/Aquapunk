@@ -184,7 +184,7 @@ namespace Aquapunk
         {
             if (other.gameObject != gameObject && other.GetComponent<Entity>() && !other.isTrigger)
             {
-                Destroy(other.GetComponent<Entity>().hpBar);
+                other.GetComponent<Entity>().DeleteHPBar();
             }
         }
 
