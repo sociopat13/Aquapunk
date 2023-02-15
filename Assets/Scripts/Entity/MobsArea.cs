@@ -17,6 +17,8 @@ namespace Aquapunk
             {
                 mobs.Add(other.GetComponent<Mob>());
 
+                other.GetComponent<Mob>().startPos = transform.position;
+
                 StartCoroutine(other.GetComponent<Mob>().TerritoryPatrol());
             }
         }

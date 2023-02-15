@@ -13,9 +13,9 @@ namespace Aquapunk
         public List<GameObject> DropItems;
         public MobMovement mobMovement;
 
-        [SerializeField] private bool agreed = true;
-        [SerializeField] private GameObject trigger;
-        [SerializeField] private Vector3 startPos;
+        public bool agreed = true;
+        public GameObject trigger;
+        public Vector3 startPos;
         [SerializeField] private float radiusPatrol;
         [SerializeField] private float minMagnitudeStartPos;
         [SerializeField] private float timeWaitPatrol;
@@ -36,7 +36,7 @@ namespace Aquapunk
             {
                 
                 Vector3 point = startPos + (Random.insideUnitSphere * radiusPatrol);
-                if (_state != StateEntity.Stan || _state != StateEntity.Attack)
+                if ((_state != StateEntity.Stan || _state != StateEntity.Attack) && trigger == null)
                 {
                     mobMovement.MoveToPoint(point);
                 }
@@ -70,7 +70,7 @@ namespace Aquapunk
             MovementInTheArea();
         }
 
-        private void SortTrigger()
+        public void SortTrigger()
         {
             foreach (GameObject entity in enemys)
             {
@@ -106,6 +106,7 @@ namespace Aquapunk
         {
             if(trigger == null && other.GetComponent<Entity>() && other.GetComponent<Entity>().GetType().ToString() != "Aquapunk.Mob" && agreed)
             {
+                StopCoroutine(TerritoryPatrol());
                 trigger = other.gameObject;
                 enemys.Add(other.gameObject);
             }
@@ -115,6 +116,7 @@ namespace Aquapunk
         {
             if(enemys.Contains(other.gameObject))
             {
+                StartCoroutine(TerritoryPatrol());
                 enemys.Remove(trigger);
                 trigger = null;
                 SortTrigger();
@@ -129,7 +131,8 @@ namespace Aquapunk
                 agreed = true;
             }
             if (trigger != null && _state != StateEntity.Stan)
-            {        
+            {
+                
                 float distance = (trigger.transform.position - transform.position).magnitude;
                 if (distance <= _attackRange)
                 {
