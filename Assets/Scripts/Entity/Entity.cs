@@ -163,7 +163,6 @@ namespace Aquapunk
 
         protected virtual void DeathObject()
         {
-            print("1");
             if(hpBar != null)
             {
                 Destroy(hpBar.gameObject);

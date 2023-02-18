@@ -9,14 +9,14 @@ namespace Aquapunk
     public class Mob : Entity
     {
         #region fields
-        public GameObject Area;
         public List<GameObject> DropItems;
         public MobMovement mobMovement;
 
+        public bool isPatrolling = true;
         public bool agreed = true;
-        public GameObject trigger;
+        public GameObject trigger = null;
         public Vector3 startPos;
-        [SerializeField] private float radiusPatrol;
+        public float radiusPatrol;
         [SerializeField] private float minMagnitudeStartPos;
         [SerializeField] private float timeWaitPatrol;
         #endregion
@@ -32,21 +32,22 @@ namespace Aquapunk
         #region Class Methods
         public IEnumerator TerritoryPatrol()
         {
-            while (true)
+            while (isPatrolling)
             {
-                
-                Vector3 point = startPos + (Random.insideUnitSphere * radiusPatrol);
-                if ((_state != StateEntity.Stan || _state != StateEntity.Attack) && trigger == null)
+                print("patroll");
+                if (_state != StateEntity.Stan || _state != StateEntity.Attack)
                 {
-                    mobMovement.MoveToPoint(point);
+                    if (trigger == null || !trigger.activeInHierarchy)
+                    {
+                        Vector3 point = startPos + (Random.insideUnitSphere * radiusPatrol);
+                        mobMovement.MoveToPoint(point);
+                    }
                 }
-                //print(point);
                 yield return new WaitForSeconds(timeWaitPatrol);
-                if (mobMovement == null)
+                if(mobMovement.agent.path != null)
                 {
-                    break;
+                    mobMovement.agent.ResetPath();
                 }
-                mobMovement.agent.ResetPath();
             }
         }
         public void ReturnToTheArea()
@@ -104,8 +105,9 @@ namespace Aquapunk
 
         private void OnTriggerEnter(Collider other)
         {
-            if(trigger == null && other.GetComponent<Entity>() && other.GetComponent<Entity>().GetType().ToString() != "Aquapunk.Mob" && agreed)
+            if(trigger == null && other.GetComponent<Entity>() && other.GetComponent<Entity>().GetType().ToString() != "Aquapunk.Mob" && agreed && !other.isTrigger)
             {
+                isPatrolling = false;
                 StopCoroutine(TerritoryPatrol());
                 trigger = other.gameObject;
                 enemys.Add(other.gameObject);
@@ -116,6 +118,7 @@ namespace Aquapunk
         {
             if(enemys.Contains(other.gameObject))
             {
+                isPatrolling = true;
                 StartCoroutine(TerritoryPatrol());
                 enemys.Remove(trigger);
                 trigger = null;
@@ -145,16 +148,8 @@ namespace Aquapunk
                 }
             }
 
-            //if (_timeAttackCoolDown > 0f)
-            //{
-            //    _timeAttackCoolDown -= Time.deltaTime;
-            //}
             CoolDown(out _timeAttackCoolDown, _timeAttackCoolDown);
 
-            //if (_timeStanCoolDown > 0f)
-            //{
-            //    _timeStanCoolDown -= Time.deltaTime;
-            //}
             CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
             
             if (_timeStanCoolDown <= 0f || _rigidbody.velocity == Vector3.zero && _state != StateEntity.Stan )
@@ -167,8 +162,6 @@ namespace Aquapunk
         {
             _rigidbody = GetComponent<Rigidbody>();
             mobMovement = GetComponent<MobMovement>();
-            startPos = Area.transform.position;
-            radiusPatrol = Area.GetComponent<SphereCollider>().radius;
         }
         #endregion
         #endregion

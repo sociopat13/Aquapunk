@@ -71,10 +71,8 @@ namespace Aquapunk
         //[Client]
         public void SetHPBar(Entity entity)
         {
-            print(1);
             if (isLocalPlayer && entity != this)
             {
-                print(2);
                 GameObject hpBar = Instantiate(HPBarPrefab, canvasWorld.gameObject.transform);
                 HPBar hpBarScript = hpBar.GetComponent<HPBar>();
                 hpBarScript.target = entity.gameObject;

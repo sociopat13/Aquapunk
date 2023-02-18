@@ -15,11 +15,15 @@ namespace Aquapunk
         {
             if (other.GetComponent<Mob>() && !mobs.Contains(other.GetComponent<Mob>()))
             {
-                mobs.Add(other.GetComponent<Mob>());
+                Mob mob = other.GetComponent<Mob>();
+                mobs.Add(mob);
 
-                other.GetComponent<Mob>().startPos = transform.position;
+                mob.startPos = transform.position;
+                mob.radiusPatrol = GetComponent<SphereCollider>().radius;
 
-                StartCoroutine(other.GetComponent<Mob>().TerritoryPatrol());
+                mob.startPos = transform.position;
+                StartCoroutine(mob.TerritoryPatrol());
+
             }
         }
 
@@ -27,8 +31,8 @@ namespace Aquapunk
         {
             if (mobs.Contains(other.GetComponent<Mob>()))
             {
-                StopCoroutine(other.GetComponent<Mob>().TerritoryPatrol());
-                other.GetComponent<Mob>().ReturnToTheArea();
+                Mob mob = other.GetComponent<Mob>();
+                mob.ReturnToTheArea();
             }
         }
         #endregion
