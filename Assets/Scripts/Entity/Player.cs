@@ -10,7 +10,7 @@ namespace Aquapunk
     {
         #region Fields
         public GameObject HPBarPrefab;
-        public HPBarUI hPBarUI;
+        public HPBarUI HPBar;
 
         public RpgNetworkManager nm;
 
@@ -18,7 +18,6 @@ namespace Aquapunk
         public CinemachineVirtualCamera camera;
         public EntityMovement entityMovenent;
         [SerializeField] private Vector3 offsetCamera;
-        public RPGInteresManager im;
 
         [Header("Inventory")]
         [SyncVar]
@@ -27,27 +26,20 @@ namespace Aquapunk
         public SetPostItem setNewItem;
 
         public TextMeshProUGUI textWaterCounter;
-        [SerializeField] private float waterCounter;
-        #endregion
-        #region Properties
-        public float WaterCounter
-        {
-            get { return waterCounter; }
-            set 
-            { 
-                waterCounter += value;
-                textWaterCounter.text = waterCounter.ToString();
-            }
-        }
+        public float WaterCounter { get; set; }
         #endregion
         #region Methods
         #region Class Methods
-
-        public void SetUiHP(float value)
+        public void UpdateWaterCount()
         {
-            if (hPBarUI != null)
+            textWaterCounter.text = WaterCounter.ToString();
+        }
+
+        public void UpdateHPBar(float value)
+        {
+            if (HPBar != null)
             {
-                hPBarUI.SetHP(value);
+                HPBar.SetHP(value);
             }
         }
 
@@ -68,8 +60,7 @@ namespace Aquapunk
             }
         }
 
-        //[Client]
-        public void SetHPBar(Entity entity)
+        public void InstantiateHPBar(Entity entity)
         {
             if (isLocalPlayer && entity != this)
             {
@@ -85,7 +76,7 @@ namespace Aquapunk
         public override void Attacked(float damage, Entity entity)
         {
             base.Attacked(damage, entity);
-            SetUiHP(healthCurrent / healthMax);
+            UpdateHPBar(healthCurrent / healthMax);
         }
 
         protected override void DeathObject()
@@ -129,16 +120,8 @@ namespace Aquapunk
         {
             if (isLocalPlayer)
             {
-                //if (_timeAttackCoolDown > 0f)
-                //{
-                //    _timeAttackCoolDown -= Time.deltaTime;
-                //}
                 CoolDown(out _timeAttackCoolDown, _timeAttackCoolDown);
 
-                //if(_timeStanCoolDown > 0f)
-                //{
-                //    _timeStanCoolDown -= Time.deltaTime;
-                //}
                 CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
 
                 if (_timeStanCoolDown <= 0f && _state == StateEntity.Stan || _state != StateEntity.Stan && _rigidbody.velocity == Vector3.zero)
@@ -158,15 +141,12 @@ namespace Aquapunk
                 textWaterCounter = FindObjectOfType<PlayerUI>().waterCounter;
                 FindObjectOfType<PlayerUI>().attackButton.onClick.AddListener(() => Attack());
                 camera = FindObjectOfType<CinemachineVirtualCamera>();
-                hPBarUI = FindObjectOfType<PlayerUI>().hpbar;
+                HPBar = FindObjectOfType<PlayerUI>().hpbar;
                 camera.Follow = gameObject.transform;
                 camera.LookAt = gameObject.transform;
                 FindObjectOfType<PlayerInfo>().player = this;
                 ExpDeathSet();
-                im = FindObjectOfType<RPGInteresManager>();
                 nm = FindObjectOfType<RpgNetworkManager>();
-                im.LocalPlayer = this;
-                im.hpView += SetHPBar;
             }
         }
 
@@ -174,7 +154,7 @@ namespace Aquapunk
         {
             if(other.gameObject != gameObject && other.GetComponent<Entity>() && !other.isTrigger)
             {
-                SetHPBar(other.GetComponent<Entity>());
+                InstantiateHPBar(other.GetComponent<Entity>());
             }
         }
 

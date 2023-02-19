@@ -18,7 +18,8 @@ namespace Aquapunk
             switch (consumableType)
             {
                 case ConsumableType.water:
-                    player.WaterCounter = value;
+                    player.WaterCounter += value;
+                    player.UpdateWaterCount();
                     break;
             }
         }

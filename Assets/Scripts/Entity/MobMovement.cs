@@ -33,8 +33,8 @@ namespace Aquapunk
         {
             Vector3 direction = (point - transform.position).normalized;
 
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            transform.DORotateQuaternion(Quaternion.Lerp(transform.rotation, lookRotation, 1), 0.5f);
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(point.x, 0, point.z));
+            transform.DORotateQuaternion(Quaternion.Lerp(transform.rotation, lookRotation, 1), speedRotate);
 
             agent.SetDestination(new Vector3(point.x, 0.5f, point.z));
         }

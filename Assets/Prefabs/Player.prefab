@@ -90,17 +90,15 @@ MonoBehaviour:
   healthCurrent: 0
   hpBar: {fileID: 0}
   HPBarPrefab: {fileID: 8214830115922944676, guid: 0ec7b9c835c779841a0963d8ddc22cb1, type: 3}
-  hPBarUI: {fileID: 0}
+  HPBar: {fileID: 0}
   nm: {fileID: 0}
   joystick: {fileID: 0}
   camera: {fileID: 0}
   entityMovenent: {fileID: 4452891666028492741}
   offsetCamera: {x: 0, y: 20, z: -22.2}
-  im: {fileID: 0}
   items: []
   KitItems: []
   textWaterCounter: {fileID: 0}
-  waterCounter: 0
 --- !u!114 &4452891666028492741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f43b562ea27d774e874419e874c9641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedRotate: 0.3
   _speed: 100
 --- !u!136 &4452891666028492740
 CapsuleCollider:

@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using DG.Tweening;
 
 namespace Aquapunk
 {
     public class EntityMovement : MonoBehaviour
     {
         #region Fields
+        public float speedRotate;
+
         protected Rigidbody _rigidbody;
         [SerializeField] protected float _speed = 5.5f;
         #endregion
@@ -21,7 +24,7 @@ namespace Aquapunk
             _rigidbody.velocity = (dir * _speed * Time.fixedDeltaTime);
             //rotate to directional movement
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
-            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 1);
+            transform.DORotateQuaternion(Quaternion.Lerp(transform.rotation, lookRotation, 1), speedRotate);
         }
         #endregion
         #region Unity Methods

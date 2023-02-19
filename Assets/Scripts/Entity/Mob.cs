@@ -1,24 +1,30 @@
 using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Aquapunk
 {
     public class Mob : Entity
     {
         #region fields
-        public List<GameObject> DropItems;
-        public MobMovement mobMovement;
+        public Vector3 startPosition;
 
+        public GameObject trigger = null;
+        public List<GameObject> dropItems;
+        
         public bool isPatrolling = true;
         public bool agreed = true;
-        public GameObject trigger = null;
-        public Vector3 startPos;
         public float radiusPatrol;
-        [SerializeField] private float minMagnitudeStartPos;
-        [SerializeField] private float timeWaitPatrol;
+
+        private Coroutine patroling;
+        private MobMovement _mobMovement;
+        [SerializeField] private float _minStartPosDistance;
+        [SerializeField] private float _timeWaitPatrol;
         #endregion
         #region Properties
         public bool Agreed
@@ -30,45 +36,58 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region Class Methods
+
         public IEnumerator TerritoryPatrol()
         {
+            // Move to a random point if not attacking or stunned
             while (isPatrolling)
             {
-                print("patroll");
+                Debug.Log("patrol");
                 if (_state != StateEntity.Stan || _state != StateEntity.Attack)
                 {
-                    if (trigger == null || !trigger.activeInHierarchy)
+                    if (trigger == null)
                     {
-                        Vector3 point = startPos + (Random.insideUnitSphere * radiusPatrol);
-                        mobMovement.MoveToPoint(point);
+                        Vector3 point = startPosition + (Random.insideUnitSphere * radiusPatrol);
+
+                        try
+                        {
+                            _mobMovement.MoveToPoint(point);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogError($"Error moving to point {point}: {e.Message}");
+                        }
                     }
                 }
-                yield return new WaitForSeconds(timeWaitPatrol);
-                if(mobMovement.agent.path != null)
+
+                yield return new WaitForSeconds(_timeWaitPatrol);
+
+                // Reset the agent's path
+                if (_mobMovement.agent.path != null)
                 {
-                    mobMovement.agent.ResetPath();
+                    _mobMovement.agent.ResetPath();
                 }
             }
         }
-        public void ReturnToTheArea()
+
+        public void StartPatrol()
         {
-            NoTrigger();
+            agreed = true;
+            isPatrolling = true;
+            patroling = StartCoroutine(TerritoryPatrol());
+        }
+
+        public void StopPatrol()
+        {
+            agreed = false;
+            isPatrolling = false;
+            StopCoroutine(patroling);
         }
 
         public override void Attacked(float damage, Entity entity)
         {
             base.Attacked(damage, entity);
             trigger = entity.gameObject;
-
-        }
-
-        //clears all triggers and returns the object to the region
-        private void NoTrigger()
-        {
-            agreed = false;
-            enemys.Clear();
-            trigger = null;
-            MovementInTheArea();
         }
 
         public void SortTrigger()
@@ -84,15 +103,10 @@ namespace Aquapunk
             }
         }
 
-        private void MovementInTheArea()
-        { 
-            mobMovement.MoveToPoint(startPos);
-        }
-
         [Server]
         protected override void DeathObject()
         {
-            foreach(GameObject item in DropItems)
+            foreach(GameObject item in dropItems)
             {
                 GameObject itemObject = Instantiate(item, transform.position, item.transform.rotation);
                 NetworkServer.Spawn(itemObject);
@@ -105,7 +119,7 @@ namespace Aquapunk
 
         private void OnTriggerEnter(Collider other)
         {
-            if(trigger == null && other.GetComponent<Entity>() && other.GetComponent<Entity>().GetType().ToString() != "Aquapunk.Mob" && agreed && !other.isTrigger)
+            if(trigger == null && other.GetComponent<Entity>() && other.GetComponent<Entity>().GetType() != typeof(Mob) && agreed && !other.isTrigger)
             {
                 isPatrolling = false;
                 StopCoroutine(TerritoryPatrol());
@@ -129,11 +143,7 @@ namespace Aquapunk
 
         private void Update()
         { 
-            if (!agreed && (transform.position - startPos).magnitude <= minMagnitudeStartPos)
-            {
-                agreed = true;
-            }
-            if (trigger != null && _state != StateEntity.Stan)
+            if (trigger != null && (_state != StateEntity.Stan || _state != StateEntity.Attack))
             {
                 
                 float distance = (trigger.transform.position - transform.position).magnitude;
@@ -144,7 +154,7 @@ namespace Aquapunk
 
                 else if (_state != StateEntity.Attack)
                 {
-                    GoToDirection(mobMovement.Movement, trigger.transform.position - transform.position);
+                    GoToDirection(_mobMovement.Movement, trigger.transform.position - transform.position);
                 }
             }
 
@@ -161,7 +171,11 @@ namespace Aquapunk
         private void Start()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            mobMovement = GetComponent<MobMovement>();
+            _mobMovement = GetComponent<MobMovement>();
+
+            startPosition = transform.position;
+
+            StartPatrol();
         }
         #endregion
         #endregion

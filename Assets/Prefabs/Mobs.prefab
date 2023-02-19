@@ -103,20 +103,15 @@ MonoBehaviour:
   healthMax: 100
   healthCurrent: 0
   hpBar: {fileID: 0}
-  Area: {fileID: 0}
-  DropItems:
-  - {fileID: 1419392032361333036, guid: 2854b64a802e66543bd73fc71df6f386, type: 3}
-  - {fileID: 1419392032361333036, guid: 4cb148e2a8bcea44793fa6f42554beef, type: 3}
-  - {fileID: 1419392032361333036, guid: a275000b3c50cd4489cc31707b009770, type: 3}
-  - {fileID: 1419392032361333036, guid: bbfb03b6a35dd53469126a8ce463483f, type: 3}
-  - {fileID: 1419392032361333036, guid: b45757d7289619f40b9738fe0d4e16e6, type: 3}
-  mobMovement: {fileID: 4154974685415177327}
-  agreed: 1
+  startPosition: {x: 0, y: 0, z: 0}
   trigger: {fileID: 0}
-  startPos: {x: -10, y: 0.6, z: 0}
-  radiusPatrol: 1
-  minMagnitudeStartPos: 2
-  timeWaitPatrol: 5
+  dropItems:
+  - {fileID: 8443172308914579638, guid: 549112eed2ea3cb40a7459bb3eec6ef1, type: 3}
+  isPatrolling: 1
+  agreed: 1
+  radiusPatrol: 4
+  _minStartPosDistance: 0.5
+  _timeWaitPatrol: 10
 --- !u!135 &4154974685415177316
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -164,6 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de30acdbc74c0e84982123dcbbd820c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedRotate: 0.5
   _speed: 80
   agent: {fileID: 0}
 --- !u!114 &5546067969437243101
