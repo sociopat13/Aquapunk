@@ -113,21 +113,15 @@ namespace Aquapunk
         {
             if(joystick != null && joystick.Direction != Vector2.zero)
             {
-                GoToDirection(entityMovenent.Movement, new Vector3(joystick.Horizontal, 0, joystick.Vertical));
+                _state = StateEntity.Move;
+                entityMovenent.Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
             }
         }
         private void Update()
         {
             if (isLocalPlayer)
             {
-                CoolDown(out _timeAttackCoolDown, _timeAttackCoolDown);
-
-                CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
-
-                if (_timeStanCoolDown <= 0f && _state == StateEntity.Stan || _state != StateEntity.Stan && _rigidbody.velocity == Vector3.zero)
-                {
-                    Idle();
-                }
+                ProcessCooldown();
             }
             
         }

@@ -21,10 +21,10 @@ namespace Aquapunk
         public bool agreed = true;
         public float radiusPatrol;
 
-        private Coroutine patroling;
-        private MobMovement _mobMovement;
-        [SerializeField] private float _minStartPosDistance;
-        [SerializeField] private float _timeWaitPatrol;
+        protected Coroutine patroling;
+        protected MobMovement _mobMovement;
+        [SerializeField] protected float _minStartPosDistance;
+        [SerializeField] protected float _timeWaitPatrol;
         #endregion
         #region Properties
         public bool Agreed
@@ -114,6 +114,27 @@ namespace Aquapunk
             StopAllCoroutines();
             base.DeathObject();
         }
+
+        protected virtual void BehaveAtTrigger()
+        {
+            if (trigger != null && (_state != StateEntity.Stan || _state != StateEntity.Attack))
+            {
+
+                float distance = (trigger.transform.position - transform.position).magnitude;
+                if (distance <= _attackRange)
+                {
+                    Attack();
+                }
+
+                else
+                {
+                    _state = StateEntity.Move;
+                    _mobMovement.Movement(trigger.transform.position - transform.position);
+                }
+            }
+        }
+
+        
         #endregion
         #region Unity Methods
 
@@ -142,30 +163,9 @@ namespace Aquapunk
         }
 
         private void Update()
-        { 
-            if (trigger != null && (_state != StateEntity.Stan || _state != StateEntity.Attack))
-            {
-                
-                float distance = (trigger.transform.position - transform.position).magnitude;
-                if (distance <= _attackRange)
-                {
-                    Attack();
-                }
-
-                else if (_state != StateEntity.Attack)
-                {
-                    GoToDirection(_mobMovement.Movement, trigger.transform.position - transform.position);
-                }
-            }
-
-            CoolDown(out _timeAttackCoolDown, _timeAttackCoolDown);
-
-            CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
-            
-            if (_timeStanCoolDown <= 0f || _rigidbody.velocity == Vector3.zero && _state != StateEntity.Stan )
-            {
-                Idle();
-            }
+        {
+            BehaveAtTrigger();
+            ProcessCooldown();
         }
 
         private void Start()

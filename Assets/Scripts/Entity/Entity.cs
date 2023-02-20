@@ -18,6 +18,8 @@ namespace Aquapunk
         public LayerMask layer;
         public List<GameObject> enemys;
 
+        public bool NotBurn;
+
         [SerializeField] protected float _attackRange = 1.5f, _attackDamage = 20f;
         [SerializeField] protected float _timeAttackCoolDown, _attackCollDown = 0.5f, _timeStanCoolDown, _stanCollDown = 0.5f;
         [SerializeField] protected Vector3 _attackOffset;
@@ -138,7 +140,7 @@ namespace Aquapunk
                 DeathObject();
                 return;
             }
-            Stan();
+            StanState();
         }
 
         public virtual void Attack()
@@ -156,8 +158,7 @@ namespace Aquapunk
                         collider.GetComponent<Entity>().Attacked(_attackDamage, this);
                     }
                 }
-                _timeAttackCoolDown = _attackCollDown;
-                _state = StateEntity.Attack;
+                AttackState();
             }
         }
 
@@ -195,32 +196,43 @@ namespace Aquapunk
             }
         }
 
-        protected virtual void GoToDirection(MoveFunk moveFunk,Vector3 dir)
+        protected virtual void ProcessCooldown()
         {
-            
-            if(_state != StateEntity.Stan)
-            {
-                _state = StateEntity.Move;
-                //anim movement
+            CoolDown(out _timeAttackCoolDown, _timeAttackCoolDown);
 
-                moveFunk(dir);
+            CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
+
+            if (_timeStanCoolDown <= 0f || _rigidbody.velocity == Vector3.zero && _state != StateEntity.Stan)
+            {
+                IdleState();
             }
         }
+        protected virtual void AttackState()
+        {
+            _timeAttackCoolDown = _attackCollDown;
+            _state = StateEntity.Attack;
+        }
 
-        protected virtual void Stan()
+        protected virtual void StanState()
         {
             _timeStanCoolDown = _stanCollDown;
             _state = StateEntity.Stan;
-            //animation stan
         }
 
-        protected virtual void Idle()
+        protected virtual void IdleState()
         {
             _state = StateEntity.Idle;
-            //anim state
         }
         #endregion
         #region Unity Methods
+
+        void OnTriggerStay(Collider other)
+        {
+            if (other.CompareTag("flame") && !NotBurn)
+            {
+                healthCurrent -= 5f * Time.deltaTime; // уменьшаем здоровье игрока со временем
+            }
+        }
 
         private void Awake()
         {
