@@ -43,7 +43,7 @@ namespace Aquapunk
             while (isPatrolling)
             {
                 Debug.Log("patrol");
-                if (_state != StateEntity.Stan || _state != StateEntity.Attack)
+                if (_state == StateEntity.Idle)
                 {
                     if (trigger == null)
                     {
@@ -84,21 +84,33 @@ namespace Aquapunk
             StopCoroutine(patroling);
         }
 
-        public override void Attacked(float damage, Entity entity)
+        public override void setDamage(float damage, Entity entity)
         {
-            base.Attacked(damage, entity);
-            trigger = entity.gameObject;
+            base.setDamage(damage, entity);
+            if(entity != null)
+            {
+                trigger = entity.gameObject;
+            }
+            
         }
 
         public void SortTrigger()
         {
-            foreach (GameObject entity in enemys)
+            
+            if(enemys.Count == 0)
             {
-                switch (entity.GetComponent<Entity>().GetType().ToString())
+                trigger = null;
+            }
+            else
+            {
+                foreach (GameObject entity in enemys)
                 {
-                    case "Aquapunk.Player":
-                        trigger = entity;
-                        break;
+                    switch (entity.GetComponent<Entity>().GetType().ToString())
+                    {
+                        case "Aquapunk.Player":
+                            trigger = entity;
+                            break;
+                    }
                 }
             }
         }
@@ -119,7 +131,7 @@ namespace Aquapunk
         {
             if (trigger != null && (_state != StateEntity.Stan || _state != StateEntity.Attack))
             {
-
+                
                 float distance = (trigger.transform.position - transform.position).magnitude;
                 if (distance <= _attackRange)
                 {
@@ -134,32 +146,35 @@ namespace Aquapunk
             }
         }
 
-        
+
         #endregion
         #region Unity Methods
-
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerExit(Collider other)
         {
-            if(trigger == null && other.GetComponent<Entity>() && other.GetComponent<Entity>().GetType() != typeof(Mob) && agreed && !other.isTrigger)
+            print("trigger exit");
+            enemys.Remove(other.gameObject);
+            SortTrigger();
+            if (trigger == null)
             {
-                isPatrolling = false;
-                StopCoroutine(TerritoryPatrol());
-                trigger = other.gameObject;
-                enemys.Add(other.gameObject);
+                StartPatrol();
             }
         }
 
-        private void OnTriggerExit(Collider other)
+        private void OnTriggerStay(Collider other)
         {
-            if(enemys.Contains(other.gameObject))
+
+            if(trigger == null && other.GetComponent<Entity>() && other.GetComponent<Entity>().GetType() != typeof(Mob) && agreed && !other.isTrigger)
             {
-                isPatrolling = true;
-                StartCoroutine(TerritoryPatrol());
-                enemys.Remove(trigger);
-                trigger = null;
+
+                print("trigger enter");
+                if (isPatrolling)
+                {
+                    StopPatrol();
+                }
+                enemys.Add(other.gameObject);
+
                 SortTrigger();
             }
-            
         }
 
         private void Update()

@@ -16,6 +16,13 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region Class Methods
+
+        public void RotateTo(Vector3 direction)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.DORotateQuaternion(Quaternion.Lerp(transform.rotation, lookRotation, 1), speedRotate);
+        }
+
         public virtual void Movement(Vector3 moveToDirection)
         {
             //move to directional on joistick
@@ -23,8 +30,7 @@ namespace Aquapunk
             Vector3 dir = moveToDirection.normalized;
             _rigidbody.velocity = (dir * _speed * Time.fixedDeltaTime);
             //rotate to directional movement
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
-            transform.DORotateQuaternion(Quaternion.Lerp(transform.rotation, lookRotation, 1), speedRotate);
+            RotateTo(dir);
         }
         #endregion
         #region Unity Methods

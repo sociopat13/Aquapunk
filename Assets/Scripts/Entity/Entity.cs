@@ -18,7 +18,7 @@ namespace Aquapunk
         public LayerMask layer;
         public List<GameObject> enemys;
 
-        public bool NotBurn;
+        public bool notBurn;
 
         [SerializeField] protected float _attackRange = 1.5f, _attackDamage = 20f;
         [SerializeField] protected float _timeAttackCoolDown, _attackCollDown = 0.5f, _timeStanCoolDown, _stanCollDown = 0.5f;
@@ -100,7 +100,7 @@ namespace Aquapunk
         [Command]
         public void CmdAttackFromClient(Entity enemy, float damage, Entity entity)
         {
-            enemy.Attacked(damage, entity);
+            enemy.setDamage(damage, entity);
         }
 
         public void DeleteHPBar()
@@ -131,7 +131,7 @@ namespace Aquapunk
         /// <param name="damage"></param>
         /// <param name="entity"></param>
         //[Server]
-        public virtual void Attacked(float damage, Entity entity)
+        public virtual void setDamage(float damage, Entity entity)
         {
             healthCurrent -= damage;
             if (healthCurrent <= 0)
@@ -145,7 +145,8 @@ namespace Aquapunk
 
         public virtual void Attack()
         {
-            if(_timeAttackCoolDown <= 0 && _state != StateEntity.Stan)
+            
+            if (_timeAttackCoolDown <= 0 && _state != StateEntity.Stan)
             {
                 // animate
                 //detected hit enemys in range of attack
@@ -155,7 +156,7 @@ namespace Aquapunk
                 {
                     if (collider.gameObject != gameObject && !collider.isTrigger)
                     {
-                        collider.GetComponent<Entity>().Attacked(_attackDamage, this);
+                        collider.GetComponent<Entity>().setDamage(_attackDamage, this);
                     }
                 }
                 AttackState();
@@ -202,7 +203,7 @@ namespace Aquapunk
 
             CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
 
-            if (_timeStanCoolDown <= 0f || _rigidbody.velocity == Vector3.zero && _state != StateEntity.Stan)
+            if ((_timeStanCoolDown <= 0f || _rigidbody.velocity == Vector3.zero || _timeAttackCoolDown <= 0) && _state != StateEntity.Idle)
             {
                 IdleState();
             }
@@ -228,9 +229,10 @@ namespace Aquapunk
 
         void OnTriggerStay(Collider other)
         {
-            if (other.CompareTag("flame") && !NotBurn)
+            
+            if (other.CompareTag("flame") && !notBurn)
             {
-                healthCurrent -= 5f * Time.deltaTime; // уменьшаем здоровье игрока со временем
+                setDamage(5f * Time.deltaTime, other.transform.parent.GetComponent<Entity>()); // уменьшаем здоровье игрока со временем
             }
         }
 

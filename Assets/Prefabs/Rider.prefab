@@ -173,6 +173,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   enemys: []
+  notBurn: 1
   _attackRange: 6
   _attackDamage: 20
   _timeAttackCoolDown: 0
@@ -204,6 +205,10 @@ PrefabInstance:
     - target: {fileID: 8440082413428026360, guid: d516822998f552a4a85fd9159e061d0c, type: 3}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440082413428026360, guid: d516822998f552a4a85fd9159e061d0c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 470.8
       objectReference: {fileID: 0}
     - target: {fileID: 8440082413428026360, guid: d516822998f552a4a85fd9159e061d0c, type: 3}
       propertyPath: m_LocalPosition.x

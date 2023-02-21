@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using DG.Tweening;
+using System.Drawing;
 
 namespace Aquapunk
 {
@@ -16,6 +17,7 @@ namespace Aquapunk
 
         #region methods
         #region class methods
+
         public void MoveToPoint(Vector3 point)
         {
             if(agent != null)
@@ -33,8 +35,7 @@ namespace Aquapunk
         {
             Vector3 direction = (point - transform.position).normalized;
 
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(point.x, 0, point.z));
-            transform.DORotateQuaternion(Quaternion.Lerp(transform.rotation, lookRotation, 1), speedRotate);
+            RotateTo(direction);
 
             agent.SetDestination(new Vector3(point.x, 0.5f, point.z));
         }

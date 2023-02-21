@@ -10,6 +10,7 @@ namespace Aquapunk
         public void Shoot(Vector3 direction)
         {
             GameObject flame = Instantiate(flameEffect, transform.position, transform.rotation);
+            flame.GetComponent<flameScript>().rider = transform;
         }
 
         public override void Attack()
@@ -26,20 +27,23 @@ namespace Aquapunk
 
         protected override void BehaveAtTrigger()
         {
-            if (trigger != null && (_state != StateEntity.Stan || _state != StateEntity.Attack))
+            if (trigger != null)
             {
-
-                float distance = (trigger.transform.position - transform.position).magnitude;
-                if (distance < _attackRange)
+                if (_state == StateEntity.Idle)
                 {
-                    Attack();
-                }
+                    float distance = (trigger.transform.position - transform.position).magnitude;
+                    if (distance < _attackRange)
+                    {
+                        Attack();
+                    }
 
-                else
-                {
-                    _state = StateEntity.Move;
-                    _mobMovement.Movement(trigger.transform.position - transform.position);
+                    else
+                    {
+                        _state = StateEntity.Move;
+                        _mobMovement.Movement(trigger.transform.position - transform.position);
+                    }
                 }
+                _mobMovement.RotateTo((trigger.transform.position - transform.position).normalized);
             }
         }
     }

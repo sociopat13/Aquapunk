@@ -30,6 +30,19 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region Class Methods
+        public void InstantiateHPBar(Entity entity)
+        {
+            if (isLocalPlayer && entity != this)
+            {
+                GameObject hpBar = Instantiate(HPBarPrefab, canvasWorld.gameObject.transform);
+                HPBar hpBarScript = hpBar.GetComponent<HPBar>();
+                hpBarScript.target = entity.gameObject;
+                hpBarScript.offset = entity.offsetHPBar;
+                hpBarScript.SetHP(entity.healthCurrent / entity.healthMax);
+                entity.hpBar = hpBarScript;
+            }
+        }
+
         public void UpdateWaterCount()
         {
             textWaterCounter.text = WaterCounter.ToString();
@@ -60,31 +73,27 @@ namespace Aquapunk
             }
         }
 
-        public void InstantiateHPBar(Entity entity)
+        public override void Attack()
         {
-            if (isLocalPlayer && entity != this)
+            base.Attack();
+            Collider[] colliders = Physics.OverlapSphere(transform.position + _attackOffset, _attackRange, layer);
+            // damage
+            foreach (Collider collider in colliders)
             {
-                GameObject hpBar = Instantiate(HPBarPrefab, canvasWorld.gameObject.transform);
-                HPBar hpBarScript = hpBar.GetComponent<HPBar>();
-                hpBarScript.target = entity.gameObject;
-                hpBarScript.offset = entity.offsetHPBar;
-                hpBarScript.SetHP(entity.healthCurrent/entity.healthMax);
-                entity.hpBar = hpBarScript;
+                if (isLocalPlayer &&
+                    collider.GetComponent<Entity>().hpBar == null && 
+                    collider.gameObject != gameObject && !collider.isTrigger )
+                {
+                    InstantiateHPBar(collider.GetComponent<Entity>());
+                }
             }
         }
 
-        public override void Attacked(float damage, Entity entity)
+        public override void setDamage(float damage, Entity entity)
         {
-            base.Attacked(damage, entity);
+            base.setDamage(damage, entity);
             UpdateHPBar(healthCurrent / healthMax);
         }
-
-        protected override void DeathObject()
-        {
-            Destroy(hpBar);
-            NetworkManager.singleton.StopClient();
-        }
-
 
         public void SetItem(Item item)
         {
@@ -106,6 +115,12 @@ namespace Aquapunk
         private void ExpDeathSet()
         {
             experienceDeath = maxExpLevel / 4;
+        }
+
+        protected override void DeathObject()
+        {
+            Destroy(hpBar);
+            NetworkManager.singleton.StopClient();
         }
         #endregion
         #region Unity Methods
@@ -141,22 +156,6 @@ namespace Aquapunk
                 FindObjectOfType<PlayerInfo>().player = this;
                 ExpDeathSet();
                 nm = FindObjectOfType<RpgNetworkManager>();
-            }
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if(other.gameObject != gameObject && other.GetComponent<Entity>() && !other.isTrigger)
-            {
-                InstantiateHPBar(other.GetComponent<Entity>());
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.gameObject != gameObject && other.GetComponent<Entity>() && !other.isTrigger)
-            {
-                other.GetComponent<Entity>().DeleteHPBar();
             }
         }
 
