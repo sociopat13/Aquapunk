@@ -195,6 +195,7 @@ MonoBehaviour:
   _minStartPosDistance: 0.5
   _timeWaitPatrol: 10
   flameEffect: {fileID: 192732, guid: da7e85de16ef88a40ba28b9cc5dcb743, type: 3}
+  rearDamageMultiplier: 2
 --- !u!1001 &149300765739272412
 PrefabInstance:
   m_ObjectHideFlags: 0

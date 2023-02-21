@@ -6,6 +6,22 @@ namespace Aquapunk
     public class Rider : Mob
     {
         public GameObject flameEffect; // fire effect prefab
+        public float rearDamageMultiplier;
+
+        public override void setDamage(float damage, Entity entity)
+        {
+            
+            Vector3 directionToTarget = entity.transform.position - transform.position;
+            Vector3 forward = transform.forward;
+            float dotProduct = Vector3.Dot(directionToTarget, forward);
+            float multiplier = 1;
+            if (dotProduct < 0)
+            {
+                multiplier = rearDamageMultiplier;
+                Debug.Log("DD");
+            }
+            base.setDamage(damage * multiplier, entity);
+        }
 
         public void Shoot(Vector3 direction)
         {
@@ -27,7 +43,7 @@ namespace Aquapunk
 
         protected override void BehaveAtTrigger()
         {
-            if (trigger != null)
+            if (trigger != null && _state != StateEntity.Stan)
             {
                 if (_state == StateEntity.Idle)
                 {

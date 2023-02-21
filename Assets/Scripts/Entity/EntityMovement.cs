@@ -23,6 +23,12 @@ namespace Aquapunk
             transform.DORotateQuaternion(Quaternion.Lerp(transform.rotation, lookRotation, 1), speedRotate);
         }
 
+        public void RotateTo(Vector3 direction, TweenCallback tweenCallback)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.DORotateQuaternion(Quaternion.Lerp(transform.rotation, lookRotation, 1), speedRotate).OnComplete(tweenCallback);
+        }
+
         public virtual void Movement(Vector3 moveToDirection)
         {
             //move to directional on joistick

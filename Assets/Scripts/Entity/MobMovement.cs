@@ -35,9 +35,10 @@ namespace Aquapunk
         {
             Vector3 direction = (point - transform.position).normalized;
 
-            RotateTo(direction);
-
-            agent.SetDestination(new Vector3(point.x, 0.5f, point.z));
+            RotateTo(direction, () =>
+            {
+                agent.SetDestination(new Vector3(point.x, 0.5f, point.z));
+            });
         }
 
         public override void Movement(Vector3 moveToDirection)

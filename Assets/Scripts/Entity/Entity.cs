@@ -97,11 +97,6 @@ namespace Aquapunk
         /// <param name="damage"></param>
         /// <param name="entity"></param>
         
-        [Command]
-        public void CmdAttackFromClient(Entity enemy, float damage, Entity entity)
-        {
-            enemy.setDamage(damage, entity);
-        }
 
         public void DeleteHPBar()
         {

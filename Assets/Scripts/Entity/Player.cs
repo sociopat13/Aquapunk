@@ -81,6 +81,7 @@ namespace Aquapunk
             foreach (Collider collider in colliders)
             {
                 if (isLocalPlayer &&
+                    collider.GetComponent<Entity>() &&
                     collider.GetComponent<Entity>().hpBar == null && 
                     collider.gameObject != gameObject && !collider.isTrigger )
                 {
