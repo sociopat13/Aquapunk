@@ -67,13 +67,17 @@ namespace Aquapunk
         /// </summary>
         /// <param name="oldValue"></param>
         /// <param name="newValue"></param>
-        [Client]
         public virtual void SyncHP(float oldValue, float newValue)
         {
             healthCurrent = newValue;
             if(hpBar != null)
             {
                 hpBar.SetHP(healthCurrent / healthMax);
+            }
+            if (healthCurrent <= 0)
+            {
+                //FindObjectOfType<RpgNetworkManager>().StopClient();
+                DeathObject();
             }
         }
 
@@ -125,17 +129,18 @@ namespace Aquapunk
         /// </summary>
         /// <param name="damage"></param>
         /// <param name="entity"></param>
-        //[Server]
+        [Server]
         public virtual void setDamage(float damage, Entity entity)
         {
             healthCurrent -= damage;
-            if (healthCurrent <= 0)
-            {
-                //FindObjectOfType<RpgNetworkManager>().StopClient();
-                DeathObject();
-                return;
-            }
+            
             StanState();
+        }
+
+        [Command]
+        public virtual void CmdSetDamage(Entity enemy,float damage, Entity entity)
+        {
+            enemy.setDamage(damage, entity);
         }
 
         public virtual void Attack()
@@ -151,7 +156,14 @@ namespace Aquapunk
                 {
                     if (collider.gameObject != gameObject && !collider.isTrigger)
                     {
-                        collider.GetComponent<Entity>().setDamage(_attackDamage, this);
+                        if (isServer)
+                        {
+                            collider.GetComponent<Entity>().setDamage(_attackDamage, this);
+                        }
+                        else
+                        {
+                            CmdSetDamage(collider.GetComponent<Entity>(), _attackDamage, this);
+                        }
                     }
                 }
                 AttackState();

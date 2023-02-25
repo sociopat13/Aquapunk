@@ -1,5 +1,6 @@
 using Cinemachine;
 using Mirror;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -30,6 +31,12 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region Class Methods
+
+        public override void SyncHP(float oldValue, float newValue)
+        {
+            base.SyncHP(oldValue, newValue);
+            UpdateHPBar(healthCurrent / healthMax);
+        }
         public void InstantiateHPBar(Entity entity)
         {
             if (isLocalPlayer && entity != this)
@@ -90,10 +97,10 @@ namespace Aquapunk
             }
         }
 
+        [Server]
         public override void setDamage(float damage, Entity entity)
         {
             base.setDamage(damage, entity);
-            UpdateHPBar(healthCurrent / healthMax);
         }
 
         public void SetItem(Item item)
@@ -118,10 +125,15 @@ namespace Aquapunk
             experienceDeath = maxExpLevel / 4;
         }
 
+        [ClientRpc]
         protected override void DeathObject()
         {
+            print("death " + name);
             Destroy(hpBar);
-            NetworkManager.singleton.StopClient();
+            if (isLocalPlayer)
+            {
+                NetworkManager.singleton.StopClient();
+            }
         }
         #endregion
         #region Unity Methods

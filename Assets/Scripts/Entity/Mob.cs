@@ -105,12 +105,16 @@ namespace Aquapunk
             {
                 foreach (GameObject entity in enemys)
                 {
-                    switch (entity.GetComponent<Entity>().GetType().ToString())
+                    if(entity != null)
                     {
-                        case "Aquapunk.Player":
-                            trigger = entity;
-                            break;
+                        switch (entity.GetComponent<Entity>().GetType().ToString())
+                        {
+                            case "Aquapunk.Player":
+                                trigger = entity;
+                                break;
+                        }
                     }
+                    
                 }
             }
         }
@@ -171,7 +175,10 @@ namespace Aquapunk
                 {
                     StopPatrol();
                 }
-                enemys.Add(other.gameObject);
+                if (!enemys.Contains(other.gameObject))
+                {
+                    enemys.Add(other.gameObject);
+                }
 
                 SortTrigger();
             }
