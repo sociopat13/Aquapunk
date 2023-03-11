@@ -43,24 +43,11 @@ namespace Aquapunk
 
         protected override void BehaveAtTrigger()
         {
-            if (trigger != null && _state != StateEntity.Stan)
+            if (trigger != null && (_state != StateEntity.Stan || _state != StateEntity.Attack))
             {
-                if (_state == StateEntity.Idle)
-                {
-                    float distance = (trigger.transform.position - transform.position).magnitude;
-                    if (distance < _attackRange)
-                    {
-                        Attack();
-                    }
-
-                    else
-                    {
-                        _state = StateEntity.Move;
-                        _mobMovement.Movement(trigger.transform.position - transform.position);
-                    }
-                }
                 _mobMovement.RotateTo((trigger.transform.position - transform.position).normalized);
             }
+            base.BehaveAtTrigger();
         }
     }
 }

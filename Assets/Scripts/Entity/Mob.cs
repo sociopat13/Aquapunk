@@ -43,7 +43,7 @@ namespace Aquapunk
             while (isPatrolling)
             {
                 Debug.Log("patrol");
-                if (_state == StateEntity.Idle)
+                if (_state != StateEntity.Stan || _state != StateEntity.Attack)
                 {
                     if (trigger == null)
                     {
@@ -137,7 +137,7 @@ namespace Aquapunk
             {
                 
                 float distance = (trigger.transform.position - transform.position).magnitude;
-                if (distance <= _attackRange)
+                if (distance < _attackRange)
                 {
                     Attack();
                 }
@@ -155,12 +155,15 @@ namespace Aquapunk
         #region Unity Methods
         private void OnTriggerExit(Collider other)
         {
-            print("trigger exit");
-            enemys.Remove(other.gameObject);
-            SortTrigger();
-            if (trigger == null)
+            if (enemys.Contains(other.gameObject))
             {
-                StartPatrol();
+                print("trigger exit");
+                enemys.Remove(other.gameObject);
+                SortTrigger();
+                if (trigger == null)
+                {
+                    StartPatrol();
+                }
             }
         }
 
