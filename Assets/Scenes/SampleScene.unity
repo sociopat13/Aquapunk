@@ -613,14 +613,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8303451966894821399, guid: 84db216e52f541749803b57abd8823bb, type: 3}
-      propertyPath: m_Follow
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303451966894821399, guid: 84db216e52f541749803b57abd8823bb, type: 3}
-      propertyPath: m_LookAt
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8303451968315097040, guid: 84db216e52f541749803b57abd8823bb, type: 3}
       propertyPath: m_XDamping
       value: 0
@@ -639,6 +631,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84db216e52f541749803b57abd8823bb, type: 3}
+--- !u!114 &1778739976 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3559389521829826365, guid: 84db216e52f541749803b57abd8823bb, type: 3}
+  m_PrefabInstance: {fileID: 1778739975}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e199b9d5bde436b42bbbd038a0b781bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4154974684539485186
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -919,6 +922,18 @@ PrefabInstance:
     - target: {fileID: 4610846012584612546, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5075085235374944387, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1778739976}
+    - target: {fileID: 5075085235374944387, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnBuildMode
+      objectReference: {fileID: 0}
+    - target: {fileID: 5075085235374944387, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Aquapunk.CameraModifier, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}

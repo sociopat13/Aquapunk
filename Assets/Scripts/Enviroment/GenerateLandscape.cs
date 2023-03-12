@@ -6,17 +6,18 @@ public class GenerateLandscape : MonoBehaviour
 {
     public GameObject planePrefab;
 
-
     [SerializeField]
     private int _rols;
     [SerializeField]
     private int _cols;
 
-    private void Start()
+    private void Generate()
     {
-        for(float obj = 0, x = 0 - planePrefab.transform.localScale.x * 10 * _rols/ 2; obj <= _rols; obj++, x += planePrefab.transform.localScale.x * 10)
+        float factorX = planePrefab.transform.localScale.x * 10;
+        float factorZ = planePrefab.transform.localScale.z * 10;
+        for (float obj = 0, x = 0 - factorX * _rols / 2; obj <= _rols; obj++, x += factorX)
         {
-            for (float objZ = 0, z = 0 - planePrefab.transform.localScale.z * 10 * _cols/ 2; objZ <= _cols; objZ++, z += planePrefab.transform.localScale.z * 10)
+            for (float objZ = 0, z = 0 - factorZ * _cols / 2; objZ <= _cols; objZ++, z += factorZ)
             {
                 Transform plane = Instantiate(planePrefab).transform;
 
@@ -26,5 +27,9 @@ public class GenerateLandscape : MonoBehaviour
             }
         }
         transform.Rotate(new Vector3(0, 45, 0));
+    }
+    private void Start()
+    {
+        Generate();
     }
 }

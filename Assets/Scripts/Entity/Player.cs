@@ -169,6 +169,7 @@ namespace Aquapunk
                 FindObjectOfType<PlayerInfo>().player = this;
                 ExpDeathSet();
                 nm = FindObjectOfType<RpgNetworkManager>();
+                FindObjectOfType<CameraModifier>().player = this;
             }
         }
 

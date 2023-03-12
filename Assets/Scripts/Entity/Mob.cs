@@ -48,7 +48,6 @@ namespace Aquapunk
                     if (trigger == null)
                     {
                         Vector3 point = startPosition + (Random.insideUnitSphere * radiusPatrol);
-
                         try
                         {
                             _mobMovement.MoveToPoint(point);
@@ -59,9 +58,7 @@ namespace Aquapunk
                         }
                     }
                 }
-
                 yield return new WaitForSeconds(_timeWaitPatrol);
-
                 // Reset the agent's path
                 if (_mobMovement.agent.path != null)
                 {
@@ -91,12 +88,10 @@ namespace Aquapunk
             {
                 trigger = entity.gameObject;
             }
-            
         }
 
         public void SortTrigger()
         {
-            
             if(enemys.Count == 0)
             {
                 trigger = null;
@@ -114,7 +109,6 @@ namespace Aquapunk
                                 break;
                         }
                     }
-                    
                 }
             }
         }
@@ -135,7 +129,6 @@ namespace Aquapunk
         {
             if (trigger != null && (_state != StateEntity.Stan || _state != StateEntity.Attack))
             {
-                
                 float distance = (trigger.transform.position - transform.position).magnitude;
                 if (distance < _attackRange)
                 {
@@ -172,7 +165,6 @@ namespace Aquapunk
 
             if(trigger == null && other.GetComponent<Entity>() && other.GetComponent<Entity>().GetType() != typeof(Mob) && agreed && !other.isTrigger)
             {
-
                 print("trigger enter");
                 if (isPatrolling)
                 {
@@ -182,7 +174,6 @@ namespace Aquapunk
                 {
                     enemys.Add(other.gameObject);
                 }
-
                 SortTrigger();
             }
         }
@@ -197,13 +188,10 @@ namespace Aquapunk
         {
             _rigidbody = GetComponent<Rigidbody>();
             _mobMovement = GetComponent<MobMovement>();
-
             startPosition = transform.position;
-
             StartPatrol();
         }
         #endregion
         #endregion
     }
-
 }
