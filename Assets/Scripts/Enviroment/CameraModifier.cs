@@ -12,20 +12,17 @@ namespace Aquapunk
         public Player player;
         public float buildOrthoSize, trevelOrthoSize;
 
-        public Action buildMode;
-        public Action trevelMode;
-
         [SerializeField]
         private CinemachineVirtualCamera VirtualCamera;
 
         public void OnBuildMode()
         {
-            buildMode?.Invoke();
+            CameraMode(buildOrthoSize, null);
         }
 
         public void OnTrevelMode()
         {
-            trevelMode?.Invoke();
+            CameraMode(trevelOrthoSize, player.transform);
         }
 
         private void CameraMode(float orthoSize, Transform trigger)
@@ -37,9 +34,7 @@ namespace Aquapunk
 
         private void Start()
         {
-            VirtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-            buildMode += () => CameraMode(buildOrthoSize, null);
-            trevelMode += () => CameraMode(trevelOrthoSize, player.transform);
+            VirtualCamera = GetComponent<CinemachineVirtualCamera>();
         }
     }
 }
