@@ -10,6 +10,8 @@ namespace Aquapunk
     public class Player : Entity
     {
         #region Fields
+        public StructureManager structureBuilding;
+
         public GameObject HPBarPrefab;
         public HPBarUI HPBar;
 
@@ -18,6 +20,9 @@ namespace Aquapunk
         public Joystick joystick;
         public CinemachineVirtualCamera camera;
         public EntityMovement entityMovenent;
+
+        public bool buildMod;
+
         [SerializeField] private Vector3 offsetCamera;
 
         [Header("Inventory")]

@@ -15,21 +15,22 @@ namespace Aquapunk
         [SerializeField]
         private CinemachineVirtualCamera VirtualCamera;
 
-        public void OnBuildMode()
+        public void OnBuildMod()
         {
-            CameraMode(buildOrthoSize, null);
+            CameraMod(buildOrthoSize, null, true);
         }
 
-        public void OnTrevelMode()
+        public void OnTrevelMod()
         {
-            CameraMode(trevelOrthoSize, player.transform);
+            CameraMod(trevelOrthoSize, player.transform, false);
         }
 
-        private void CameraMode(float orthoSize, Transform trigger)
+        private void CameraMod(float orthoSize, Transform trigger, bool buildMod)
         {
             VirtualCamera.m_Lens.OrthographicSize = orthoSize;
             VirtualCamera.LookAt = trigger;
             VirtualCamera.Follow = trigger;
+            player.buildMod = buildMod;
         }
 
         private void Start()
