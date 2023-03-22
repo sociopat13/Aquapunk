@@ -1,18 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
+using System.Threading.Tasks;
+using System;
 
-public class StructureObject : MonoBehaviour
+namespace Aquapunk
 {
-    // Start is called before the first frame update
-    void Start()
+    public class StructureObject : NetworkBehaviour
     {
-        
-    }
+        public Structure structure;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private GameObject temporarily;
+        private float cooldownTime;
+
+        [Server]
+        public void Build()
+        {
+            temporarily = Instantiate(structure.structureProcessBuild, gameObject.transform);
+            Building();
+        }
+
+        [Server]
+        private async Task Building()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(structure.timeBuild));
+            temporarily = Instantiate(structure.structureFinichBuild, gameObject.transform);
+
+        }
+        private void Update()
+        {
+            if(cooldownTime > 0)
+            {
+                cooldownTime -= Time.deltaTime;
+            }
+        }
     }
 }
+

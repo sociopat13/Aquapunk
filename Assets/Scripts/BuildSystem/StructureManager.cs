@@ -1,16 +1,18 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Aquapunk
 {
-    public class StructureManager : MonoBehaviour
+    public class StructureManager : NetworkBehaviour
     {
         #region Fields
+        public Structure structure;
         public Player owner;
 
         public GameObject structureHologram;
-        public GameObject structureProcessBuild;
+        public GameObject structureObject;
         #endregion
 
         #region Methods
@@ -23,16 +25,20 @@ namespace Aquapunk
 
         public Transform BuildStructure(PlaneLandscape plane)
         {
-            Transform obj = BuildObject(plane, structureProcessBuild);
+            Transform obj = BuildObject(plane, structureObject);
+
             return obj;
         }
 
+        [Server]
         private Transform BuildObject(PlaneLandscape plane, GameObject obj)
         {
             Transform structureTransform = Instantiate(obj).transform;
 
             structureTransform.position = plane.transform.position;
             structureTransform.SetParent(plane.transform);
+            structureTransform.GetComponent<StructureObject>().structure = structure;
+            structureTransform.GetComponent<StructureObject>().Build();
 
             return structureTransform;
         }

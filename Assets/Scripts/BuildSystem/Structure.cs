@@ -15,6 +15,8 @@ namespace Aquapunk
         public string itemInfo;
 
         public Sprite iconItem;
+        public GameObject structureProcessBuild;
+        public GameObject structureFinichBuild;
         #endregion
 
         #region Methods
