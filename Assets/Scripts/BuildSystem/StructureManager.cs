@@ -17,13 +17,13 @@ namespace Aquapunk
 
         #region Methods
         #region Class Methods
-        public Transform SpawnStructureHologram(PlaneLandscape plane)
+        public Transform SpawnStructureHologram(GameObject plane)
         {
             Transform obj = BuildObject(plane, structureHologram);
             return obj;
         }
 
-        public Transform BuildStructure(PlaneLandscape plane)
+        public Transform BuildStructure(GameObject plane)
         {
             Transform obj = BuildObject(plane, structureObject);
 
@@ -31,7 +31,7 @@ namespace Aquapunk
         }
 
         [Server]
-        private Transform BuildObject(PlaneLandscape plane, GameObject obj)
+        private Transform BuildObject(GameObject plane, GameObject obj)
         {
             Transform structureTransform = Instantiate(obj).transform;
 

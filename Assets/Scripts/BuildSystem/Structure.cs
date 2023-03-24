@@ -5,16 +5,10 @@ using UnityEngine;
 namespace Aquapunk
 {
     [CreateAssetMenu(fileName = "New Structure", menuName = "Structures/Create New Structures")]
-    public class Structure : ScriptableObject
+    public class Structure : Scriptable
     {
         #region Fields
-        public int id;
         public float timeBuild;
-
-        public string itemName;
-        public string itemInfo;
-
-        public Sprite iconItem;
         public GameObject structureProcessBuild;
         public GameObject structureFinichBuild;
         #endregion

@@ -23,19 +23,19 @@ namespace Aquapunk
         #region Class Methods
         public void UpdateInventoryKit(Item item)
         {
-            switch (item.typeItem)
+            switch (item.type)
             {
                 case Item.TypeItem.Weapon:
-                    weaponIcon.sprite = item.iconItem;
+                    weaponIcon.sprite = item.icon;
                     break;
                 case Item.TypeItem.Tool:
-                    toolIcon.sprite = item.iconItem;
+                    toolIcon.sprite = item.icon;
                     break;
                 case Item.TypeItem.Armor:
-                    armorIcon.sprite = item.iconItem;
+                    armorIcon.sprite = item.icon;
                     break;
                 case Item.TypeItem.Artefact:
-                    artefactIcon.sprite = item.iconItem;
+                    artefactIcon.sprite = item.icon;
                     break;
             }
         }

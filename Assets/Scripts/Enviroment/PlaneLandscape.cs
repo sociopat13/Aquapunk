@@ -7,7 +7,7 @@ namespace Aquapunk
 {
     public class PlaneLandscape : NetworkBehaviour
     {
-        public CameraModifier cameraMod;
+        public PlayerInfo playerInfo;
         private Transform structureTransform;
         [SyncVar(hook = nameof(SyncStatus))]
         public bool freePlane = true;
@@ -30,13 +30,13 @@ namespace Aquapunk
         {
             freePlane = true;
             ClearStructureTransform();
-            structureTransform = cameraMod.player.structureBuilding.BuildStructure(this);
+            structureTransform = playerInfo.player.structureBuilding.BuildStructure(gameObject);
         }
         private void OnMouseEnter()
         {
-            if (cameraMod.player != null && cameraMod.player.structureBuilding != null)
+            if (playerInfo.player != null && playerInfo.player.structureBuilding != null)
             {
-                structureTransform = cameraMod.player.structureBuilding.SpawnStructureHologram(this);
+                structureTransform = playerInfo.player.structureBuilding.SpawnStructureHologram(gameObject);
             }
         }
         
@@ -58,7 +58,7 @@ namespace Aquapunk
 
         private void Start()
         {
-            cameraMod = FindObjectOfType<CameraModifier>();
+            playerInfo = FindObjectOfType<PlayerInfo>();
         }
     }
 }

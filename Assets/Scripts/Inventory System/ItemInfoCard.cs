@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -19,11 +20,8 @@ namespace Aquapunk
         #region ClassMethods
         public void GetItemInfo(Item item)
         {
-            applyItemButton.onClick.RemoveAllListeners();
-            ItemIcon.sprite = item.iconItem;
-            ItemName.text = item.itemName;
-            ItemInfo.text = item.itemInfo;
-            if(item.typeItem != Item.TypeItem.Default)
+            Apply(item);
+            if(item.type != Item.TypeItem.Default)
             {
                 applyItemButton.gameObject.SetActive(true);
                 applyItemButton.onClick.AddListener(() => playerInfo.player.SetItem(item));
@@ -32,6 +30,14 @@ namespace Aquapunk
             {
                 applyItemButton.gameObject.SetActive(false);
             }
+        }
+
+        protected void Apply(Scriptable scriptable)
+        {
+            applyItemButton.onClick.RemoveAllListeners();
+            ItemIcon.sprite = scriptable.icon;
+            ItemName.text = scriptable.name;
+            ItemInfo.text = scriptable.info;
         }
         #endregion
         #endregion

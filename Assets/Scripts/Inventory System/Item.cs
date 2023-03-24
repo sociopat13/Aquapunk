@@ -6,18 +6,13 @@ using UnityEngine;
 namespace Aquapunk
 {
     [CreateAssetMenu(fileName = "New Item", menuName = "Item/Create New Item")]
-    public class Item : ScriptableObject
+    public class Item : Scriptable
     {
         #region Fields
-        public int id;
         public int value;
 
-        public string itemName;
-        public string itemInfo;
-
-        public Sprite iconItem;
-        public TypeItem typeItem = default;
-        public Player owner;
+        
+        public TypeItem type = default;
 
         [Header("boos parameters")]
         public float MaxHealth;

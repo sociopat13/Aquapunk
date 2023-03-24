@@ -108,11 +108,17 @@ namespace Aquapunk
             base.setDamage(damage, entity);
         }
 
+        public void SetStructure(StructureManager structure)
+        {
+            structureBuilding = structure;
+        }
+
         public void SetItem(Item item)
         {
             foreach(Item MainItem in KitItems)
             {
-                if(MainItem.typeItem == item.typeItem)
+                if(MainItem.type == item.type)
+                if(MainItem.type == item.type)
                 {
                     MainItem.ResetParameters();
                     KitItems.Remove(MainItem);

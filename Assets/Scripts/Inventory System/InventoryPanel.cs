@@ -27,8 +27,8 @@ namespace Aquapunk
             {
                 GameObject cell = Instantiate(itemCell, context.transform);
 
-                cell.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = item.itemName;
-                cell.transform.Find("Icon").GetComponent<Image>().sprite = item.iconItem;
+                cell.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = item.name;
+                cell.transform.Find("Icon").GetComponent<Image>().sprite = item.icon;
                 cell.GetComponent<Button>().onClick.AddListener(() => info.GetItemInfo(item));
             }
         }
