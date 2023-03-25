@@ -28,13 +28,6 @@ namespace Aquapunk
             temporarily = Instantiate(structure.structureFinichBuild, gameObject.transform);
 
         }
-        private void Update()
-        {
-            if(cooldownTime > 0)
-            {
-                cooldownTime -= Time.deltaTime;
-            }
-        }
     }
 }
 

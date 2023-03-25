@@ -36,7 +36,7 @@ namespace Aquapunk
         {
             applyItemButton.onClick.RemoveAllListeners();
             ItemIcon.sprite = scriptable.icon;
-            ItemName.text = scriptable.name;
+            ItemName.text = scriptable.title;
             ItemInfo.text = scriptable.info;
         }
         #endregion

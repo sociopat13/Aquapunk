@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static UnityEditor.Progress;
 
@@ -8,7 +9,7 @@ namespace Aquapunk
     public class StructureInfoCard : ItemInfoCard
     {
         #region Fields
-        public float infoTimeBuid;
+        public TextMeshProUGUI infoTimeBuid;
         #endregion
 
         #region Methods
@@ -16,7 +17,8 @@ namespace Aquapunk
         public void GetStructureInfo(StructureManager structure)
         {
             Apply(structure.structure);
-            if(structure != null)
+            infoTimeBuid.text = structure.structure.timeBuild.ToString();
+            if (structure != null)
             {
                 applyItemButton.gameObject.SetActive(true);
                 applyItemButton.onClick.AddListener(() => playerInfo.player.SetStructure(structure));

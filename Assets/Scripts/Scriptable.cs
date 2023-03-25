@@ -8,7 +8,7 @@ namespace Aquapunk
     {
         public int id;
 
-        public string name;
+        public string title;
         public string info;
 
         public Sprite icon;
