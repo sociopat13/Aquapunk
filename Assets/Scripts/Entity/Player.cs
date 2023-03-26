@@ -55,6 +55,7 @@ namespace Aquapunk
             }
         }
 
+
         public void UpdateWaterCount()
         {
             textWaterCounter.text = WaterCounter.ToString();
@@ -66,6 +67,12 @@ namespace Aquapunk
             {
                 HPBar.SetHP(value);
             }
+        }
+
+        [Command]
+        public void CmdBuildStructure(GameObject plane)
+        {
+            structureBuilding.BuildStructure(plane);
         }
 
         [Server]

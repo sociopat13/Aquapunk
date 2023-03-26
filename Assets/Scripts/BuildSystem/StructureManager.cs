@@ -17,21 +17,18 @@ namespace Aquapunk
 
         #region Methods
         #region Class Methods
-        public Transform SpawnStructureHologram(GameObject plane)
+        public void SpawnStructureHologram(GameObject plane)
         {
-            Transform obj = BuildObject(plane, structureHologram);
-            return obj;
+            BuildObject(plane, structureHologram);
         }
-
-        public Transform BuildStructure(GameObject plane)
-        {
-            Transform obj = BuildObject(plane, structureObject);
-
-            return obj;
-        }
-
         [Server]
-        private Transform BuildObject(GameObject plane, GameObject obj)
+        public void BuildStructure(GameObject plane)
+        {
+            BuildObject(plane, structureObject);
+        }
+
+        
+        private void BuildObject(GameObject plane, GameObject obj)
         {
             Transform structureTransform = Instantiate(obj).transform;
 
@@ -39,8 +36,7 @@ namespace Aquapunk
             structureTransform.SetParent(plane.transform);
             structureTransform.GetComponent<StructureObject>().structure = structure;
             structureTransform.GetComponent<StructureObject>().Build();
-
-            return structureTransform;
+            plane.GetComponent<PlaneLandscape>().structureTransform = structureTransform;
         }
         #endregion
         #endregion

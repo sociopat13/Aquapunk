@@ -552,7 +552,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2393219706977463964
 RectTransform:
   m_ObjectHideFlags: 0
@@ -884,10 +884,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a01832860e2171c47a1cc3502cf284e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  structures: []
+  structures:
+  - {fileID: 7218648430516837327, guid: 4668307ad86aeee4fa7064a4bb302d2e, type: 3}
   structureCell: {fileID: 2948086713684977505, guid: 9bfb86ec7e39c8b4eae9507ae18e2733, type: 3}
   context: {fileID: 6174157835815778911}
-  info: {fileID: 0}
+  info: {fileID: 8717618203927065595}
 --- !u!1 &3506071373687144445
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,7 +1050,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2665011815282255980
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6745,6 +6746,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8095818159269036018}
+        m_TargetAssemblyTypeName: Aquapunk.StructurCatalog, Assembly-CSharp
+        m_MethodName: LoadStructureCatalog
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Aquapunk.CameraModifier, Assembly-CSharp
+        m_MethodName: OnBuildMod
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &9002304859540970454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6940,7 +6965,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 15.467, y: 0}
-  m_SizeDelta: {x: -30.8347, y: 0}
+  m_SizeDelta: {x: -30.8347, y: 5}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3967699032941371648
 MonoBehaviour:

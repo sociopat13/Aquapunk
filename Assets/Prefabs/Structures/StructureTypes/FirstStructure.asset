@@ -15,8 +15,8 @@ MonoBehaviour:
   id: 1
   title: first
   info: this first structure
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 02800fb9cff14da47a04572790384d8b, type: 3}
   owner: {fileID: 0}
-  timeBuild: 0
-  structureProcessBuild: {fileID: 0}
-  structureFinichBuild: {fileID: 0}
+  timeBuild: 2
+  structureProcessBuild: {fileID: 5066041932430804681, guid: 44dc8584c23e487479548d384d734094, type: 3}
+  structureFinichBuild: {fileID: 4551036598848002575, guid: 0fecc5636ca39044a9ca83acd9538fcb, type: 3}

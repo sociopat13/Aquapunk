@@ -8,7 +8,7 @@ namespace Aquapunk
     public class PlaneLandscape : NetworkBehaviour
     {
         public PlayerInfo playerInfo;
-        private Transform structureTransform;
+        public Transform structureTransform;
         [SyncVar(hook = nameof(SyncStatus))]
         public bool freePlane = true;
 
@@ -25,18 +25,17 @@ namespace Aquapunk
             }
         }
 
-        [Command]
         private void CmdBuildStructure()
         {
             freePlane = true;
             ClearStructureTransform();
-            structureTransform = playerInfo.player.structureBuilding.BuildStructure(gameObject);
+            playerInfo.player.CmdBuildStructure(gameObject);
         }
         private void OnMouseEnter()
         {
             if (playerInfo.player != null && playerInfo.player.structureBuilding != null)
             {
-                structureTransform = playerInfo.player.structureBuilding.SpawnStructureHologram(gameObject);
+                playerInfo.player.structureBuilding.SpawnStructureHologram(gameObject);
             }
         }
         
