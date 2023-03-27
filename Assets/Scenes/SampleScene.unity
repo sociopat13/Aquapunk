@@ -941,7 +941,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 780915121948415582, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: OnTrevelMode
+      value: OnTrevelMod
       objectReference: {fileID: 0}
     - target: {fileID: 780915121948415582, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName

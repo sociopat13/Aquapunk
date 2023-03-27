@@ -21,7 +21,7 @@ namespace Aquapunk
         {
             BuildObject(plane, structureHologram);
         }
-        [Server]
+
         public void BuildStructure(GameObject plane)
         {
             BuildObject(plane, structureObject);

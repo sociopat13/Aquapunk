@@ -33,7 +33,7 @@ namespace Aquapunk
         }
         private void OnMouseEnter()
         {
-            if (playerInfo.player != null && playerInfo.player.structureBuilding != null)
+            if (playerInfo.player != null && playerInfo.player.structureBuilding != null && playerInfo.player.buildMod && freePlane)
             {
                 playerInfo.player.structureBuilding.SpawnStructureHologram(gameObject);
             }
@@ -41,7 +41,7 @@ namespace Aquapunk
         
         private void OnMouseExit()
         {
-            if (freePlane)
+            if (playerInfo.player != null && playerInfo.player.structureBuilding != null && playerInfo.player.buildMod && freePlane)
             {
                 ClearStructureTransform();
             }
@@ -49,7 +49,7 @@ namespace Aquapunk
 
         private void OnMouseDown()
         {
-            if (freePlane)
+            if (playerInfo.player != null && playerInfo.player.structureBuilding != null && playerInfo.player.buildMod && freePlane)
             {
                 CmdBuildStructure();
             }

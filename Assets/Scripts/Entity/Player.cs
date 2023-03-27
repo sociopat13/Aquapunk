@@ -69,8 +69,15 @@ namespace Aquapunk
             }
         }
 
+
         [Command]
         public void CmdBuildStructure(GameObject plane)
+        {
+            BuildStructure(plane);
+        }
+
+        [Server]
+        public void BuildStructure(GameObject plane)
         {
             structureBuilding.BuildStructure(plane);
         }

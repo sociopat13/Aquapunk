@@ -9,7 +9,7 @@ namespace Aquapunk
 {
     public class StructurCatalog : MonoBehaviour
     {
-        public List<StructureManager> structures;
+        public List<GameObject> structures;
         public GameObject structureCell;
         public GameObject context;
         public StructureInfoCard info;
@@ -20,12 +20,15 @@ namespace Aquapunk
             {
                 Destroy(child.gameObject);
             }
-            foreach (StructureManager manager in structures)
+            foreach (GameObject manager in structures)
             {
+                GameObject objectStructureManager = Instantiate(manager);
+                StructureManager newManager = objectStructureManager.GetComponent<StructureManager>();
                 GameObject cell = Instantiate(structureCell, context.transform);
-                cell.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = manager.structure.title;
-                cell.transform.Find("Icon").GetComponent<Image>().sprite = manager.structure.icon;
-                cell.GetComponent<Button>().onClick.AddListener(() => info.GetStructureInfo(manager));
+                objectStructureManager.transform.SetParent(cell.transform);
+                cell.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = newManager.structure.title;
+                cell.transform.Find("Icon").GetComponent<Image>().sprite = newManager.structure.icon;
+                cell.GetComponent<Button>().onClick.AddListener(() => info.GetStructureInfo(newManager));
             }
         }
     }
