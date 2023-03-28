@@ -27,7 +27,7 @@ namespace Aquapunk
 
         private void CmdBuildStructure()
         {
-            freePlane = true;
+            freePlane = false;
             ClearStructureTransform();
             playerInfo.player.CmdBuildStructure(gameObject);
         }

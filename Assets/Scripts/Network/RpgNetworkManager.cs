@@ -7,12 +7,50 @@ namespace Aquapunk
 {
     public class RpgNetworkManager : NetworkManager
     {
+        public GameObject landscapes;
+        public GameObject planePrefab;
         #region Methods
         #region ClassMethods
+        [SerializeField]
+        private int _rols;
+        [SerializeField]
+        private int _cols;
+
+        [Server]
+        private void Generate()
+        {
+            GameObject landscp = Instantiate(landscapes);
+            float factorX = planePrefab.transform.localScale.x * 10;
+            float factorZ = planePrefab.transform.localScale.z * 10;
+            for (float obj = 0, x = 0 - factorX * _rols / 2; obj <= _rols; obj++, x += factorX)
+            {
+                for (float objZ = 0, z = 0 - factorZ * _cols / 2; objZ <= _cols; objZ++, z += factorZ)
+                {
+                    Transform plane = Instantiate(planePrefab).transform;
+
+                    plane.position = new Vector3(x, 0, z);
+
+                    plane.SetParent(landscp.transform);
+                }
+            }
+            landscp.transform.Rotate(new Vector3(0, 45, 0));
+        }
+
         public override void OnServerAddPlayer(NetworkConnectionToClient conn)
         {
             GameObject player = Instantiate(playerPrefab);
             NetworkServer.AddPlayerForConnection(conn, player);
+        }
+
+        public override void OnStartServer()
+        {
+            base.OnStartServer();
+            Generate();
+        }
+
+        public override void OnStartHost()
+        {
+            base.OnStartHost();
         }
         #endregion
         #endregion

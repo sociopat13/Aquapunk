@@ -25,6 +25,7 @@ namespace Aquapunk
         private async Task Building()
         {
             await Task.Delay(TimeSpan.FromSeconds(structure.timeBuild));
+            Destroy(temporarily);
             temporarily = Instantiate(structure.structureFinichBuild, gameObject.transform);
 
         }
