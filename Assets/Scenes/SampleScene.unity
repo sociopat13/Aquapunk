@@ -497,6 +497,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3776879576797588837, guid: 804d2784f8070144b92e4129bc098d8c, type: 3}
+      propertyPath: sceneId
+      value: 1304272538
+      objectReference: {fileID: 0}
     - target: {fileID: 8554985375162345521, guid: 804d2784f8070144b92e4129bc098d8c, type: 3}
       propertyPath: m_Name
       value: Landscape
