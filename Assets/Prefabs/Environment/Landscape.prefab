@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8554985375162345527}
   - component: {fileID: 3776879576797588837}
   - component: {fileID: 1997777281118866517}
-  - component: {fileID: 6545173117163129662}
+  - component: {fileID: 6207375034241849791}
   m_Layer: 0
   m_Name: Landscape
   m_TagString: Untagged
@@ -67,9 +67,9 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   planePrefab: {fileID: 1078960553816656496, guid: 39cadd8419a3e8f418a0fa66d4d7926e, type: 3}
-  _rols: 30
-  _cols: 30
---- !u!114 &6545173117163129662
+  _rols: 100
+  _cols: 100
+--- !u!114 &6207375034241849791
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -78,19 +78,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8554985375162345521}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
   target: {fileID: 8554985375162345527}
-  clientAuthority: 0
   onlySyncOnChange: 1
-  bufferResetMultiplier: 5
-  positionSensitivity: 0.01
+  onlySyncOnChangeCorrectionMultiplier: 2
   rotationSensitivity: 0.01
-  scaleSensitivity: 0.01
+  compressRotation: 0
+  positionPrecision: 0.01
+  scalePrecision: 0.01
   syncPosition: 1
   syncRotation: 1
   syncScale: 0

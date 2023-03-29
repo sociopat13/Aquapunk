@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1802834, g: 0.2257135, b: 0.3069223, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028346, g: 0.22571373, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -476,10 +476,6 @@ MonoBehaviour:
   - {fileID: 8554985375162345521, guid: 804d2784f8070144b92e4129bc098d8c, type: 3}
   - {fileID: 1078960553816656496, guid: 39cadd8419a3e8f418a0fa66d4d7926e, type: 3}
   timeInterpolationGui: 0
-  landscapes: {fileID: 8554985375162345521, guid: 804d2784f8070144b92e4129bc098d8c, type: 3}
-  planePrefab: {fileID: 1078960553816656496, guid: 39cadd8419a3e8f418a0fa66d4d7926e, type: 3}
-  _rols: 30
-  _cols: 30
 --- !u!4 &649458670
 Transform:
   m_ObjectHideFlags: 0
@@ -504,13 +500,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 649458666}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39adc6e09d5544ed955a50ce8600355a, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f60becab051427fbdd3c8ac9ab4712b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visRange: 20
-  rebuildInterval: 1
-  checkMethod: 0
-  showSlider: 0
+  visRange: 100
+  rebuildInterval: 0.1
 --- !u!1 &662228853
 GameObject:
   m_ObjectHideFlags: 0
