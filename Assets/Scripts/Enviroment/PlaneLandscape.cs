@@ -55,6 +55,14 @@ namespace Aquapunk
             }
         }
 
+        private void OnMouseOver()
+        {
+            if(structureTransform != null && !playerInfo.player.buildMod && !structureTransform.GetComponent<StructureObject>())
+            {
+                ClearStructureTransform();
+            }
+        }
+
         private void Start()
         {
             playerInfo = FindObjectOfType<PlayerInfo>();

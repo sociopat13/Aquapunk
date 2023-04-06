@@ -30,10 +30,10 @@ namespace Aquapunk
         
         private void BuildObject(GameObject plane, GameObject obj)
         {
-            Transform structureTransform = Instantiate(obj).transform;
+            Transform structureTransform = Instantiate(obj, plane.transform).transform;
 
-            structureTransform.position = plane.transform.position;
-            structureTransform.SetParent(plane.transform);
+            //structureTransform.position = plane.transform.position;
+            //structureTransform.SetParent(plane.transform);
 
             plane.GetComponent<PlaneLandscape>().structureTransform = structureTransform;
             if (structureTransform.GetComponent<StructureObject>())

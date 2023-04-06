@@ -42,7 +42,6 @@ namespace Aquapunk
             // Move to a random point if not attacking or stunned
             while (isPatrolling)
             {
-                Debug.Log("patrol");
                 if (_state != StateEntity.Stan || _state != StateEntity.Attack)
                 {
                     if (trigger == null)

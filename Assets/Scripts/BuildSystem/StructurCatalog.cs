@@ -13,6 +13,9 @@ namespace Aquapunk
         public GameObject structureCell;
         public GameObject context;
         public StructureInfoCard info;
+        
+        
+        private PlayerInfo playerInfo;
 
         public void LoadStructureCatalog()
         {
@@ -31,6 +34,19 @@ namespace Aquapunk
                 cell.GetComponent<Button>().onClick.AddListener(() => info.GetStructureInfo(newManager));
             }
         }
+
+        public void ReverseBuildMod()
+        {
+            playerInfo.player.buildMod = !playerInfo.player.buildMod;
+        }
+
+
+        private void Start()
+        {
+            playerInfo = FindObjectOfType<PlayerInfo>();
+        }
+
+        
     }
 }
 
