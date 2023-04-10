@@ -89,12 +89,14 @@ MonoBehaviour:
   healthMax: 100
   healthCurrent: 0
   hpBar: {fileID: 0}
+  structureBuilding: {fileID: 0}
   HPBarPrefab: {fileID: 8214830115922944676, guid: 0ec7b9c835c779841a0963d8ddc22cb1, type: 3}
   HPBar: {fileID: 0}
   nm: {fileID: 0}
   joystick: {fileID: 0}
   camera: {fileID: 0}
   entityMovenent: {fileID: 4452891666028492741}
+  buildMod: 0
   offsetCamera: {x: 0, y: 20, z: -22.2}
   items: []
   KitItems: []

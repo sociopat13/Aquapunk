@@ -44,6 +44,23 @@ namespace Aquapunk
         {
             _rigidbody = GetComponent<Rigidbody>();
         }
+
+        void FixedUpdate()
+        {
+            // Check if there is a speed
+            if (_rigidbody.velocity.magnitude < 0.01f)
+            {
+                // If there is no speed, stop the object
+                _rigidbody.velocity = Vector3.zero;
+                _rigidbody.angularVelocity = Vector3.zero;
+            }
+            else
+            {
+                // If there is a speed, we pass it to Rigidbody
+                Vector3 move = transform.forward * _speed;
+                _rigidbody.velocity = move;
+            }
+        }
         #endregion
         #endregion
     }
