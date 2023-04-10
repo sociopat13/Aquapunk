@@ -236,7 +236,6 @@ namespace Aquapunk
 
         void OnTriggerStay(Collider other)
         {
-            
             if (other.CompareTag("flame") && !notBurn)
             {
                 setDamage(5f * Time.deltaTime, other.transform.parent.GetComponent<Entity>()); // уменьшаем здоровье игрока со временем
