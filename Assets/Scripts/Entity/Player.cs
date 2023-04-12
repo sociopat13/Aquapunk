@@ -1,15 +1,18 @@
 using Cinemachine;
+using DG.Tweening;
 using Mirror;
 using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Aquapunk
 {
     public class Player : Entity
     {
         #region Fields
+
         public StructureManager structureBuilding;
 
         public GameObject HPBarPrefab;
@@ -162,12 +165,19 @@ namespace Aquapunk
         }
         #endregion
         #region Unity Methods
+
+
         private void FixedUpdate()
         {
             if(joystick != null && joystick.Direction != Vector2.zero)
             {
                 _state = StateEntity.Move;
                 entityMovenent.Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
+            }
+            else
+            {
+                _rigidbody.velocity = Vector3.zero;
+                _rigidbody.angularVelocity = Vector3.zero;
             }
         }
         private void Update()

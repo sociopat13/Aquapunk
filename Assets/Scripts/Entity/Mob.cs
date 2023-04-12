@@ -21,6 +21,8 @@ namespace Aquapunk
         public bool agreed = true;
         public float radiusPatrol;
 
+        public float stoppingDistance = 1f;
+
         protected Coroutine patroling;
         protected MobMovement _mobMovement;
         [SerializeField] protected float _minStartPosDistance;
@@ -177,6 +179,23 @@ namespace Aquapunk
             }
         }
 
+        private void OnCollisionStay(Collision collision)
+        {
+            // Проверяем, столкнулись ли мы с объектом на слое "Enemy"
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            {
+                // Если столкнулись, вычисляем вектор до врага
+                Vector3 toEnemy = collision.transform.position - transform.position;
+
+                // Если игрок находится ближе к врагу, чем определенное расстояние,
+                // то отменяем движение в этом направлении
+                if (toEnemy.magnitude < stoppingDistance)
+                {
+                    Vector3 cancelMove = Vector3.Project(_rigidbody.velocity, -toEnemy.normalized);
+                    _rigidbody.velocity -= cancelMove;
+                }
+            }
+        }
         private void Update()
         {
             BehaveAtTrigger();
