@@ -107,23 +107,18 @@ namespace Aquapunk
             base.Attack();
             Collider[] colliders = Physics.OverlapSphere(transform.position + _attackOffset, _attackRange, layer);
             // damage
-            foreach (Collider collider in colliders)
+            foreach (GameObject enemy in enemys)
             {
                 if (isLocalPlayer &&
-                    collider.GetComponent<Entity>() &&
-                    collider.GetComponent<Entity>().hpBar == null && 
-                    collider.gameObject != gameObject && !collider.isTrigger )
+                    enemy.GetComponent<Entity>() &&
+                    enemy.GetComponent<Entity>().hpBar == null &&
+                    enemy.gameObject != gameObject && !enemy.GetComponent<Collider>().isTrigger )
                 {
-                    InstantiateHPBar(collider.GetComponent<Entity>());
+                    InstantiateHPBar(enemy.GetComponent<Entity>());
                 }
             }
         }
 
-        [Server]
-        public override void setDamage(float damage, Entity entity)
-        {
-            base.setDamage(damage, entity);
-        }
 
         public void SetStructure(StructureManager structure)
         {
@@ -174,11 +169,11 @@ namespace Aquapunk
                 _state = StateEntity.Move;
                 entityMovenent.Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
             }
-            else
-            {
-                _rigidbody.velocity = Vector3.zero;
-                _rigidbody.angularVelocity = Vector3.zero;
-            }
+            //else
+            //{
+            //    _rigidbody.velocity = Vector3.zero;
+            //    _rigidbody.angularVelocity = Vector3.zero;
+            //}
         }
         private void Update()
         {

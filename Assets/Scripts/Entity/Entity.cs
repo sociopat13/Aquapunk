@@ -20,6 +20,9 @@ namespace Aquapunk
 
         public bool notBurn;
 
+        [SerializeField]
+        protected TypeAttack _typeAttack;
+
         [SerializeField] protected float _attackRange = 1.5f, _attackDamage = 20f;
         [SerializeField] protected float _timeAttackCoolDown, _attackCollDown = 0.5f, _timeStanCoolDown, _stanCollDown = 0.5f;
         [SerializeField] protected Vector3 _attackOffset;
@@ -60,6 +63,15 @@ namespace Aquapunk
         public void SyncExp(float oldValue, float newValue)
         {
             experienceLevel = newValue;
+        }
+
+        public TypeAttack typeAttack
+        {
+            get
+            {
+                return _typeAttack;
+            }
+            private set { }
         }
 
         /// <summary>
@@ -135,6 +147,13 @@ namespace Aquapunk
             healthCurrent -= damage;
             
             StanState();
+
+            if(entity.typeAttack == TypeAttack.Melee)
+            {
+                print("adf");
+                _rigidbody.AddForce((transform.position - entity.transform.position).normalized * 100, ForceMode.Force);
+                print(transform.position - entity.transform.position);
+            }
         }
 
         [Command]
@@ -149,20 +168,19 @@ namespace Aquapunk
             if (_timeAttackCoolDown <= 0 && _state != StateEntity.Stan)
             {
                 // animate
-                //detected hit enemys in range of attack
-                Collider[] colliders = Physics.OverlapSphere(transform.position + _attackOffset, _attackRange, layer);
                 // damage
-                foreach (Collider collider in colliders)
+                foreach (GameObject enemy in enemys)
                 {
-                    if (collider.gameObject != gameObject && !collider.isTrigger)
+                    if (enemy.GetComponent<Collider>().gameObject != gameObject && !enemy.GetComponent<Collider>().isTrigger && 
+                        _attackRange > (enemy.GetComponent<Collider>().transform.position - transform.position).magnitude)
                     {
                         if (isServer)
                         {
-                            collider.GetComponent<Entity>().setDamage(_attackDamage, this);
+                            enemy.GetComponent<Entity>().setDamage(_attackDamage, this);
                         }
                         else
                         {
-                            CmdSetDamage(collider.GetComponent<Entity>(), _attackDamage, this);
+                            CmdSetDamage(enemy.GetComponent<Entity>(), _attackDamage, this);
                         }
                     }
                 }
@@ -242,6 +260,22 @@ namespace Aquapunk
             }
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.GetComponent<Entity>())
+            {
+                enemys.Add(other.gameObject);
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (enemys.Contains(other.gameObject))
+            {
+                enemys.Remove(other.gameObject);
+            }
+        }
+
         private void Awake()
         {
             healthCurrent = healthMax;
@@ -256,6 +290,12 @@ namespace Aquapunk
             Move,
             Sprint,
             Attack
+        }
+
+        public enum TypeAttack
+        {
+            Range,
+            Melee
         }
 
         public delegate void MoveFunk(Vector3 dir);
