@@ -79,7 +79,7 @@ MonoBehaviour:
   enemys: []
   notBurn: 0
   _typeAttack: 1
-  _attackRange: 2
+  _attackRange: 10
   _attackDamage: 20
   _timeAttackCoolDown: 0
   _attackCollDown: 0.5

@@ -150,9 +150,7 @@ namespace Aquapunk
 
             if(entity.typeAttack == TypeAttack.Melee)
             {
-                print("adf");
                 _rigidbody.AddForce((transform.position - entity.transform.position).normalized * 100, ForceMode.Force);
-                print(transform.position - entity.transform.position);
             }
         }
 
