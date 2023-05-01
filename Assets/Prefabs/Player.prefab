@@ -88,7 +88,7 @@ MonoBehaviour:
   _attackOffset: {x: 0, y: 0, z: 0}
   level: 0
   experienceLevel: 0
-  healthMax: 100
+  healthMax: 10000
   healthCurrent: 0
   hpBar: {fileID: 0}
   structureBuilding: {fileID: 0}
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedRotate: 0.3
-  _speed: 100
+  _speed: 250
 --- !u!136 &4452891666028492740
 CapsuleCollider:
   m_ObjectHideFlags: 0

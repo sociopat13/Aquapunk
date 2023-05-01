@@ -165,6 +165,8 @@ namespace Aquapunk
             
             if (_timeAttackCoolDown <= 0 && _state != StateEntity.Stan)
             {
+
+                AttackState();
                 // animate
                 // damage
                 foreach (GameObject enemy in enemys)
@@ -182,7 +184,7 @@ namespace Aquapunk
                         }
                     }
                 }
-                AttackState();
+                _timeAttackCoolDown = _attackCollDown;
             }
         }
 
@@ -226,14 +228,15 @@ namespace Aquapunk
 
             CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
 
-            if ((_timeStanCoolDown <= 0f || _rigidbody.velocity == Vector3.zero || _timeAttackCoolDown <= 0) && _state != StateEntity.Idle)
+            if (_timeStanCoolDown <= 0f && _rigidbody.velocity == Vector3.zero && _timeAttackCoolDown <= 0)
             {
+                print(3);
                 IdleState();
             }
         }
         protected virtual void AttackState()
         {
-            _timeAttackCoolDown = _attackCollDown;
+            _rigidbody.velocity = Vector3.zero;
             _state = StateEntity.Attack;
         }
 
@@ -245,7 +248,11 @@ namespace Aquapunk
 
         protected virtual void IdleState()
         {
-            _state = StateEntity.Idle;
+            if (_state != StateEntity.Idle)
+            {
+                _state = StateEntity.Idle;
+                _rigidbody.velocity = Vector3.zero;
+            }
         }
         #endregion
         #region Unity Methods

@@ -158,6 +158,7 @@ namespace Aquapunk
                 NetworkManager.singleton.StopClient();
             }
         }
+
         #endregion
         #region Unity Methods
 
@@ -169,11 +170,10 @@ namespace Aquapunk
                 _state = StateEntity.Move;
                 entityMovenent.Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
             }
-            //else
-            //{
-            //    _rigidbody.velocity = Vector3.zero;
-            //    _rigidbody.angularVelocity = Vector3.zero;
-            //}
+            else
+            {
+                IdleState();
+            }
         }
         private void Update()
         {
@@ -206,11 +206,11 @@ namespace Aquapunk
         #endregion
         #endregion
         #region enums and delegates
-        public enum StateMovement
-        {
-            Idle,
-            Move
-        }
+        //public enum StateMovement
+        //{
+        //    Idle,
+        //    Move
+        //}
 
         public delegate void SetPostItem(Item item);
         #endregion
