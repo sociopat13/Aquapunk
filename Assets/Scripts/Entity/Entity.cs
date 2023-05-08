@@ -88,7 +88,6 @@ namespace Aquapunk
             }
             if (healthCurrent <= 0)
             {
-                //FindObjectOfType<RpgNetworkManager>().StopClient();
                 DeathObject();
             }
         }
@@ -129,10 +128,6 @@ namespace Aquapunk
             {
                 coolDown -= Time.deltaTime;
             }
-            else if(_state != StateEntity.Idle)
-            {
-                _state = StateEntity.Idle;
-            }
         }
 
         /// <summary>
@@ -162,16 +157,15 @@ namespace Aquapunk
 
         public virtual void Attack()
         {
-            
             if (_timeAttackCoolDown <= 0 && _state != StateEntity.Stan)
             {
-
                 AttackState();
                 // animate
                 // damage
                 foreach (GameObject enemy in enemys)
                 {
-                    if (enemy.GetComponent<Collider>().gameObject != gameObject && !enemy.GetComponent<Collider>().isTrigger && 
+                    if (enemy.GetComponent<Collider>().gameObject != gameObject 
+                        && !enemy.GetComponent<Collider>().isTrigger && 
                         _attackRange > (enemy.GetComponent<Collider>().transform.position - transform.position).magnitude)
                     {
                         if (isServer)
@@ -195,10 +189,6 @@ namespace Aquapunk
                 Destroy(hpBar.gameObject);
             }
             GiveExp();
-            //if (isClient)
-            //{
-            //    FindObjectOfType<RpgNetworkManager>().OnServerDisconnect(GetComponent<NetworkIdentity>().connectionToClient);
-            //}
             NetworkServer.Destroy(gameObject);
             
         }
@@ -225,18 +215,22 @@ namespace Aquapunk
         protected virtual void ProcessCooldown()
         {
             CoolDown(out _timeAttackCoolDown, _timeAttackCoolDown);
-
+            
             CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
 
-            if (_timeStanCoolDown <= 0f && _rigidbody.velocity == Vector3.zero && _timeAttackCoolDown <= 0)
+            //if(_attackCollDown)
+        }
+
+        protected virtual void ProcessStates()
+        {
+            if (_state != StateEntity.Idle && _rigidbody.velocity == Vector3.zero
+                && (_timeAttackCoolDown <= 0 || _timeStanCoolDown <= 0f))
             {
-                print(3);
                 IdleState();
             }
         }
         protected virtual void AttackState()
         {
-            _rigidbody.velocity = Vector3.zero;
             _state = StateEntity.Attack;
         }
 
@@ -248,11 +242,12 @@ namespace Aquapunk
 
         protected virtual void IdleState()
         {
-            if (_state != StateEntity.Idle)
-            {
-                _state = StateEntity.Idle;
-                _rigidbody.velocity = Vector3.zero;
-            }
+            _state = StateEntity.Idle;
+        }
+
+        protected virtual void MoveState()
+        {
+            _state = StateEntity.Move;
         }
         #endregion
         #region Unity Methods

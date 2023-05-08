@@ -51,6 +51,7 @@ namespace Aquapunk
                         Vector3 point = startPosition + (Random.insideUnitSphere * radiusPatrol);
                         try
                         {
+                            MoveState();
                             _mobMovement.MoveToPoint(point);
                         }
                         catch (Exception e)
@@ -131,20 +132,33 @@ namespace Aquapunk
             if (trigger != null && (_state != StateEntity.Stan || _state != StateEntity.Attack))
             {
                 float distance = (trigger.transform.position - transform.position).magnitude;
-                if (distance < _attackRange)
+                print(distance);
+                if (distance <= _attackRange)
                 {
+                    print("yes");
+                    //IdleState();
                     Attack();
                 }
 
                 else
                 {
-                    _state = StateEntity.Move;
+                    MoveState();
                     _mobMovement.Movement(trigger.transform.position - transform.position);
                 }
             }
         }
 
+        protected override void IdleState()
+        {
+            //_rigidbody.isKinematic = true;
+            base.IdleState();
+        }
 
+        protected override void MoveState()
+        {
+            base.MoveState();
+            //_rigidbody.isKinematic = false;
+        }
         #endregion
         #region Unity Methods
         private void OnTriggerExit(Collider other)
@@ -164,7 +178,8 @@ namespace Aquapunk
         private void OnTriggerStay(Collider other)
         {
 
-            if(trigger == null && other.GetComponent<Entity>() && other.GetComponent<Entity>().GetType() != typeof(Mob) && agreed && !other.isTrigger)
+            if(trigger == null && other.GetComponent<Entity>() && other.GetComponent<Entity>().GetType() != typeof(Mob) 
+                && agreed && !other.isTrigger)
             {
                 print("trigger enter");
                 if (isPatrolling)
@@ -182,7 +197,7 @@ namespace Aquapunk
         private void OnCollisionStay(Collision collision)
         {
             // Проверяем, столкнулись ли мы с объектом на слое "Enemy"
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            if (collision.gameObject.layer == LayerMask.NameToLayer("entity"))
             {
                 // Если столкнулись, вычисляем вектор до врага
                 Vector3 toEnemy = collision.transform.position - transform.position;

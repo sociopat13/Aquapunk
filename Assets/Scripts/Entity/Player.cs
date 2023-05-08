@@ -159,20 +159,18 @@ namespace Aquapunk
             }
         }
 
+
         #endregion
         #region Unity Methods
 
 
         private void FixedUpdate()
         {
-            if(joystick != null && joystick.Direction != Vector2.zero)
+            if(joystick != null && joystick.Direction != Vector2.zero 
+                && _state != StateEntity.Stan && _state != StateEntity.Attack)
             {
-                _state = StateEntity.Move;
+                MoveState();
                 entityMovenent.Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
-            }
-            else
-            {
-                IdleState();
             }
         }
         private void Update()
@@ -180,6 +178,7 @@ namespace Aquapunk
             if (isLocalPlayer)
             {
                 ProcessCooldown();
+                ProcessStates();
             }
             
         }
