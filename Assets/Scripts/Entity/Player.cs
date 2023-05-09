@@ -166,11 +166,17 @@ namespace Aquapunk
 
         private void FixedUpdate()
         {
-            if(joystick != null && joystick.Direction != Vector2.zero 
-                && _state != StateEntity.Stan && _state != StateEntity.Attack)
+            if(_state != StateEntity.Stan && _state != StateEntity.Attack)
             {
-                MoveState();
-                entityMovenent.Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
+                if (joystick != null && joystick.Direction != Vector2.zero)
+                {
+                    MoveState();
+                    entityMovenent.Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
+                }
+                else if (joystick.Direction == Vector2.zero && _state != StateEntity.Idle)
+                {
+                    IdleState();
+                }
             }
         }
         private void Update()

@@ -23,8 +23,12 @@ namespace Aquapunk
         [SerializeField]
         protected TypeAttack _typeAttack;
 
+        [SerializeField] protected float _forceRangeMultiplyRange = 10, 
+            _forceRangeMultiplyMelee = 100, _forceRangeMultiplyTick = 50;
         [SerializeField] protected float _attackRange = 1.5f, _attackDamage = 20f;
-        [SerializeField] protected float _timeAttackCoolDown, _attackCollDown = 0.5f, _timeStanCoolDown, _stanCollDown = 0.5f;
+        [SerializeField] protected float _timeAttackCoolDown, _attackCollDown = 0.5f, 
+            _timeStanCoolDown, _stanCollDown = 0.3f,
+            _timeForceCoolDown, _forceCoolDown = 0.3f;
         [SerializeField] protected Vector3 _attackOffset;
 
         [Header("Level system")]
@@ -140,12 +144,31 @@ namespace Aquapunk
         public virtual void setDamage(float damage, Entity entity)
         {
             healthCurrent -= damage;
-            
-            StanState();
 
-            if(entity.typeAttack == TypeAttack.Melee)
+            if(_timeForceCoolDown <= 0)
             {
-                _rigidbody.AddForce((transform.position - entity.transform.position).normalized * 100, ForceMode.Force);
+
+                float forceRangeMultiply = _forceRangeMultiplyMelee;
+
+                if (entity)
+                {
+                    print(entity);
+                    switch (entity.typeAttack)
+                    {
+                        case TypeAttack.Range:
+                            forceRangeMultiply = _forceRangeMultiplyRange;
+                            break;
+                        case TypeAttack.RangeTick:
+                            forceRangeMultiply = _forceRangeMultiplyTick;
+                            break;
+                        default:
+                            StanState();
+                            break;
+                    }
+                }
+
+                _rigidbody.AddForce((transform.position - entity.transform.position).normalized * forceRangeMultiply);
+                _timeForceCoolDown = _forceCoolDown;
             }
         }
 
@@ -218,13 +241,13 @@ namespace Aquapunk
             
             CoolDown(out _timeStanCoolDown, _timeStanCoolDown);
 
-            //if(_attackCollDown)
+            CoolDown(out _timeForceCoolDown, _timeForceCoolDown);
         }
 
         protected virtual void ProcessStates()
         {
             if (_state != StateEntity.Idle && _rigidbody.velocity == Vector3.zero
-                && (_timeAttackCoolDown <= 0 || _timeStanCoolDown <= 0f))
+                && _timeAttackCoolDown <= 0 && _timeStanCoolDown <= 0f)
             {
                 IdleState();
             }
@@ -243,6 +266,7 @@ namespace Aquapunk
         protected virtual void IdleState()
         {
             _state = StateEntity.Idle;
+            _rigidbody.velocity = Vector3.zero;
         }
 
         protected virtual void MoveState()
@@ -256,7 +280,7 @@ namespace Aquapunk
         {
             if (other.CompareTag("flame") && !notBurn)
             {
-                setDamage(5f * Time.deltaTime, other.transform.parent.GetComponent<Entity>()); // уменьшаем здоровье игрока со временем
+                setDamage(5f * Time.deltaTime, other.transform.parent.GetComponent<flameScript>().rider.GetComponent<Entity>()); // уменьшаем здоровье игрока со временем
             }
         }
 
@@ -295,7 +319,8 @@ namespace Aquapunk
         public enum TypeAttack
         {
             Range,
-            Melee
+            Melee,
+            RangeTick
         }
 
         public delegate void MoveFunk(Vector3 dir);

@@ -19,7 +19,7 @@ public class GenerateLandscape : NetworkBehaviour
     {
         base.OnStartServer();
 
-        //Generate();
+        Generate();
     }
 
     private void Generate()

@@ -33,17 +33,18 @@ namespace Aquapunk
         {
             if (_timeAttackCoolDown <= 0 && _state != StateEntity.Stan)
             {
+                AttackState();
                 //anim
                 //atack
                 Shoot((trigger.transform.position - transform.position).normalized);
                 //state_swich
-                AttackState();
+                _timeAttackCoolDown = _attackCollDown;
             }
         }
 
         protected override void BehaveAtTrigger()
         {
-            if (trigger != null && (_state != StateEntity.Stan || _state != StateEntity.Attack))
+            if (trigger != null && _state != StateEntity.Stan && _state != StateEntity.Attack)
             {
                 _mobMovement.RotateTo((trigger.transform.position - transform.position).normalized);
             }

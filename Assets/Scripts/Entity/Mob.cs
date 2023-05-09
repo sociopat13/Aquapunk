@@ -44,7 +44,7 @@ namespace Aquapunk
             // Move to a random point if not attacking or stunned
             while (isPatrolling)
             {
-                if (_state != StateEntity.Stan || _state != StateEntity.Attack)
+                if (_state != StateEntity.Stan && _state != StateEntity.Attack)
                 {
                     if (trigger == null)
                     {
@@ -129,14 +129,12 @@ namespace Aquapunk
 
         protected virtual void BehaveAtTrigger()
         {
-            if (trigger != null && (_state != StateEntity.Stan || _state != StateEntity.Attack))
+            if (trigger != null && _state != StateEntity.Stan && _state != StateEntity.Attack)
             {
                 float distance = (trigger.transform.position - transform.position).magnitude;
-                print(distance);
                 if (distance <= _attackRange)
                 {
-                    print("yes");
-                    //IdleState();
+                    IdleState();
                     Attack();
                 }
 
@@ -148,17 +146,12 @@ namespace Aquapunk
             }
         }
 
-        protected override void IdleState()
-        {
-            //_rigidbody.isKinematic = true;
-            base.IdleState();
-        }
+        //protected override void IdleState()
+        //{
+        //    _rigidbody.velocity = Vector3.zero;
+        //    base.IdleState();
+        //}
 
-        protected override void MoveState()
-        {
-            base.MoveState();
-            //_rigidbody.isKinematic = false;
-        }
         #endregion
         #region Unity Methods
         private void OnTriggerExit(Collider other)
@@ -215,6 +208,7 @@ namespace Aquapunk
         {
             BehaveAtTrigger();
             ProcessCooldown();
+            ProcessStates();
         }
 
         private void Start()

@@ -79,12 +79,17 @@ MonoBehaviour:
   enemys: []
   notBurn: 0
   _typeAttack: 1
+  _forceRangeMultiplyRange: 10
+  _forceRangeMultiplyMelee: 100
+  _forceRangeMultiplyTick: 100
   _attackRange: 10
   _attackDamage: 20
   _timeAttackCoolDown: 0
   _attackCollDown: 0.5
   _timeStanCoolDown: 0
   _stanCollDown: 0.5
+  _timeForceCoolDown: 0
+  _forceCoolDown: 0.5
   _attackOffset: {x: 0, y: 0, z: 0}
   level: 0
   experienceLevel: 0
