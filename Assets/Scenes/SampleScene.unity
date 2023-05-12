@@ -672,23 +672,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8303451968315097040, guid: 84db216e52f541749803b57abd8823bb, type: 3}
-      propertyPath: m_XDamping
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303451968315097040, guid: 84db216e52f541749803b57abd8823bb, type: 3}
-      propertyPath: m_YDamping
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303451968315097040, guid: 84db216e52f541749803b57abd8823bb, type: 3}
-      propertyPath: m_FollowOffset.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303451968315097040, guid: 84db216e52f541749803b57abd8823bb, type: 3}
-      propertyPath: m_FollowOffset.z
-      value: -3
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8303451968315097047, guid: 84db216e52f541749803b57abd8823bb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 84db216e52f541749803b57abd8823bb, type: 3}
 --- !u!114 &1778739976 stripped
 MonoBehaviour:
