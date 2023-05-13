@@ -1,4 +1,3 @@
-using Mirror.Examples.MultipleMatch;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -40,13 +39,10 @@ namespace Aquapunk
             playerInfo.player.buildMod = !playerInfo.player.buildMod;
         }
 
-
         private void Start()
         {
             playerInfo = FindObjectOfType<PlayerInfo>();
         }
-
-        
     }
 }
 

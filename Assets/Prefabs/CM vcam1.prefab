@@ -86,7 +86,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   buildOrthoSize: 8
-  trevelOrthoSize: 5.3
+  trevelOrthoSize: 6.5
   VirtualCamera: {fileID: 0}
 --- !u!1 &8303451968315097042
 GameObject:

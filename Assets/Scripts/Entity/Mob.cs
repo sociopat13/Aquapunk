@@ -1,4 +1,3 @@
-using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,7 +43,7 @@ namespace Aquapunk
             // Move to a random point if not attacking or stunned
             while (isPatrolling)
             {
-                if (_state != StateEntity.Stan && _state != StateEntity.Attack)
+                if (_timeStanCoolDown <= 0 && _timeAttackCoolDown <= 0)
                 {
                     if (trigger == null)
                     {
@@ -115,13 +114,11 @@ namespace Aquapunk
             }
         }
 
-        [Server]
         protected override void DeathObject()
         {
             foreach(GameObject item in dropItems)
             {
                 GameObject itemObject = Instantiate(item, transform.position, item.transform.rotation);
-                NetworkServer.Spawn(itemObject);
             }
             StopAllCoroutines();
             base.DeathObject();
@@ -129,7 +126,7 @@ namespace Aquapunk
 
         protected virtual void BehaveAtTrigger()
         {
-            if (trigger != null && _state != StateEntity.Stan && _state != StateEntity.Attack)
+            if (trigger != null && _timeStanCoolDown <= 0 && _timeAttackCoolDown <= 0)
             {
                 float distance = (trigger.transform.position - transform.position).magnitude;
                 if (distance <= _attackRange)
@@ -146,19 +143,12 @@ namespace Aquapunk
             }
         }
 
-        //protected override void IdleState()
-        //{
-        //    _rigidbody.velocity = Vector3.zero;
-        //    base.IdleState();
-        //}
-
         #endregion
         #region Unity Methods
         private void OnTriggerExit(Collider other)
         {
             if (enemys.Contains(other.gameObject))
             {
-                print("trigger exit");
                 enemys.Remove(other.gameObject);
                 SortTrigger();
                 if (trigger == null)
@@ -168,13 +158,13 @@ namespace Aquapunk
             }
         }
 
+        //проверить
         private void OnTriggerStay(Collider other)
         {
 
             if(trigger == null && other.GetComponent<Entity>() && other.GetComponent<Entity>().GetType() != typeof(Mob) 
                 && agreed && !other.isTrigger)
             {
-                print("trigger enter");
                 if (isPatrolling)
                 {
                     StopPatrol();
@@ -187,6 +177,7 @@ namespace Aquapunk
             }
         }
 
+        //проверить
         private void OnCollisionStay(Collision collision)
         {
             // Проверяем, столкнулись ли мы с объектом на слое "Enemy"
@@ -204,7 +195,7 @@ namespace Aquapunk
                 }
             }
         }
-        private void Update()
+        private void FixedUpdate()
         {
             BehaveAtTrigger();
             ProcessCooldown();

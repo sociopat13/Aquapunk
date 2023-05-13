@@ -1,21 +1,14 @@
-using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Aquapunk
 {
-    public class PlaneLandscape : NetworkBehaviour
+    public class PlaneLandscape : MonoBehaviour
     {
         public PlayerInfo playerInfo;
         public Transform structureTransform;
-        [SyncVar(hook = nameof(SyncStatus))]
         public bool freePlane = true;
-
-        public void SyncStatus(bool oldValue, bool newValue)
-        {
-            freePlane = newValue;
-        }
 
         private void ClearStructureTransform()
         {
@@ -25,11 +18,11 @@ namespace Aquapunk
             }
         }
 
-        private void CmdBuildStructure()
+        private void BuildStructure()
         {
             freePlane = false;
             ClearStructureTransform();
-            playerInfo.player.CmdBuildStructure(gameObject);
+            playerInfo.player.BuildStructure(gameObject);
         }
         private void OnMouseEnter()
         {
@@ -51,7 +44,7 @@ namespace Aquapunk
         {
             if (playerInfo.player != null && playerInfo.player.structureBuilding != null && playerInfo.player.buildMod && freePlane)
             {
-                CmdBuildStructure();
+                BuildStructure();
             }
         }
 

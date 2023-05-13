@@ -1,10 +1,9 @@
-using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 
-public class GenerateLandscape : NetworkBehaviour
+public class GenerateLandscape : MonoBehaviour
 {
     public GameObject planePrefab;
 
@@ -15,10 +14,8 @@ public class GenerateLandscape : NetworkBehaviour
     private int _cols;
 
 
-    public override void OnStartServer()
+    private void Start()
     {
-        base.OnStartServer();
-
         Generate();
     }
 
@@ -38,8 +35,6 @@ public class GenerateLandscape : NetworkBehaviour
                 plane.SetParent(transform);
 
                 list.Add(plane.gameObject);
-
-                NetworkServer.Spawn(plane.gameObject);
             }
         }
         transform.Rotate(new Vector3(0, 45, 0));

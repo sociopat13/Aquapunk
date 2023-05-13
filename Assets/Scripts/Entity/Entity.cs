@@ -1,11 +1,10 @@
-using Mirror;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace Aquapunk
 {
-    public class Entity : NetworkBehaviour
+    public class Entity : MonoBehaviour
     {
         #region Fields
         public Canvas canvasWorld;
@@ -16,6 +15,8 @@ namespace Aquapunk
         [Header("Attack")]
 
         public LayerMask layer;
+        public Transform atackPoint;
+
         public List<GameObject> enemys;
 
         public bool notBurn;
@@ -33,9 +34,7 @@ namespace Aquapunk
 
         [Header("Level system")]
 
-        [SyncVar(hook = nameof(SyncLevel))]
         public float level;
-        [SyncVar(hook = nameof(SyncExp))]
         public float experienceLevel;
 
         protected float maxExpLevel = 100;
@@ -47,28 +46,12 @@ namespace Aquapunk
         [Header("HP system")]
 
         public float healthMax = 100f;
-        [SyncVar(hook = nameof(SyncHP))]
         public float healthCurrent;
 
         public HPBar hpBar;
         #endregion
         #region Methods
         #region Class Methods
-        /// <summary>
-        /// The hook attribute can be used to specify a function to be called when the SyncVar changes value on the client.
-        /// </summary>
-        /// <param name="oldValue"></param>
-        /// <param name="newValue"></param>
-        public void SyncLevel(float oldValue, float newValue)
-        {
-            level = newValue;
-        }
-
-        public void SyncExp(float oldValue, float newValue)
-        {
-            experienceLevel = newValue;
-        }
-
         public TypeAttack typeAttack
         {
             get
@@ -79,36 +62,6 @@ namespace Aquapunk
         }
 
         /// <summary>
-        /// The hook attribute can be used to specify a function to be called when the SyncVar changes value on the client.
-        /// </summary>
-        /// <param name="oldValue"></param>
-        /// <param name="newValue"></param>
-        public virtual void SyncHP(float oldValue, float newValue)
-        {
-            healthCurrent = newValue;
-            if(hpBar != null)
-            {
-                hpBar.SetHP(healthCurrent / healthMax);
-            }
-            if (healthCurrent <= 0)
-            {
-                DeathObject();
-            }
-        }
-
-        /// <summary>
-        /// used to call a method on the client for execution on the server 
-        /// passes the experience gained to the player object
-        /// </summary>
-        /// <param name="exp"></param>
-        /// <param name="entity"></param>
-        [Command]
-        public void CmdSetExp(float exp, Player player)
-        {
-            player.SetExp(exp);
-        }
-
-        /// <summary>
         /// used to call a method on the client for execution on the server 
         /// sends an attack from the client to the server
         /// </summary>
@@ -116,7 +69,6 @@ namespace Aquapunk
         /// <param name="damage"></param>
         /// <param name="entity"></param>
         
-
         public void DeleteHPBar()
         {
             if (hpBar != null)
@@ -130,7 +82,7 @@ namespace Aquapunk
             coolDown = postCoolDown;
             if (coolDown > 0f)
             {
-                coolDown -= Time.deltaTime;
+                coolDown -= Time.fixedDeltaTime;
             }
         }
 
@@ -140,7 +92,6 @@ namespace Aquapunk
         /// </summary>
         /// <param name="damage"></param>
         /// <param name="entity"></param>
-        [Server]
         public virtual void setDamage(float damage, Entity entity)
         {
             healthCurrent -= damage;
@@ -152,7 +103,6 @@ namespace Aquapunk
 
                 if (entity)
                 {
-                    print(entity);
                     switch (entity.typeAttack)
                     {
                         case TypeAttack.Range:
@@ -162,7 +112,7 @@ namespace Aquapunk
                             forceRangeMultiply = _forceRangeMultiplyTick;
                             break;
                         default:
-                            StanState();
+                            _timeStanCoolDown = _stanCollDown;
                             break;
                     }
                 }
@@ -170,35 +120,31 @@ namespace Aquapunk
                 _rigidbody.AddForce((transform.position - entity.transform.position).normalized * forceRangeMultiply);
                 _timeForceCoolDown = _forceCoolDown;
             }
+
+            if (hpBar)
+            {
+                hpBar.SetHP(healthCurrent / healthMax);
+            }
+            if (healthCurrent <= 0)
+            {
+                DeathObject();
+            }
         }
 
-        [Command]
-        public virtual void CmdSetDamage(Entity enemy,float damage, Entity entity)
-        {
-            enemy.setDamage(damage, entity);
-        }
 
         public virtual void Attack()
         {
-            if (_timeAttackCoolDown <= 0 && _state != StateEntity.Stan)
+            if (_timeAttackCoolDown <= 0 && _timeStanCoolDown <= 0)
             {
-                AttackState();
+                Collider[] enemysAtack = Physics.OverlapSphere(atackPoint.position + _attackOffset, _attackRange, layer);
                 // animate
                 // damage
-                foreach (GameObject enemy in enemys)
+                foreach (Collider enemy in enemysAtack)
                 {
-                    if (enemy.GetComponent<Collider>().gameObject != gameObject 
-                        && !enemy.GetComponent<Collider>().isTrigger && 
-                        _attackRange > (enemy.GetComponent<Collider>().transform.position - transform.position).magnitude)
+                    if (enemy.gameObject != gameObject && !enemy.isTrigger && 
+                        _attackRange > (enemy.transform.position - transform.position).magnitude)
                     {
-                        if (isServer)
-                        {
-                            enemy.GetComponent<Entity>().setDamage(_attackDamage, this);
-                        }
-                        else
-                        {
-                            CmdSetDamage(enemy.GetComponent<Entity>(), _attackDamage, this);
-                        }
+                        enemy.GetComponent<Entity>().setDamage(_attackDamage, this);
                     }
                 }
                 _timeAttackCoolDown = _attackCollDown;
@@ -212,10 +158,9 @@ namespace Aquapunk
                 Destroy(hpBar.gameObject);
             }
             GiveExp();
-            NetworkServer.Destroy(gameObject);
+            Destroy(gameObject);
             
         }
-        [Command]
         protected virtual void GiveExp()
         {
             List<Collider> expColliders = Physics.OverlapSphere(transform.position, expRange, layerXP).ToList();
@@ -223,14 +168,7 @@ namespace Aquapunk
             {
                 if (expColliders[c].gameObject != gameObject && !expColliders[c].isTrigger)
                 {
-                    if (isClient)
-                    {
-                        CmdSetExp(experienceDeath / expColliders.Count, expColliders[c].GetComponent<Player>());
-                    }
-                    else
-                    {
-                        expColliders[c].GetComponent<Player>().SetExp(experienceDeath / expColliders.Count);
-                    }
+                    expColliders[c].GetComponent<Player>().SetExp(experienceDeath / expColliders.Count);
                 }
             }
         }
@@ -249,19 +187,11 @@ namespace Aquapunk
             if (_state != StateEntity.Idle && _rigidbody.velocity == Vector3.zero
                 && _timeAttackCoolDown <= 0 && _timeStanCoolDown <= 0f)
             {
+                print(0);
                 IdleState();
             }
         }
-        protected virtual void AttackState()
-        {
-            _state = StateEntity.Attack;
-        }
 
-        protected virtual void StanState()
-        {
-            _timeStanCoolDown = _stanCollDown;
-            _state = StateEntity.Stan;
-        }
 
         protected virtual void IdleState()
         {
@@ -280,7 +210,7 @@ namespace Aquapunk
         {
             if (other.CompareTag("flame") && !notBurn)
             {
-                setDamage(5f * Time.deltaTime, other.transform.parent.GetComponent<flameScript>().rider.GetComponent<Entity>()); // уменьшаем здоровье игрока со временем
+                setDamage(5f * Time.deltaTime, other.transform.parent.GetComponent<FlameScript>().rider.GetComponent<Entity>()); // уменьшаем здоровье игрока со временем
             }
         }
 
@@ -309,11 +239,9 @@ namespace Aquapunk
         #region delegates and enums
         public enum StateEntity
         {
-            Stan,
             Idle,
             Move,
-            Sprint,
-            Attack
+            Sprint
         }
 
         public enum TypeAttack

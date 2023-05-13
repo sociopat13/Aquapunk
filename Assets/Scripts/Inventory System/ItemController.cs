@@ -1,12 +1,10 @@
-
-using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Aquapunk
 {
-    public class ItemController : NetworkBehaviour
+    public class ItemController : MonoBehaviour
     {
         #region Fields
         public Item item;
@@ -18,7 +16,7 @@ namespace Aquapunk
             if (player != null)
             {
                 item.PickUp(player);
-                NetworkServer.Destroy(gameObject);
+                Destroy(gameObject);
             }
         }
         #endregion

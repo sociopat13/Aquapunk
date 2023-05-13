@@ -1,6 +1,5 @@
 using Cinemachine;
 using DG.Tweening;
-using Mirror;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -18,8 +17,6 @@ namespace Aquapunk
         public GameObject HPBarPrefab;
         public HPBarUI HPBar;
 
-        public RpgNetworkManager nm;
-
         public Joystick joystick;
         public CinemachineVirtualCamera camera;
         public EntityMovement entityMovenent;
@@ -29,7 +26,6 @@ namespace Aquapunk
         [SerializeField] private Vector3 offsetCamera;
 
         [Header("Inventory")]
-        [SyncVar]
         public List<Item> items;
         public List<Item> KitItems;
         public SetPostItem setNewItem;
@@ -39,15 +35,9 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region Class Methods
-
-        public override void SyncHP(float oldValue, float newValue)
-        {
-            base.SyncHP(oldValue, newValue);
-            UpdateHPBar(healthCurrent / healthMax);
-        }
         public void InstantiateHPBar(Entity entity)
         {
-            if (isLocalPlayer && entity != this)
+            if (entity != this)
             {
                 GameObject hpBar = Instantiate(HPBarPrefab, canvasWorld.gameObject.transform);
                 HPBar hpBarScript = hpBar.GetComponent<HPBar>();
@@ -72,20 +62,18 @@ namespace Aquapunk
             }
         }
 
-
-        [Command]
-        public void CmdBuildStructure(GameObject plane)
-        {
-            BuildStructure(plane);
-        }
-
-        [Server]
         public void BuildStructure(GameObject plane)
         {
             structureBuilding.BuildStructure(plane);
         }
 
-        [Server]
+        public override void setDamage(float damage, Entity entity)
+        {
+            base.setDamage(damage, entity);
+
+            UpdateHPBar(healthCurrent / healthMax);
+        }
+
         public virtual void SetExp(float exp)
         {
             experienceLevel += exp;
@@ -107,12 +95,11 @@ namespace Aquapunk
             base.Attack();
             Collider[] colliders = Physics.OverlapSphere(transform.position + _attackOffset, _attackRange, layer);
             // damage
-            foreach (GameObject enemy in enemys)
+            foreach (Collider enemy in colliders)
             {
-                if (isLocalPlayer &&
-                    enemy.GetComponent<Entity>() &&
+                if (enemy.GetComponent<Entity>() &&
                     enemy.GetComponent<Entity>().hpBar == null &&
-                    enemy.gameObject != gameObject && !enemy.GetComponent<Collider>().isTrigger )
+                    enemy.gameObject != gameObject && !enemy.isTrigger )
                 {
                     InstantiateHPBar(enemy.GetComponent<Entity>());
                 }
@@ -148,25 +135,18 @@ namespace Aquapunk
             experienceDeath = maxExpLevel / 4;
         }
 
-        [ClientRpc]
         protected override void DeathObject()
         {
             print("death " + name);
             Destroy(hpBar);
-            if (isLocalPlayer)
-            {
-                NetworkManager.singleton.StopClient();
-            }
         }
 
 
         #endregion
         #region Unity Methods
-
-
         private void FixedUpdate()
         {
-            if(_state != StateEntity.Stan && _state != StateEntity.Attack)
+            if(_timeStanCoolDown <= 0 && _timeAttackCoolDown <= 0)
             {
                 if (joystick != null && joystick.Direction != Vector2.zero)
                 {
@@ -181,31 +161,24 @@ namespace Aquapunk
         }
         private void Update()
         {
-            if (isLocalPlayer)
-            {
-                ProcessCooldown();
-                ProcessStates();
-            }
-            
+            ProcessCooldown();
+            ProcessStates();
         }
         private void Start()
         {
-            if (isLocalPlayer)
-            {
-                canvasWorld = FindObjectOfType<WorldCanvas>().GetComponent<Canvas>();
-                _rigidbody = GetComponent<Rigidbody>();
-                joystick = FindObjectOfType<FixedJoystick>();
-                textWaterCounter = FindObjectOfType<PlayerUI>().waterCounter;
-                FindObjectOfType<PlayerUI>().attackButton.onClick.AddListener(() => Attack());
-                camera = FindObjectOfType<CinemachineVirtualCamera>();
-                HPBar = FindObjectOfType<PlayerUI>().hpbar;
-                camera.Follow = gameObject.transform;
-                camera.LookAt = gameObject.transform;
-                FindObjectOfType<PlayerInfo>().player = this;
-                ExpDeathSet();
-                nm = FindObjectOfType<RpgNetworkManager>();
-                FindObjectOfType<CameraModifier>().player = this;
-            }
+            canvasWorld = FindObjectOfType<WorldCanvas>().GetComponent<Canvas>();
+            _rigidbody = GetComponent<Rigidbody>();
+            joystick = FindObjectOfType<FixedJoystick>();
+            textWaterCounter = FindObjectOfType<PlayerUI>().waterCounter;
+            FindObjectOfType<PlayerUI>().attackButton.onClick.AddListener(() => Attack());
+            camera = FindObjectOfType<CinemachineVirtualCamera>();
+            HPBar = FindObjectOfType<PlayerUI>().hpbar;
+            camera.Follow = gameObject.transform;
+            camera.LookAt = gameObject.transform;
+            FindObjectOfType<PlayerInfo>().player = this;
+            ExpDeathSet();
+            //nm = FindObjectOfType<RpgNetworkManager>();
+            FindObjectOfType<CameraModifier>().player = this;
         }
 
         #endregion

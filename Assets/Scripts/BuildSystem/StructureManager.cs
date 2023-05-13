@@ -1,11 +1,10 @@
-using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Aquapunk
 {
-    public class StructureManager : NetworkBehaviour
+    public class StructureManager : MonoBehaviour
     {
         #region Fields
         public Structure structure;
