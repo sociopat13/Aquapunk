@@ -98,6 +98,7 @@ namespace Aquapunk
 
             if(_timeForceCoolDown <= 0)
             {
+                _rigidbody.velocity = Vector3.zero;
 
                 float forceRangeMultiply = _forceRangeMultiplyMelee;
 
@@ -116,6 +117,8 @@ namespace Aquapunk
                             break;
                     }
                 }
+
+                print(forceRangeMultiply);
 
                 _rigidbody.AddForce((transform.position - entity.transform.position).normalized * forceRangeMultiply);
                 _timeForceCoolDown = _forceCoolDown;
@@ -187,7 +190,6 @@ namespace Aquapunk
             if (_state != StateEntity.Idle && _rigidbody.velocity == Vector3.zero
                 && _timeAttackCoolDown <= 0 && _timeStanCoolDown <= 0f)
             {
-                print(0);
                 IdleState();
             }
         }
@@ -210,6 +212,7 @@ namespace Aquapunk
         {
             if (other.CompareTag("flame") && !notBurn)
             {
+                print("Burn!");
                 setDamage(5f * Time.deltaTime, other.transform.parent.GetComponent<FlameScript>().rider.GetComponent<Entity>()); // уменьшаем здоровье игрока со временем
             }
         }

@@ -813,6 +813,10 @@ PrefabInstance:
       propertyPath: canvas
       value: 
       objectReference: {fileID: 1014471328}
+    - target: {fileID: 4154974685415177317, guid: b2a6338277bedf541a9decdf3c638fe6, type: 3}
+      propertyPath: healthMax
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 4154974685415177319, guid: b2a6338277bedf541a9decdf3c638fe6, type: 3}
       propertyPath: m_Name
       value: Mobs

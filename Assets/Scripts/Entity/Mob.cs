@@ -134,7 +134,6 @@ namespace Aquapunk
                     IdleState();
                     Attack();
                 }
-
                 else
                 {
                     MoveState();

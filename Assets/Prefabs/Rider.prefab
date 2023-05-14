@@ -127,7 +127,7 @@ MonoBehaviour:
   notBurn: 1
   _typeAttack: 2
   _forceRangeMultiplyRange: 10
-  _forceRangeMultiplyMelee: 100
+  _forceRangeMultiplyMelee: 50
   _forceRangeMultiplyTick: 1
   _attackRange: 6
   _attackDamage: 20
@@ -136,7 +136,7 @@ MonoBehaviour:
   _timeStanCoolDown: 0
   _stanCollDown: 0.5
   _timeForceCoolDown: 0
-  _forceCoolDown: 0.3
+  _forceCoolDown: 0.2
   _attackOffset: {x: 0, y: 0, z: 0}
   level: 0
   experienceLevel: 0
