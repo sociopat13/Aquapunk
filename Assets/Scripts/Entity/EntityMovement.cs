@@ -11,6 +11,17 @@ namespace Aquapunk
         #region Fields
         public float speedRotate;
 
+        protected Animator _animator;
+
+        [SerializeField]
+        protected float _rollSpeed = 5f;
+        [SerializeField]
+        protected float _timerRoll, _rollTime = 1f;
+        [SerializeField]
+        protected float _timeRollCoolDown, _rollCoolDown = 0.5f;
+        [SerializeField]
+        protected bool _isRolling;
+
         protected Rigidbody _rigidbody;
         [SerializeField] protected float _speed = 5.5f;
         #endregion
@@ -39,29 +50,49 @@ namespace Aquapunk
             //rotate to directional movement
             RotateTo(dir);
         }
+
+        public virtual void Roll()
+        {
+            if (!_isRolling && _timeRollCoolDown <= 0)
+            {
+                _isRolling = true;
+                _timerRoll = 0;
+                //_animator.SetTrigger("Roll");
+                
+            }
+        }
         #endregion
         #region Unity Methods
         private void Start()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _animator = GetComponent<Animator>();
         }
 
-        //void FixedUpdate()
-        //{
-        //    // Check if there is a speed
-        //    if (_rigidbody.velocity.magnitude < 0.01f)
-        //    {
-        //        // If there is no speed, stop the object
-        //        _rigidbody.velocity = Vector3.zero;
-        //        _rigidbody.angularVelocity = Vector3.zero;
-        //    }
-        //    else
-        //    {
-        //        // If there is a speed, we pass it to Rigidbody
-        //        Vector3 move = transform.forward * _speed;
-        //        _rigidbody.velocity = move;
-        //    }
-        //}
+        private void Update()
+        {
+            if (_isRolling)
+            {
+                _timerRoll += Time.deltaTime;
+                float t = Mathf.Clamp01(_timerRoll / _rollTime);
+                float rollDistance = _rollSpeed * Time.deltaTime;
+                transform.Translate(Vector3.forward * rollDistance);
+
+                if (t >= 1f)
+                {
+                    _isRolling = false;
+                    _timeRollCoolDown = _rollCoolDown;
+                }
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            if(_timeRollCoolDown > 0)
+            {
+                _timeRollCoolDown -= Time.fixedDeltaTime;
+            }
+        }
         #endregion
         #endregion
     }

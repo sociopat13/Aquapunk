@@ -5,11 +5,8 @@ namespace Aquapunk
 {
     public class Flamethrower : Mob
     {
-        public GameObject flameEffect; // fire effect prefab
-
         public float rearDamageMultiplier;
 
-        private GameObject flame;
 
         public override void setDamage(float damage, Entity entity)
         {
@@ -26,24 +23,6 @@ namespace Aquapunk
             base.setDamage(damage * multiplier, entity);
         }
 
-        public void Shoot(Vector3 direction)
-        {
-            flame = Instantiate(flameEffect, transform.position, transform.rotation);
-            flame.GetComponent<FlameScript>().rider = transform;
-        }
-
-        public override void Attack()
-        {
-            if (_timeStanCoolDown <= 0 && _timeAttackCoolDown <= 0)
-            {
-                //anim
-                //atack
-                Shoot((trigger.transform.position - transform.position).normalized);
-                //state_swich
-                _timeAttackCoolDown = _attackCollDown;
-            }
-        }
-
         protected override void BehaveAtTrigger()
         {
             if (trigger != null && _timeStanCoolDown <= 0 && _timeAttackCoolDown <= 0)
@@ -51,15 +30,6 @@ namespace Aquapunk
                 _mobMovement.RotateTo((trigger.transform.position - transform.position).normalized);
             }
             base.BehaveAtTrigger();
-        }
-
-        protected override void DeathObject()
-        {
-            base.DeathObject();
-            if (flame)
-            {
-                Destroy(flame);
-            }
         }
     }
 }

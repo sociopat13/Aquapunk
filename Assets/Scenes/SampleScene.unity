@@ -565,6 +565,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4452891666028492741, guid: c5a8ab6f2b341734c8883d543c489771, type: 3}
+      propertyPath: _rollTime
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4452891666028492742, guid: c5a8ab6f2b341734c8883d543c489771, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -608,6 +612,14 @@ PrefabInstance:
     - target: {fileID: 4452891666028492742, guid: c5a8ab6f2b341734c8883d543c489771, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4452891666028492743, guid: c5a8ab6f2b341734c8883d543c489771, type: 3}
+      propertyPath: _typeAttack
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4452891666028492743, guid: c5a8ab6f2b341734c8883d543c489771, type: 3}
+      propertyPath: _projetileSpawnOffser.y
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4452891666028492761, guid: c5a8ab6f2b341734c8883d543c489771, type: 3}
       propertyPath: m_Name

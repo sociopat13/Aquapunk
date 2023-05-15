@@ -90,6 +90,11 @@ namespace Aquapunk
             }
         }
 
+        public virtual void Roll()
+        {
+            entityMovenent.Roll();
+        }
+
         public override void Attack()
         {
             base.Attack();
@@ -163,6 +168,10 @@ namespace Aquapunk
         {
             ProcessCooldown();
             ProcessStates();
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                Roll();
+            }
         }
         private void Start()
         {

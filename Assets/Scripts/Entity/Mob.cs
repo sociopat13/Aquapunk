@@ -13,7 +13,7 @@ namespace Aquapunk
         #region fields
         public Vector3 startPosition;
 
-        public GameObject trigger = null;
+        
         public List<GameObject> dropItems;
         
         public bool isPatrolling = true;

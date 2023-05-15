@@ -13,6 +13,7 @@ namespace Aquapunk
         [SerializeField] protected StateEntity _state = StateEntity.Idle;
 
         [Header("Attack")]
+        public GameObject trigger = null;
 
         public LayerMask layer;
         public Transform atackPoint;
@@ -20,6 +21,15 @@ namespace Aquapunk
         public List<GameObject> enemys;
 
         public bool notBurn;
+
+
+        public GameObject projectile;
+        [SerializeField]
+        protected Vector3 _projetileSpawnOffser;
+
+        public GameObject flameEffect;
+        protected GameObject flame;
+
 
         [SerializeField]
         protected TypeAttack _typeAttack;
@@ -61,14 +71,6 @@ namespace Aquapunk
             private set { }
         }
 
-        /// <summary>
-        /// used to call a method on the client for execution on the server 
-        /// sends an attack from the client to the server
-        /// </summary>
-        /// <param name="enemy"></param>
-        /// <param name="damage"></param>
-        /// <param name="entity"></param>
-        
         public void DeleteHPBar()
         {
             if (hpBar != null)
@@ -86,12 +88,6 @@ namespace Aquapunk
             }
         }
 
-        /// <summary>
-        /// used to call a method on the server 
-        /// handles damage
-        /// </summary>
-        /// <param name="damage"></param>
-        /// <param name="entity"></param>
         public virtual void setDamage(float damage, Entity entity)
         {
             healthCurrent -= damage;
@@ -118,8 +114,6 @@ namespace Aquapunk
                     }
                 }
 
-                print(forceRangeMultiply);
-
                 _rigidbody.AddForce((transform.position - entity.transform.position).normalized * forceRangeMultiply);
                 _timeForceCoolDown = _forceCoolDown;
             }
@@ -134,25 +128,59 @@ namespace Aquapunk
             }
         }
 
-
         public virtual void Attack()
         {
             if (_timeAttackCoolDown <= 0 && _timeStanCoolDown <= 0)
             {
-                Collider[] enemysAtack = Physics.OverlapSphere(atackPoint.position + _attackOffset, _attackRange, layer);
-                // animate
-                // damage
-                foreach (Collider enemy in enemysAtack)
+                switch (typeAttack)
                 {
-                    if (enemy.gameObject != gameObject && !enemy.isTrigger && 
-                        _attackRange > (enemy.transform.position - transform.position).magnitude)
-                    {
-                        enemy.GetComponent<Entity>().setDamage(_attackDamage, this);
-                    }
+                    case TypeAttack.Melee:
+                        MelleAttack();
+                        break;
+                    case TypeAttack.RangeTick:
+                        RangeTickAttack();
+                        break;
+                    case TypeAttack.Range:
+                        RangeAttack();
+                        break;
                 }
                 _timeAttackCoolDown = _attackCollDown;
             }
         }
+
+        protected virtual void MelleAttack()
+        {
+            Collider[] enemysAtack = Physics.OverlapSphere(atackPoint.position + _attackOffset, _attackRange, layer);
+            // animate
+            // damage
+            foreach (Collider enemy in enemysAtack)
+            {
+                if (enemy.gameObject != gameObject && !enemy.isTrigger &&
+                    _attackRange > (enemy.transform.position - transform.position).magnitude)
+                {
+                    enemy.GetComponent<Entity>().setDamage(_attackDamage, this);
+                }
+            }
+        }
+
+        protected virtual void RangeAttack()
+        {
+            if (trigger)
+            {
+                Vector3 direction = trigger.transform.position - transform.position;
+                RangeProjectile projectileObj = Instantiate(projectile, direction.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0,0,0,0)).GetComponent<RangeProjectile>();
+                projectileObj.direction = direction;
+                projectileObj.owner = this;
+            }
+        }
+
+        protected virtual void RangeTickAttack()
+        {
+            flame = Instantiate(flameEffect, transform.position, transform.rotation);
+            flame.GetComponent<FlameScript>().rider = transform;
+        }
+
+
 
         protected virtual void DeathObject()
         {
@@ -160,9 +188,13 @@ namespace Aquapunk
             {
                 Destroy(hpBar.gameObject);
             }
+
+            if (flame)
+            {
+                Destroy(flame);
+            }
             GiveExp();
             Destroy(gameObject);
-            
         }
         protected virtual void GiveExp()
         {
@@ -212,7 +244,6 @@ namespace Aquapunk
         {
             if (other.CompareTag("flame") && !notBurn)
             {
-                print("Burn!");
                 setDamage(5f * Time.deltaTime, other.transform.parent.GetComponent<FlameScript>().rider.GetComponent<Entity>()); // уменьшаем здоровье игрока со временем
             }
         }
@@ -222,6 +253,7 @@ namespace Aquapunk
             if (other.GetComponent<Entity>())
             {
                 enemys.Add(other.gameObject);
+                trigger = other.gameObject;
             }
         }
 
@@ -230,6 +262,7 @@ namespace Aquapunk
             if (enemys.Contains(other.gameObject))
             {
                 enemys.Remove(other.gameObject);
+                trigger = null;
             }
         }
 
