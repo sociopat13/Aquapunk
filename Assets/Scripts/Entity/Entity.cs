@@ -22,7 +22,8 @@ namespace Aquapunk
 
         public bool notBurn;
 
-
+        public float projectileDeflection;
+        public float recoil;
         public GameObject projectile;
         [SerializeField]
         protected Vector3 _projetileSpawnOffser;
@@ -170,8 +171,10 @@ namespace Aquapunk
                 Vector3 direction = trigger.transform.position - transform.position;
                 RangeProjectile projectileObj = Instantiate(projectile, direction.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0,0,0,0)).GetComponent<RangeProjectile>();
                 direction.y = 0;
-                projectileObj.direction = direction;
+                projectileObj.direction = direction + 
+                    new Vector3(Random.Range(0, projectileDeflection), Random.Range(0, projectileDeflection),Random.Range(0, projectileDeflection));
                 projectileObj.owner = this;
+                _rigidbody.AddForce((transform.position - trigger.transform.position).normalized * recoil);
             }
         }
 
@@ -181,7 +184,13 @@ namespace Aquapunk
             flame.GetComponent<FlameScript>().rider = transform;
         }
 
-
+        public virtual void SortTrigger()
+        {
+            if (enemys.Count == 0)
+            {
+                trigger = null;
+            }
+        }
 
         protected virtual void DeathObject()
         {

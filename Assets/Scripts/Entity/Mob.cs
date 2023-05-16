@@ -91,13 +91,10 @@ namespace Aquapunk
             }
         }
 
-        public void SortTrigger()
+        public override void SortTrigger()
         {
-            if(enemys.Count == 0)
-            {
-                trigger = null;
-            }
-            else
+            base.SortTrigger();
+            if(enemys.Count > 0)
             {
                 foreach (GameObject entity in enemys)
                 {

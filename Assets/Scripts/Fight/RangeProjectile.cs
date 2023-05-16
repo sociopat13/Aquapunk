@@ -28,6 +28,7 @@ namespace Aquapunk
             if (other.gameObject.GetComponent<Entity>())
             {
                 other.gameObject.GetComponent<Entity>().setDamage(_damage, owner);
+                DeathPrijectile();
             }
         }
 

@@ -99,9 +99,11 @@ namespace Aquapunk
         {
             if (trigger)
             {
-                entityMovenent.RotateTo(trigger.transform.position - transform.position);
+                entityMovenent.RotateTo(trigger.transform.position - transform.position, () =>
+                {
+                    base.Attack();
+                });
             }
-            base.Attack();
             Collider[] colliders = Physics.OverlapSphere(transform.position + _attackOffset, _attackRange, layer);
             // damage
             foreach (Collider enemy in colliders)
@@ -152,6 +154,26 @@ namespace Aquapunk
             Destroy(hpBar);
         }
 
+        public override void SortTrigger()
+        {
+            base.SortTrigger();
+            if (enemys.Count > 0)
+            {
+                foreach (GameObject entity in enemys)
+                {
+                    if (entity && trigger != null && 
+                        (entity.transform.position - transform.position).magnitude < 
+                        (trigger.transform.position - transform.position).magnitude)
+                    {
+                        trigger = entity;
+                    }
+                    else
+                    {
+                        trigger = entity;
+                    }
+                }
+            }
+        }
 
         #endregion
         #region Unity Methods
@@ -178,6 +200,10 @@ namespace Aquapunk
             {
                 Roll();
             }
+            if(trigger == null && enemys.Count > 0)
+            {
+                SortTrigger();
+            }
         }
         private void Start()
         {
@@ -185,7 +211,7 @@ namespace Aquapunk
             _rigidbody = GetComponent<Rigidbody>();
             joystick = FindObjectOfType<FixedJoystick>();
             textWaterCounter = FindObjectOfType<PlayerUI>().waterCounter;
-            FindObjectOfType<PlayerUI>().attackButton.onClick.AddListener(() => Attack());
+            FindObjectOfType<PlayerUI>().onAttack = () => Attack();
             camera = FindObjectOfType<CinemachineVirtualCamera>();
             HPBar = FindObjectOfType<PlayerUI>().hpbar;
             camera.Follow = gameObject.transform;

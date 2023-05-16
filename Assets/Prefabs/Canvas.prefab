@@ -3142,7 +3142,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waterCounter: {fileID: 4610846012525744318}
-  attackButton: {fileID: 4610846011707909753}
   hpbar: {fileID: 118994952905873997}
 --- !u!1 &4610846011699497909
 GameObject:
@@ -3320,7 +3319,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates: []
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1232909634544146650}
+          m_TargetAssemblyTypeName: Aquapunk.PlayerUI, Assembly-CSharp
+          m_MethodName: OnBeginAttack
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1232909634544146650}
+          m_TargetAssemblyTypeName: Aquapunk.PlayerUI, Assembly-CSharp
+          m_MethodName: OnEndAttack
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &4610846011730950498
 GameObject:
   m_ObjectHideFlags: 0

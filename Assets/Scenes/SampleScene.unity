@@ -337,6 +337,17 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
+--- !u!114 &733287058 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1232909634544146650, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+  m_PrefabInstance: {fileID: 4610846011048841387}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed0cbfa816f09c04a881831588db79c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,8 +625,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4452891666028492743, guid: c5a8ab6f2b341734c8883d543c489771, type: 3}
+      propertyPath: recoil
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4452891666028492743, guid: c5a8ab6f2b341734c8883d543c489771, type: 3}
       propertyPath: _typeAttack
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4452891666028492743, guid: c5a8ab6f2b341734c8883d543c489771, type: 3}
+      propertyPath: _attackCollDown
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4452891666028492743, guid: c5a8ab6f2b341734c8883d543c489771, type: 3}
+      propertyPath: projectileDeflection
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4452891666028492743, guid: c5a8ab6f2b341734c8883d543c489771, type: 3}
       propertyPath: _projetileSpawnOffser.y
@@ -1022,6 +1045,62 @@ PrefabInstance:
     - target: {fileID: 2951858036459440139, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610846011707909753, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610846011707909753, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 733287058}
+    - target: {fileID: 4610846011707909753, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610846011707909753, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPlayerAttack
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610846011707909753, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Aquapunk.PlayerUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610846011707909753, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610846011707909758, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_Delegates.Array.data[2].eventID
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610846011707909758, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610846011707909758, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610846011707909758, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 733287058}
+    - target: {fileID: 4610846011707909758, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610846011707909758, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPlayerAttack
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610846011707909758, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Aquapunk.PlayerUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610846011707909758, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 4610846012245757854, guid: cb56b06c678947b419ccbd6f997517ea, type: 3}
       propertyPath: m_SizeDelta.y
