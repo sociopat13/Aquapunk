@@ -35,7 +35,8 @@ namespace Aquapunk
         {
             if(_liveTime > 0)
             {
-                _rigidbody.AddForce(direction.normalized * _speed);
+                //_rigidbody.AddForce(direction.normalized * _speed);
+                transform.Translate(direction.normalized * Time.fixedDeltaTime * _speed);
                 _liveTime -= Time.fixedDeltaTime;
             }
             else

@@ -61,6 +61,20 @@ namespace Aquapunk
                 
             }
         }
+
+        private void Rolling()
+        {
+            _timerRoll += Time.deltaTime;
+            float t = Mathf.Clamp01(_timerRoll / _rollTime);
+            float rollDistance = _rollSpeed * Time.deltaTime;
+            transform.Translate(Vector3.forward * rollDistance);
+
+            if (t >= 1f)
+            {
+                _isRolling = false;
+                _timeRollCoolDown = _rollCoolDown;
+            }
+        }
         #endregion
         #region Unity Methods
         private void Start()
@@ -73,16 +87,7 @@ namespace Aquapunk
         {
             if (_isRolling)
             {
-                _timerRoll += Time.deltaTime;
-                float t = Mathf.Clamp01(_timerRoll / _rollTime);
-                float rollDistance = _rollSpeed * Time.deltaTime;
-                transform.Translate(Vector3.forward * rollDistance);
-
-                if (t >= 1f)
-                {
-                    _isRolling = false;
-                    _timeRollCoolDown = _rollCoolDown;
-                }
+                Rolling();
             }
         }
 

@@ -115,7 +115,7 @@ MonoBehaviour:
   typeProjectile: 0
   owner: {fileID: 0}
   _liveTime: 5
-  _speed: 10
+  _speed: 12
   _damage: 100
 --- !u!54 &2787947885591993648
 Rigidbody:

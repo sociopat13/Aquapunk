@@ -169,6 +169,7 @@ namespace Aquapunk
             {
                 Vector3 direction = trigger.transform.position - transform.position;
                 RangeProjectile projectileObj = Instantiate(projectile, direction.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0,0,0,0)).GetComponent<RangeProjectile>();
+                direction.y = 0;
                 projectileObj.direction = direction;
                 projectileObj.owner = this;
             }
