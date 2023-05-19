@@ -166,16 +166,22 @@ namespace Aquapunk
 
         protected virtual void RangeAttack()
         {
+            Vector3 direction = transform.forward.normalized;
             if (trigger)
             {
-                Vector3 direction = trigger.transform.position - transform.position;
-                RangeProjectile projectileObj = Instantiate(projectile, direction.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0,0,0,0)).GetComponent<RangeProjectile>();
-                direction.y = 0;
-                projectileObj.direction = direction + 
-                    new Vector3(Random.Range(0, projectileDeflection), Random.Range(0, projectileDeflection),Random.Range(0, projectileDeflection));
-                projectileObj.owner = this;
-                _rigidbody.AddForce((transform.position - trigger.transform.position).normalized * recoil);
+                direction = (trigger.transform.position - transform.position).normalized;
             }
+
+            RangeProjectile projectileObj = Instantiate(projectile, direction.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0, 0, 0, 0)).GetComponent<RangeProjectile>();
+            
+            direction.y = 0;
+
+            projectileObj.direction = direction +
+                new Vector3(Random.Range(0, projectileDeflection),
+                Random.Range(0, projectileDeflection),
+                Random.Range(0, projectileDeflection));
+            projectileObj.owner = this;
+            //_rigidbody.AddForce((transform.position - trigger.transform.position).normalized * recoil);
         }
 
         protected virtual void RangeTickAttack()
