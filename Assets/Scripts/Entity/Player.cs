@@ -97,13 +97,12 @@ namespace Aquapunk
 
         public override void Attack()
         {
-            if (trigger)
-            {
-                entityMovenent.RotateTo(trigger.transform.position - transform.position, () =>
-                {
-                    base.Attack();
-                });
-            }
+            //entityMovenent.RotateTo(trigger.transform.position - transform.position, () =>
+            //{
+            //    
+            //});
+
+            base.Attack();
             Collider[] colliders = Physics.OverlapSphere(transform.position + _attackOffset, _attackRange, layer);
             // damage
             foreach (Collider enemy in colliders)
