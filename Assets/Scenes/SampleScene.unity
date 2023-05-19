@@ -638,7 +638,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4452891666028492743, guid: c5a8ab6f2b341734c8883d543c489771, type: 3}
       propertyPath: projectileDeflection
-      value: 0.1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4452891666028492743, guid: c5a8ab6f2b341734c8883d543c489771, type: 3}
       propertyPath: _projetileSpawnOffser.y
