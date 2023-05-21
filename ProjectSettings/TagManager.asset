@@ -4,10 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - entity
-  - Missile
-  - flame
-  - Ground
+  - Shadow
+  - Collide
   layers:
   - Default
   - TransparentFX
@@ -15,10 +13,10 @@ TagManager:
   - 
   - Water
   - UI
-  - entity
-  - player
-  - PostProcess
   - 
+  - 
+  - TempCast
+  - Walkable
   - 
   - 
   - 
