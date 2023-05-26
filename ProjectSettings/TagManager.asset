@@ -6,8 +6,6 @@ TagManager:
   tags:
   - Shadow
   - Collide
-  - entity
-  - flame
   layers:
   - Default
   - TransparentFX
