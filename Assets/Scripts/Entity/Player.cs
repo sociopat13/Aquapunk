@@ -196,10 +196,6 @@ namespace Aquapunk
         {
             ProcessCooldown();
             ProcessStates();
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                Roll();
-            }
             if(trigger == null && enemys.Count > 0)
             {
                 SortTrigger();
