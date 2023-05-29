@@ -14,9 +14,14 @@ namespace Aquapunk
 
         public Action OnAttackAction;
         public Action OnBeginAttackAction;
+
         public Action OnEndAttackAction;
 
+        public Action OnBeginRengeAttack;
+        public Action OnRangeAttack;
+
         private bool isButtonPressed = false;
+        private bool isRangeButtonPressed = false;
 
         private void Update()
         {
@@ -24,6 +29,22 @@ namespace Aquapunk
             {
                 OnAttackAction.Invoke();
             }
+            if (isRangeButtonPressed)
+            {
+                OnRangeAttack.Invoke();
+            }
+        }
+
+        public void OnBeginRangeAttack()
+        {
+            isRangeButtonPressed = true;
+            OnBeginRengeAttack.Invoke();
+        }
+
+        public void OnEndRangeAttack()
+        {
+            isRangeButtonPressed = false;
+            OnEndAttackAction.Invoke();
         }
 
         public void OnBeginAttack()

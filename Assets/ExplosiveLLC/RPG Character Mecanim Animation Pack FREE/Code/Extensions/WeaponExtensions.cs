@@ -4,6 +4,8 @@ namespace RPGCharacterAnims.Extensions
 {
 	public static class WeaponExtensions
 	{
+		public static bool IsRange(this Weapon weapon)
+		{ return weapon == Weapon.Range; }
 		/// <summary>
 		/// Checks if the weapon is a 2 Handed weapon.
 		/// </summary>
@@ -44,7 +46,7 @@ namespace RPGCharacterAnims.Extensions
 		/// <returns></returns>
 		public static AnimatorWeapon ToAnimatorWeapon(this Weapon weapon)
 		{
-			if (weapon == Weapon.Unarmed || weapon == Weapon.TwoHandSword)
+			if (weapon == Weapon.Unarmed || weapon == Weapon.TwoHandSword || weapon == Weapon.Range)
 			{ return ( AnimatorWeapon )weapon; }
 
 			return AnimatorWeapon.UNARMED;
@@ -57,6 +59,9 @@ namespace RPGCharacterAnims.Extensions
 		/// <returns>True if 1 Handed, false if not.</returns>
 		public static bool Is2HandedAnimWeapon(this AnimatorWeapon weapon)
 		{ return weapon == AnimatorWeapon.TWOHANDSWORD; }
+
+		public static bool IsRagneAnimWeapon(this AnimatorWeapon weapon)
+		{ return weapon == AnimatorWeapon.RANGE; }
 
 		/// <summary>
 		/// Checks if the animator weapon is Unarmed or Relaxed.

@@ -73,7 +73,7 @@ namespace RPGCharacterAnims.Actions
 				case "none":
 				case "right":
 					changeRight = true;
-					if (toRightWeapon.Is2HandedWeapon() && !fromLeftWeapon.HasNoWeapon()) {
+					if ((toRightWeapon.IsRange() || toRightWeapon.Is2HandedWeapon()) && !fromLeftWeapon.HasNoWeapon()) {
 						changeLeft = true;
 						toLeftWeapon = Weapon.Unarmed;
 					}

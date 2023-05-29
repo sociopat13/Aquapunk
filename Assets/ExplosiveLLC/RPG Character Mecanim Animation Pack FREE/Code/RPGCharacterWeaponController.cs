@@ -24,6 +24,7 @@ namespace RPGCharacterAnims
 
 		[Header("Weapon Models")]
         public GameObject twoHandSword;
+		public GameObject range;
 
         private void Awake()
         {
@@ -180,6 +181,22 @@ namespace RPGCharacterAnims
 				if (weapon.IsIKWeapon())
 				{ rpgCharacterController.SetIKOn(( Weapon )animator.GetInteger(AnimationParameters.Weapon)); }
 			}
+			if (weapon.IsRange())
+			{
+				if (debugWalkthrough) { Debug.Log($"InstantSwitch to 2HandedWeapon - weapon:{weapon}"); }
+
+				// 2Handed weapons map directly to AnimatorWeapon.
+				animator.SetInteger(AnimationParameters.Weapon, (int)weapon);
+				rpgCharacterController.rightWeapon = Weapon.Unarmed;
+				rpgCharacterController.leftWeapon = Weapon.Unarmed;
+				animator.SetInteger(AnimationParameters.LeftWeapon, 0);
+				animator.SetInteger(AnimationParameters.RightWeapon, 0);
+				StartCoroutine(_HideAllWeapons(false, false));
+				StartCoroutine(_WeaponVisibility(weapon, true));
+
+				if (weapon.IsIKWeapon())
+				{ rpgCharacterController.SetIKOn((Weapon)animator.GetInteger(AnimationParameters.Weapon)); }
+			}
 			// Switching to Unarmed or Relax which map directly.
 			else {
 				animator.SetInteger(AnimationParameters.Weapon, ( int )weapon);
@@ -298,6 +315,7 @@ namespace RPGCharacterAnims
                 animator.SetSide(Side.None);
             }
             SafeSetVisibility(twoHandSword, false);
+			SafeSetVisibility(range, false);
         }
 
         /// <summary>
@@ -312,7 +330,15 @@ namespace RPGCharacterAnims
 
 			while (isWeaponSwitching) { yield return null; }
             var weaponType = (Weapon)weaponNumber;
-			switch (weaponType) { case Weapon.TwoHandSword: SafeSetVisibility(twoHandSword, visible); break; }
+			switch (weaponType) 
+			{ 
+				case Weapon.TwoHandSword: 
+					SafeSetVisibility(twoHandSword, visible); 
+					break;
+				case Weapon.Range:
+					SafeSetVisibility(range, visible);
+					break;
+			}
             yield return null;
         }
 
@@ -337,9 +363,19 @@ namespace RPGCharacterAnims
             StopCoroutine(nameof(_WeaponVisibility));
 
             SafeSetVisibility(twoHandSword, false);
+			SafeSetVisibility(range, false);
 
             var rightWeaponType = (Weapon)rpgCharacterController.rightWeapon;
-            switch (rightWeaponType) { case Weapon.TwoHandSword: SafeSetVisibility(twoHandSword, true); break; }
+            switch (rightWeaponType) 
+			{ 
+				case Weapon.TwoHandSword: 
+					SafeSetVisibility(twoHandSword, true); 
+					break;
+
+				case Weapon.Range:
+					SafeSetVisibility(range, true);
+					break;
+			}
         }
     }
 }

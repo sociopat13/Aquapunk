@@ -74,6 +74,41 @@ namespace Aquapunk
             //UpdateHPBar(healthCurrent / healthMax);
         }
 
+        public void RangeArmed()
+        {
+            if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
+
+            var doSwitch = false;
+
+            // Create a new SwitchWeaponContext with the switch settings.
+            var switchWeaponContext = new SwitchWeaponContext();
+
+            foreach (var weapon in WeaponGroupings.Range)
+            {
+                if (rpgCharacterController.rightWeapon != weapon)
+                {
+                    var label = weapon.ToString();
+                    if (label.StartsWith("TwoHand")) { label = label.Replace("TwoHand", "2H "); }
+                    //if (GUI.Button(new Rect(1115, offset, 100, 30), label))
+                    //{
+                    doSwitch = true;
+                    switchWeaponContext.type = "Switch";
+                    switchWeaponContext.side = "None";
+                    switchWeaponContext.leftWeapon = Weapon.Unarmed;
+                    switchWeaponContext.rightWeapon = weapon;
+                    //}
+                }
+                //offset += 30;
+            }
+            // Instant weapon toggle.
+            //useInstant = true;// GUI.Toggle(new Rect(1000, 310, 100, 30), useInstant, "Instant");
+            //if (useInstant) {
+            switchWeaponContext.type = "Instant"; //}
+
+            // Perform the weapon switch using the SwitchWeaponContext created earlier.
+            if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
+        }
+
         public void Armed()
         {
             if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
@@ -266,6 +301,8 @@ namespace Aquapunk
             FindObjectOfType<PlayerUI>().OnAttackAction = () => Attack();
             FindObjectOfType<PlayerUI>().OnBeginAttackAction = () => Armed();
             FindObjectOfType<PlayerUI>().OnEndAttackAction = () => Unarmed();
+            FindObjectOfType<PlayerUI>().OnRangeAttack = () => print("fire!");
+            FindObjectOfType<PlayerUI>().OnBeginRengeAttack = () => RangeArmed();
             camera = FindObjectOfType<CinemachineVirtualCamera>();
             camera.Follow = gameObject.transform;
             camera.LookAt = gameObject.transform;

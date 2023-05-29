@@ -329,7 +329,7 @@ namespace RPGCharacterAnims
                 {
                     ""name"": """",
                     ""id"": ""2c1b111f-b14e-4638-95be-9154e3b9b55e"",
-                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad;Mouse and Keyboard"",

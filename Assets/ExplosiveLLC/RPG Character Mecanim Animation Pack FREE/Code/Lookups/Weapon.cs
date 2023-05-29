@@ -4,5 +4,6 @@ namespace RPGCharacterAnims.Lookups
 	{
         Unarmed = 0,
         TwoHandSword = 1,
+        Range = 2,
     }
 }

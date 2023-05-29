@@ -11,5 +11,6 @@ namespace RPGCharacterAnims.Lookups
 	{
         UNARMED = 0,
         TWOHANDSWORD = 1,
+		RANGE = 2,
     }
 }

@@ -4,5 +4,8 @@ namespace RPGCharacterAnims.Lookups
 	{
         public static Weapon[] TwoHandedWeapons = new Weapon[]
 		{ Weapon.TwoHandSword, };
+
+        public static Weapon[] Range = new Weapon[]
+        { Weapon.Range, };
     }
 }
