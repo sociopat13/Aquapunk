@@ -20,7 +20,7 @@ namespace Aquapunk
             if (structure != null)
             {
                 applyItemButton.gameObject.SetActive(true);
-                applyItemButton.onClick.AddListener(() => playerInfo.player.SetStructure(structure));
+                //applyItemButton.onClick.AddListener(() => playerInfo.player.SetStructure(structure));
             }
             else
             {

@@ -34,10 +34,10 @@ namespace Aquapunk
             }
         }
 
-        public void ReverseBuildMod()
-        {
-            playerInfo.player.buildMod = !playerInfo.player.buildMod;
-        }
+        //public void ReverseBuildMod()
+        //{
+        //    playerInfo.player.buildMod = !playerInfo.player.buildMod;
+        //}
 
         private void Start()
         {

@@ -7,7 +7,7 @@ namespace Aquapunk
     public class Entity : MonoBehaviour
     {
         #region Fields
-        public Canvas canvasWorld;
+        //public Canvas canvasWorld;
         public Vector3 offsetHPBar;
         protected Rigidbody _rigidbody;
         [SerializeField] protected StateEntity _state = StateEntity.Idle;
@@ -45,14 +45,14 @@ namespace Aquapunk
 
         [Header("Level system")]
 
-        public float level;
-        public float experienceLevel;
-
-        protected float maxExpLevel = 100;
-        protected float experienceDeath;
-        protected float procentExp = 10;
-        protected float expRange;
-        protected LayerMask layerXP;
+        //public float level;
+        //public float experienceLevel;
+        //
+        //protected float maxExpLevel = 100;
+        //protected float experienceDeath;
+        //protected float procentExp = 10;
+        //protected float expRange;
+        //protected LayerMask layerXP;
 
         [Header("HP system")]
 
@@ -72,13 +72,13 @@ namespace Aquapunk
             private set { }
         }
 
-        public void DeleteHPBar()
-        {
-            if (hpBar != null)
-            {
-                Destroy(hpBar.gameObject);
-            }
-        }
+        //public void DeleteHPBar()
+        //{
+        //    if (hpBar != null)
+        //    {
+        //        Destroy(hpBar.gameObject);
+        //    }
+        //}
 
         protected void CoolDown(out float coolDown, float postCoolDown)
         {
@@ -115,7 +115,7 @@ namespace Aquapunk
                     }
                 }
 
-                _rigidbody.AddForce((transform.position - entity.transform.position).normalized * forceRangeMultiply);
+                //_rigidbody.AddForce((transform.position - entity.transform.position).normalized * forceRangeMultiply);
                 _timeForceCoolDown = _forceCoolDown;
             }
 
@@ -156,10 +156,12 @@ namespace Aquapunk
             // damage
             foreach (Collider enemy in enemysAtack)
             {
-                if (enemy.gameObject != gameObject && !enemy.isTrigger &&
-                    _attackRange > (enemy.transform.position - transform.position).magnitude)
+                if (enemy.gameObject != gameObject && !enemy.isTrigger
+                    && _attackRange > (enemy.transform.position - transform.position).magnitude)
                 {
+                    print((enemy.transform.position - transform.position).magnitude);
                     enemy.GetComponent<Entity>().setDamage(_attackDamage, this);
+                    print(enemy.name);
                 }
             }
         }
@@ -174,7 +176,7 @@ namespace Aquapunk
                 projectileObj.direction = direction + 
                     new Vector3(Random.Range(0, projectileDeflection), Random.Range(0, projectileDeflection),Random.Range(0, projectileDeflection));
                 projectileObj.owner = this;
-                _rigidbody.AddForce((transform.position - trigger.transform.position).normalized * recoil);
+                //_rigidbody.AddForce((transform.position - trigger.transform.position).normalized * recoil);
             }
         }
 
@@ -194,29 +196,29 @@ namespace Aquapunk
 
         protected virtual void DeathObject()
         {
-            if(hpBar != null)
-            {
-                Destroy(hpBar.gameObject);
-            }
+            //if(hpBar != null)
+            //{
+            //    Destroy(hpBar.gameObject);
+            //}
 
             if (flame)
             {
                 Destroy(flame);
             }
-            GiveExp();
+            //GiveExp();
             Destroy(gameObject);
         }
-        protected virtual void GiveExp()
-        {
-            List<Collider> expColliders = Physics.OverlapSphere(transform.position, expRange, layerXP).ToList();
-            for (int c = 0; c != expColliders.Count; c++)
-            {
-                if (expColliders[c].gameObject != gameObject && !expColliders[c].isTrigger)
-                {
-                    expColliders[c].GetComponent<Player>().SetExp(experienceDeath / expColliders.Count);
-                }
-            }
-        }
+        //protected virtual void GiveExp()
+        //{
+        //    List<Collider> expColliders = Physics.OverlapSphere(transform.position, expRange, layerXP).ToList();
+        //    for (int c = 0; c != expColliders.Count; c++)
+        //    {
+        //        if (expColliders[c].gameObject != gameObject && !expColliders[c].isTrigger)
+        //        {
+        //            expColliders[c].GetComponent<Player>().SetExp(experienceDeath / expColliders.Count);
+        //        }
+        //    }
+        //}
 
         protected virtual void ProcessCooldown()
         {

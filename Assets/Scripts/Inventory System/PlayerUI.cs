@@ -12,7 +12,9 @@ namespace Aquapunk
         public TextMeshProUGUI waterCounter;
         public HPBarUI hpbar;
 
-        public Action onAttack;
+        public Action OnAttackAction;
+        public Action OnBeginAttackAction;
+        public Action OnEndAttackAction;
 
         private bool isButtonPressed = false;
 
@@ -20,18 +22,20 @@ namespace Aquapunk
         {
             if (isButtonPressed)
             {
-                onAttack.Invoke();
+                OnAttackAction.Invoke();
             }
         }
 
         public void OnBeginAttack()
         {
             isButtonPressed = true;
+            OnBeginAttackAction.Invoke();
         }
 
         public void OnEndAttack()
         {
             isButtonPressed = false;
+            OnEndAttackAction.Invoke();
         }
     }
 }

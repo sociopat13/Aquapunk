@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Shadow
   - Collide
+  - entity
+  - flame
   layers:
   - Default
   - TransparentFX
@@ -14,7 +16,7 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - Entity
   - TempCast
   - Walkable
   - 

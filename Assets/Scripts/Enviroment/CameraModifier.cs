@@ -30,7 +30,7 @@ namespace Aquapunk
             VirtualCamera.m_Lens.OrthographicSize = orthoSize;
             VirtualCamera.LookAt = trigger;
             VirtualCamera.Follow = trigger;
-            player.buildMod = buildMod;
+            //player.buildMod = buildMod;
         }
 
         private void Start()

@@ -14,7 +14,7 @@ namespace Aquapunk
         public Vector3 startPosition;
 
         
-        public List<GameObject> dropItems;
+        //public List<GameObject> dropItems;
         
         public bool isPatrolling = true;
         public bool agreed = true;
@@ -113,10 +113,10 @@ namespace Aquapunk
 
         protected override void DeathObject()
         {
-            foreach(GameObject item in dropItems)
-            {
-                GameObject itemObject = Instantiate(item, transform.position, item.transform.rotation);
-            }
+            //foreach(GameObject item in dropItems)
+            //{
+            //    GameObject itemObject = Instantiate(item, transform.position, item.transform.rotation);
+            //}
             StopAllCoroutines();
             base.DeathObject();
         }

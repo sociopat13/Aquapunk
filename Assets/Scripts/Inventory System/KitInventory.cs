@@ -42,10 +42,10 @@ namespace Aquapunk
         #endregion
         #region Unity Methods
 
-        private void Awake()
-        {
-            playerInfo.player.setNewItem += UpdateInventoryKit;
-        }
+        //private void Awake()
+        //{
+        //    playerInfo.player.setNewItem += UpdateInventoryKit;
+        //}
         #endregion
         #endregion
     }

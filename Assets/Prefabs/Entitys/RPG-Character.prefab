@@ -5908,7 +5908,8 @@ GameObject:
   - component: {fileID: 8006402991758771111}
   - component: {fileID: 6770558966651320134}
   - component: {fileID: 6770558966651320133}
-  m_Layer: 0
+  - component: {fileID: 6815738945491980051}
+  m_Layer: 7
   m_Name: RPG-Character
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -6158,6 +6159,52 @@ MonoBehaviour:
   m_DefaultActionMap: RPGCharacter
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &6815738945491980051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6770558966651320132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f24fc8f6453f12d4ea8e6efc13db3c05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetHPBar: {x: 0, y: 0, z: 0}
+  _state: 0
+  trigger: {fileID: 0}
+  layer:
+    serializedVersion: 2
+    m_Bits: 128
+  atackPoint: {fileID: 0}
+  enemys: []
+  notBurn: 0
+  projectileDeflection: 0
+  recoil: 0
+  projectile: {fileID: 0}
+  _projetileSpawnOffser: {x: 0, y: 0, z: 0}
+  flameEffect: {fileID: 0}
+  _typeAttack: 0
+  _forceRangeMultiplyRange: 10
+  _forceRangeMultiplyMelee: 100
+  _forceRangeMultiplyTick: 50
+  _attackRange: 1.5
+  _attackDamage: 20
+  _timeAttackCoolDown: 0
+  _attackCollDown: 0.5
+  _timeStanCoolDown: 0
+  _stanCollDown: 0.3
+  _timeForceCoolDown: 0
+  _forceCoolDown: 0.3
+  _attackOffset: {x: 0, y: 0, z: 0}
+  healthMax: 100
+  healthCurrent: 0
+  hpBar: {fileID: 0}
+  structureBuilding: {fileID: 0}
+  camera: {fileID: 0}
+  buildMod: 0
+  offsetCamera: {x: 0, y: 0, z: 0}
 --- !u!1 &6770558967280556632
 GameObject:
   m_ObjectHideFlags: 0

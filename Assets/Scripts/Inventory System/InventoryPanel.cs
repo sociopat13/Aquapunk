@@ -17,21 +17,21 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region Class Methods
-        public void LoadItem()
-        {
-            foreach(Transform child in context.transform)
-            {
-                Destroy(child.gameObject);
-            }
-            foreach(Item item in playerInfo.player.items)
-            {
-                GameObject cell = Instantiate(itemCell, context.transform);
-
-                cell.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = item.name;
-                cell.transform.Find("Icon").GetComponent<Image>().sprite = item.icon;
-                cell.GetComponent<Button>().onClick.AddListener(() => info.GetItemInfo(item));
-            }
-        }
+        //public void LoadItem()
+        //{
+        //    foreach(Transform child in context.transform)
+        //    {
+        //        Destroy(child.gameObject);
+        //    }
+        //    foreach(Item item in playerInfo.player.items)
+        //    {
+        //        GameObject cell = Instantiate(itemCell, context.transform);
+        //
+        //        cell.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = item.name;
+        //        cell.transform.Find("Icon").GetComponent<Image>().sprite = item.icon;
+        //        cell.GetComponent<Button>().onClick.AddListener(() => info.GetItemInfo(item));
+        //    }
+        //}
         #endregion
         #endregion
     }

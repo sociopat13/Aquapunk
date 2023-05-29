@@ -18,19 +18,19 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region ClassMethods
-        public void GetItemInfo(Item item)
-        {
-            Apply(item);
-            if(item.type != Item.TypeItem.Default)
-            {
-                applyItemButton.gameObject.SetActive(true);
-                applyItemButton.onClick.AddListener(() => playerInfo.player.SetItem(item));
-            }
-            else
-            {
-                applyItemButton.gameObject.SetActive(false);
-            }
-        }
+        //public void GetItemInfo(Item item)
+        //{
+        //    Apply(item);
+        //    if(item.type != Item.TypeItem.Default)
+        //    {
+        //        applyItemButton.gameObject.SetActive(true);
+        //        applyItemButton.onClick.AddListener(() => playerInfo.player.SetItem(item));
+        //    }
+        //    else
+        //    {
+        //        applyItemButton.gameObject.SetActive(false);
+        //    }
+        //}
 
         protected void Apply(Scriptable scriptable)
         {

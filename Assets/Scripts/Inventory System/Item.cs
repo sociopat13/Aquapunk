@@ -20,7 +20,7 @@ namespace Aquapunk
         #region Class Methods
         public virtual void PickUp(Player player)
         {
-            player.items.Add(this);
+            //player.items.Add(this);
             owner = player;
         }
 

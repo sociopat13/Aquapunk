@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
+using RPGCharacterAnims;
+using RPGCharacterAnims.Actions;
+using RPGCharacterAnims.Lookups;
 
 namespace Aquapunk
 {
@@ -12,146 +14,202 @@ namespace Aquapunk
     {
         #region Fields
 
-        public StructureManager structureBuilding;
+        private RPGCharacterController rpgCharacterController;
+        private bool useInstant;
 
-        public GameObject HPBarPrefab;
-        public HPBarUI HPBar;
+        //public StructureManager structureBuilding;
 
-        public Joystick joystick;
         public CinemachineVirtualCamera camera;
-        public EntityMovement entityMovenent;
 
-        public bool buildMod;
+        //public bool buildMod;
 
         [SerializeField] private Vector3 offsetCamera;
 
-        [Header("Inventory")]
-        public List<Item> items;
-        public List<Item> KitItems;
-        public SetPostItem setNewItem;
+        //[Header("Inventory")]
+        //public List<Item> items;
+        //public List<Item> KitItems;
+        //public SetPostItem setNewItem;
 
-        public TextMeshProUGUI textWaterCounter;
-        public float WaterCounter { get; set; }
+        //public TextMeshProUGUI textWaterCounter;
+        //public float WaterCounter { get; set; }
         #endregion
         #region Methods
         #region Class Methods
-        public void InstantiateHPBar(Entity entity)
-        {
-            if (entity != this)
-            {
-                GameObject hpBar = Instantiate(HPBarPrefab, canvasWorld.gameObject.transform);
-                HPBar hpBarScript = hpBar.GetComponent<HPBar>();
-                hpBarScript.target = entity.gameObject;
-                hpBarScript.offset = entity.offsetHPBar;
-                hpBarScript.SetHP(entity.healthCurrent / entity.healthMax);
-                entity.hpBar = hpBarScript;
-            }
-        }
+        //public void InstantiateHPBar(Entity entity)
+        //{
+        //    if (entity != this)
+        //    {
+        //        GameObject hpBar = Instantiate(HPBarPrefab, canvasWorld.gameObject.transform);
+        //        HPBar hpBarScript = hpBar.GetComponent<HPBar>();
+        //        hpBarScript.target = entity.gameObject;
+        //        hpBarScript.offset = entity.offsetHPBar;
+        //        hpBarScript.SetHP(entity.healthCurrent / entity.healthMax);
+        //        entity.hpBar = hpBarScript;
+        //    }
+        //}
 
 
-        public void UpdateWaterCount()
-        {
-            textWaterCounter.text = WaterCounter.ToString();
-        }
+        //public void UpdateWaterCount()
+        //{
+        //    textWaterCounter.text = WaterCounter.ToString();
+        //}
 
-        public void UpdateHPBar(float value)
-        {
-            if (HPBar != null)
-            {
-                HPBar.SetHP(value);
-            }
-        }
+        //public void UpdateHPBar(float value)
+        //{
+        //    if (HPBar != null)
+        //    {
+        //        HPBar.SetHP(value);
+        //    }
+        //}
 
-        public void BuildStructure(GameObject plane)
-        {
-            structureBuilding.BuildStructure(plane);
-        }
+        //public void BuildStructure(GameObject plane)
+        //{
+        //    structureBuilding.BuildStructure(plane);
+        //}
 
         public override void setDamage(float damage, Entity entity)
         {
             base.setDamage(damage, entity);
 
-            UpdateHPBar(healthCurrent / healthMax);
+            //UpdateHPBar(healthCurrent / healthMax);
         }
 
-        public virtual void SetExp(float exp)
+        public void Armed()
         {
-            experienceLevel += exp;
-            if (experienceLevel >= maxExpLevel)
+            if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
+
+            var doSwitch = false;
+
+            // Create a new SwitchWeaponContext with the switch settings.
+            var switchWeaponContext = new SwitchWeaponContext();
+
+            foreach (var weapon in WeaponGroupings.TwoHandedWeapons)
             {
-                level++;
-                experienceLevel = 0 + experienceLevel - maxExpLevel;
-                if (level % 5 == 0)
+                if (rpgCharacterController.rightWeapon != weapon)
                 {
-                    procentExp++;
+                    var label = weapon.ToString();
+                    if (label.StartsWith("TwoHand")) { label = label.Replace("TwoHand", "2H "); }
+                    //if (GUI.Button(new Rect(1115, offset, 100, 30), label))
+                    //{
+                    doSwitch = true;
+                    switchWeaponContext.type = "Switch";
+                    switchWeaponContext.side = "None";
+                    switchWeaponContext.leftWeapon = Weapon.Unarmed;
+                    switchWeaponContext.rightWeapon = weapon;
+                    //}
                 }
-                maxExpLevel += maxExpLevel / 100 * procentExp;
-                ExpDeathSet();
+                //offset += 30;
             }
+            // Instant weapon toggle.
+            //useInstant = true;// GUI.Toggle(new Rect(1000, 310, 100, 30), useInstant, "Instant");
+            //if (useInstant) {
+            switchWeaponContext.type = "Instant"; //}
+
+            // Perform the weapon switch using the SwitchWeaponContext created earlier.
+            if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
         }
 
-        public virtual void Roll()
+        public void Unarmed()
         {
-            entityMovenent.Roll();
+            if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
+
+            var doSwitch = false;
+
+            // Create a new SwitchWeaponContext with the switch settings.
+            var switchWeaponContext = new SwitchWeaponContext();
+
+            // Unarmed.
+            if (rpgCharacterController.rightWeapon != Weapon.Unarmed
+                || rpgCharacterController.leftWeapon != Weapon.Unarmed)
+            {
+                //if (GUI.Button(new Rect(1115, 280, 100, 30), "Unarmed"))
+                //{
+                doSwitch = true;
+                switchWeaponContext.type = "Switch";
+                switchWeaponContext.side = "Both";
+                switchWeaponContext.leftWeapon = Weapon.Unarmed;
+                switchWeaponContext.rightWeapon = Weapon.Unarmed;
+                //}
+            }
+
+            switchWeaponContext.type = "Instant"; //}
+
+            // Perform the weapon switch using the SwitchWeaponContext created earlier.
+            if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
         }
 
         public override void Attack()
         {
-            if (trigger)
+            if(_timeAttackCoolDown <= 0)
             {
-                entityMovenent.RotateTo(trigger.transform.position - transform.position, () =>
-                {
-                    base.Attack();
-                });
+                rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
             }
-            Collider[] colliders = Physics.OverlapSphere(transform.position + _attackOffset, _attackRange, layer);
-            // damage
-            foreach (Collider enemy in colliders)
-            {
-                if (enemy.GetComponent<Entity>() &&
-                    enemy.GetComponent<Entity>().hpBar == null &&
-                    enemy.gameObject != gameObject && !enemy.isTrigger )
-                {
-                    InstantiateHPBar(enemy.GetComponent<Entity>());
-                }
-            }
-
-
+            base.Attack();
         }
 
+        //public virtual void SetExp(float exp)
+        //{
+        //    experienceLevel += exp;
+        //    if (experienceLevel >= maxExpLevel)
+        //    {
+        //        level++;
+        //        experienceLevel = 0 + experienceLevel - maxExpLevel;
+        //        if (level % 5 == 0)
+        //        {
+        //            procentExp++;
+        //        }
+        //        maxExpLevel += maxExpLevel / 100 * procentExp;
+        //        ExpDeathSet();
+        //    }
+        //}
 
-        public void SetStructure(StructureManager structure)
-        {
-            structureBuilding = structure;
-        }
 
-        public void SetItem(Item item)
-        {
-            foreach(Item MainItem in KitItems)
-            {
-                if(MainItem.type == item.type)
-                if(MainItem.type == item.type)
-                {
-                    MainItem.ResetParameters();
-                    KitItems.Remove(MainItem);
+        //public override void Attack()
+        //{
+        //    if (trigger)
+        //    {
+        //        entityMovenent.RotateTo(trigger.transform.position - transform.position, () =>
+        //        {
+        //            base.Attack();
+        //        });
+        //    }
+        //    base.Attack();
+        //}
 
-                    break;
-                }
-            }
-            item.SetParameters();
-            KitItems.Add(item);
-            setNewItem?.Invoke(item);
-        } 
 
-        private void ExpDeathSet()
-        {
-            experienceDeath = maxExpLevel / 4;
-        }
+        //public void SetStructure(StructureManager structure)
+        //{
+        //    structureBuilding = structure;
+        //}
+
+        //public void SetItem(Item item)
+        //{
+        //    foreach(Item MainItem in KitItems)
+        //    {
+        //        if(MainItem.type == item.type)
+        //        if(MainItem.type == item.type)
+        //        {
+        //            MainItem.ResetParameters();
+        //            KitItems.Remove(MainItem);
+        //
+        //            break;
+        //        }
+        //    }
+        //    item.SetParameters();
+        //    KitItems.Add(item);
+        //    setNewItem?.Invoke(item);
+        //} 
+
+        //private void ExpDeathSet()
+        //{
+        //    experienceDeath = maxExpLevel / 4;
+        //}
 
         protected override void DeathObject()
         {
             print("death " + name);
-            Destroy(hpBar);
+            //Destroy(hpBar);
+            Destroy(gameObject);
         }
 
         public override void SortTrigger()
@@ -181,12 +239,11 @@ namespace Aquapunk
         {
             if(_timeStanCoolDown <= 0 && _timeAttackCoolDown <= 0)
             {
-                if (joystick != null && joystick.Direction != Vector2.zero)
+                if (_rigidbody.velocity.magnitude > 0.01)
                 {
                     MoveState();
-                    entityMovenent.Movement(new Vector3(joystick.Horizontal, 0, joystick.Vertical));
                 }
-                else if (joystick.Direction == Vector2.zero && _state != StateEntity.Idle)
+                else if (_rigidbody.velocity.magnitude < 0.01 && _state != StateEntity.Idle)
                 {
                     IdleState();
                 }
@@ -203,19 +260,21 @@ namespace Aquapunk
         }
         private void Start()
         {
-            canvasWorld = FindObjectOfType<WorldCanvas>().GetComponent<Canvas>();
+            rpgCharacterController = GetComponent<RPGCharacterController>();
             _rigidbody = GetComponent<Rigidbody>();
-            joystick = FindObjectOfType<FixedJoystick>();
-            textWaterCounter = FindObjectOfType<PlayerUI>().waterCounter;
-            FindObjectOfType<PlayerUI>().onAttack = () => Attack();
+            FindObjectOfType<CameraModifier>().player = this;
+            FindObjectOfType<PlayerUI>().OnAttackAction = () => Attack();
+            FindObjectOfType<PlayerUI>().OnBeginAttackAction = () => Armed();
+            FindObjectOfType<PlayerUI>().OnEndAttackAction = () => Unarmed();
             camera = FindObjectOfType<CinemachineVirtualCamera>();
-            HPBar = FindObjectOfType<PlayerUI>().hpbar;
             camera.Follow = gameObject.transform;
             camera.LookAt = gameObject.transform;
             FindObjectOfType<PlayerInfo>().player = this;
-            ExpDeathSet();
+            //canvasWorld = FindObjectOfType<WorldCanvas>().GetComponent<Canvas>();
+            //textWaterCounter = FindObjectOfType<PlayerUI>().waterCounter;
+            //HPBar = FindObjectOfType<PlayerUI>().hpbar;
+            //ExpDeathSet();
             //nm = FindObjectOfType<RpgNetworkManager>();
-            FindObjectOfType<CameraModifier>().player = this;
         }
 
         #endregion
