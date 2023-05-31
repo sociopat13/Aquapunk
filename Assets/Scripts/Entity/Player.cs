@@ -14,7 +14,7 @@ namespace Aquapunk
     {
         #region Fields
 
-        private RPGCharacterController rpgCharacterController;
+        
         private bool useInstant;
 
         //public StructureManager structureBuilding;
@@ -74,113 +74,16 @@ namespace Aquapunk
             //UpdateHPBar(healthCurrent / healthMax);
         }
 
-        public void RangeArmed()
-        {
-            if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
 
-            var doSwitch = false;
-
-            // Create a new SwitchWeaponContext with the switch settings.
-            var switchWeaponContext = new SwitchWeaponContext();
-
-            foreach (var weapon in WeaponGroupings.Range)
-            {
-                if (rpgCharacterController.rightWeapon != weapon)
-                {
-                    var label = weapon.ToString();
-                    if (label.StartsWith("TwoHand")) { label = label.Replace("TwoHand", "2H "); }
-                    //if (GUI.Button(new Rect(1115, offset, 100, 30), label))
-                    //{
-                    doSwitch = true;
-                    switchWeaponContext.type = "Switch";
-                    switchWeaponContext.side = "None";
-                    switchWeaponContext.leftWeapon = Weapon.Unarmed;
-                    switchWeaponContext.rightWeapon = weapon;
-                    //}
-                }
-                //offset += 30;
-            }
-            // Instant weapon toggle.
-            //useInstant = true;// GUI.Toggle(new Rect(1000, 310, 100, 30), useInstant, "Instant");
-            //if (useInstant) {
-            switchWeaponContext.type = "Instant"; //}
-
-            // Perform the weapon switch using the SwitchWeaponContext created earlier.
-            if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
-        }
-
-        public void Armed()
-        {
-            if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
-
-            var doSwitch = false;
-
-            // Create a new SwitchWeaponContext with the switch settings.
-            var switchWeaponContext = new SwitchWeaponContext();
-
-            foreach (var weapon in WeaponGroupings.TwoHandedWeapons)
-            {
-                if (rpgCharacterController.rightWeapon != weapon)
-                {
-                    var label = weapon.ToString();
-                    if (label.StartsWith("TwoHand")) { label = label.Replace("TwoHand", "2H "); }
-                    //if (GUI.Button(new Rect(1115, offset, 100, 30), label))
-                    //{
-                    doSwitch = true;
-                    switchWeaponContext.type = "Switch";
-                    switchWeaponContext.side = "None";
-                    switchWeaponContext.leftWeapon = Weapon.Unarmed;
-                    switchWeaponContext.rightWeapon = weapon;
-                    //}
-                }
-                //offset += 30;
-            }
-            // Instant weapon toggle.
-            //useInstant = true;// GUI.Toggle(new Rect(1000, 310, 100, 30), useInstant, "Instant");
-            //if (useInstant) {
-            switchWeaponContext.type = "Instant"; //}
-
-            // Perform the weapon switch using the SwitchWeaponContext created earlier.
-            if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
-        }
-
-        public void Unarmed()
-        {
-            if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
-
-            var doSwitch = false;
-
-            // Create a new SwitchWeaponContext with the switch settings.
-            var switchWeaponContext = new SwitchWeaponContext();
-
-            // Unarmed.
-            if (rpgCharacterController.rightWeapon != Weapon.Unarmed
-                || rpgCharacterController.leftWeapon != Weapon.Unarmed)
-            {
-                //if (GUI.Button(new Rect(1115, 280, 100, 30), "Unarmed"))
-                //{
-                doSwitch = true;
-                switchWeaponContext.type = "Switch";
-                switchWeaponContext.side = "Both";
-                switchWeaponContext.leftWeapon = Weapon.Unarmed;
-                switchWeaponContext.rightWeapon = Weapon.Unarmed;
-                //}
-            }
-
-            switchWeaponContext.type = "Instant"; //}
-
-            // Perform the weapon switch using the SwitchWeaponContext created earlier.
-            if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
-        }
-
-        public override void Attack()
-        {
-            if(_timeAttackCoolDown <= 0)
-            {
-                rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
-            }
-            base.Attack();
-        }
+        //public override void Attack()
+        //{
+        //    if(_timeAttackCoolDown <= 0)
+        //    {
+        //        rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
+        //        endAttack = false;
+        //    }
+        //    base.Attack();
+        //}
 
         //public virtual void SetExp(float exp)
         //{
@@ -292,16 +195,25 @@ namespace Aquapunk
             {
                 SortTrigger();
             }
+            if(_timeAttackCoolDown < 0 && endAttack)
+            {
+                Unarmed();
+            }
         }
+
+        public void RangeAttackNew()
+        {
+            rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
+        }
+
         private void Start()
         {
-            rpgCharacterController = GetComponent<RPGCharacterController>();
             _rigidbody = GetComponent<Rigidbody>();
             FindObjectOfType<CameraModifier>().player = this;
             FindObjectOfType<PlayerUI>().OnAttackAction = () => Attack();
             FindObjectOfType<PlayerUI>().OnBeginAttackAction = () => Armed();
-            FindObjectOfType<PlayerUI>().OnEndAttackAction = () => Unarmed();
-            FindObjectOfType<PlayerUI>().OnRangeAttack = () => print("fire!");
+            FindObjectOfType<PlayerUI>().OnEndAttackAction = () => EndAttack();
+            FindObjectOfType<PlayerUI>().OnRangeAttack = () => RangeAttackNew();
             FindObjectOfType<PlayerUI>().OnBeginRengeAttack = () => RangeArmed();
             camera = FindObjectOfType<CinemachineVirtualCamera>();
             camera.Follow = gameObject.transform;

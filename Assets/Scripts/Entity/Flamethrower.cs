@@ -27,7 +27,7 @@ namespace Aquapunk
         {
             if (trigger != null && _timeStanCoolDown <= 0 && _timeAttackCoolDown <= 0)
             {
-                _mobMovement.RotateTo((trigger.transform.position - transform.position).normalized);
+                //_mobMovement.RotateTo((trigger.transform.position - transform.position).normalized);
             }
             base.BehaveAtTrigger();
         }

@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using RPGCharacterAnims;
+using RPGCharacterAnims.Lookups;
 
 namespace Aquapunk
 {
@@ -13,9 +15,11 @@ namespace Aquapunk
         #region fields
         public Vector3 startPosition;
 
-        
+        private RPGCharacterController rpgCharacterController;
+        private RPGCharacterNavigationController rpgNavigationController;
+
         //public List<GameObject> dropItems;
-        
+
         public bool isPatrolling = true;
         public bool agreed = true;
         public float radiusPatrol;
@@ -23,7 +27,7 @@ namespace Aquapunk
         public float stoppingDistance = 1f;
 
         protected Coroutine patroling;
-        protected MobMovement _mobMovement;
+        //protected MobMovement _mobMovement;
         [SerializeField] protected float _minStartPosDistance;
         [SerializeField] protected float _timeWaitPatrol;
         #endregion
@@ -51,7 +55,7 @@ namespace Aquapunk
                         try
                         {
                             MoveState();
-                            _mobMovement.MoveToPoint(point);
+                            rpgCharacterController.StartAction(HandlerTypes.Navigation, point);
                         }
                         catch (Exception e)
                         {
@@ -61,10 +65,10 @@ namespace Aquapunk
                 }
                 yield return new WaitForSeconds(_timeWaitPatrol);
                 // Reset the agent's path
-                if (_mobMovement.agent.path != null)
-                {
-                    _mobMovement.agent.ResetPath();
-                }
+                //if (_mobMovement.agent.path != null)
+                //{
+                //    _mobMovement.agent.ResetPath();
+                //}
             }
         }
 
@@ -128,16 +132,27 @@ namespace Aquapunk
                 float distance = (trigger.transform.position - transform.position).magnitude;
                 if (distance <= _attackRange)
                 {
+
+                    Armed();
+                    Vector3 targetDirection = trigger.transform.position - transform.position;
+                    targetDirection.y = 0; 
+
+                    transform.rotation = Quaternion.LookRotation(targetDirection);
                     IdleState();
                     Attack();
                 }
                 else
                 {
+                    Unarmed();
                     MoveState();
-                    _mobMovement.Movement(trigger.transform.position - transform.position);
+                    //_mobMovement.Movement(trigger.transform.position - transform.position);
+                    rpgCharacterController.StartAction(HandlerTypes.Navigation, RandomOffset(trigger.transform.position));
                 }
             }
         }
+
+        private Vector3 RandomOffset(Vector3 position)
+        { return new Vector3(position.x - Random.Range(1, 2), position.y, position.z - Random.Range(1, 2)); }
 
         #endregion
         #region Unity Methods
@@ -200,8 +215,10 @@ namespace Aquapunk
 
         private void Start()
         {
+            rpgCharacterController = GetComponent<RPGCharacterController>();
+            rpgNavigationController = GetComponent<RPGCharacterNavigationController>();
             _rigidbody = GetComponent<Rigidbody>();
-            _mobMovement = GetComponent<MobMovement>();
+            //_mobMovement = GetComponent<MobMovement>();
             startPosition = transform.position;
             StartPatrol();
         }

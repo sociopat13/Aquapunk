@@ -18,7 +18,7 @@ namespace RPGCharacterAnims.Actions
 			var weaponNumber = controller.rightWeapon;
 			var duration = 0f;
 
-			if (context.Side == Side.Right && weaponNumber.Is2HandedWeapon()) { context.Side = Side.None; }
+			if (context.Side == Side.Right && (weaponNumber.Is2HandedWeapon() || weaponNumber.IsRange())) { context.Side = Side.None; }
 
 			switch (context.Side) {
 				case Side.None:

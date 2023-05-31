@@ -202,6 +202,8 @@ namespace RPGCharacterAnims
 		/// </summary>
 		public bool hasTwoHandedWeapon => rightWeapon.Is2HandedWeapon();
 
+        public bool hasRangeWeapon => rightWeapon.IsRange();
+
 		/// <summary>
 		/// Returns whether the character is in Unarmed or Relax state.
 		/// </summary>

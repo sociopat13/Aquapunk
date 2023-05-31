@@ -44,8 +44,11 @@ namespace RPGCharacterAnims
 						case Weapon.TwoHandSword:
 							duration = 1.1f;
 							break;
+						case Weapon.Range:
+							duration = 1.1f;
+							break;
 						default:
-							Debug.LogError("RPG Character: no weapon number " + weapon + " for Side 0");
+							//Debug.LogError("RPG Character: no weapon number " + weapon + " for Side 0");
 							break;
 					}
 					break;
@@ -105,8 +108,10 @@ namespace RPGCharacterAnims
 					switch (weapon) {
 						case Weapon.TwoHandSword:
 							return ( int )AnimationVariations.TwoHandedSwordAttacks.TakeRandom();
+						case Weapon.Range:
+							return ( int )AnimationVariations.rangeAttacks.TakeRandom();
 						default:
-							Debug.LogError($"RPG Character: no weapon number {weapon} for Side 0");
+							//Debug.LogError($"RPG Character: no weapon number {weapon} for Side 0");
 							break;
 					}
 					break;

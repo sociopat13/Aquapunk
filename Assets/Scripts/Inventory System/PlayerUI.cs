@@ -38,12 +38,20 @@ namespace Aquapunk
         public void OnBeginRangeAttack()
         {
             isRangeButtonPressed = true;
+
             OnBeginRengeAttack.Invoke();
         }
 
         public void OnEndRangeAttack()
         {
             isRangeButtonPressed = false;
+            OnEndAttackAction.Invoke();
+            //StartCoroutine(EndRangeAttack());
+        }
+
+        private IEnumerator EndRangeAttack()
+        {
+            yield return new WaitForSeconds(2f);
             OnEndAttackAction.Invoke();
         }
 

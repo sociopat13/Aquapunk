@@ -28,40 +28,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a79b01ea5641d4aa6daa2e23605641, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enabled:
     overrideState: 1
     value: 1
   intensity:
     overrideState: 1
-    value: 0.4
+    value: 3
   threshold:
-    overrideState: 1
+    overrideState: 0
     value: 0
   softKnee:
-    overrideState: 1
-    value: 0.42
+    overrideState: 0
+    value: 0.58
   clamp:
-    overrideState: 1
+    overrideState: 0
     value: 65472
   diffusion:
-    overrideState: 1
+    overrideState: 0
     value: 7.8
   anamorphicRatio:
-    overrideState: 1
+    overrideState: 0
     value: 0.27
   color:
     overrideState: 1
-    value: {r: 0.9559735, g: 0.9386859, b: 0.8879232, a: 1}
+    value: {r: 0.9528302, g: 0.8657138, b: 0.09438412, a: 1}
   fastMode:
-    overrideState: 1
+    overrideState: 0
     value: 1
   dirtTexture:
-    overrideState: 1
+    overrideState: 0
     value: {fileID: 0}
     defaultState: 1
   dirtIntensity:
-    overrideState: 1
+    overrideState: 0
     value: 0
 --- !u!114 &6720244381944932516
 MonoBehaviour:
@@ -80,13 +80,13 @@ MonoBehaviour:
     overrideState: 1
     value: 1
   mode:
-    overrideState: 1
+    overrideState: 0
     value: 0
   color:
     overrideState: 1
     value: {r: 0, g: 0, b: 0, a: 1}
   center:
-    overrideState: 1
+    overrideState: 0
     value: {x: 0.5, y: 0.5}
   intensity:
     overrideState: 1
@@ -95,10 +95,10 @@ MonoBehaviour:
     overrideState: 1
     value: 0.23
   roundness:
-    overrideState: 1
+    overrideState: 0
     value: 1
   rounded:
-    overrideState: 1
+    overrideState: 0
     value: 0
   mask:
     overrideState: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
     value: 1
   gradingMode:
     overrideState: 0
-    value: 1
+    value: 0
   externalLut:
     overrideState: 0
     value: {fileID: 0}
@@ -165,8 +165,8 @@ MonoBehaviour:
     overrideState: 0
     value: 0
   colorFilter:
-    overrideState: 0
-    value: {r: 1, g: 1, b: 1, a: 1}
+    overrideState: 1
+    value: {r: 0.8207547, g: 0.812283, b: 0.46070665, a: 1}
   hueShift:
     overrideState: 0
     value: 0
@@ -183,13 +183,13 @@ MonoBehaviour:
     overrideState: 0
     value: 0
   mixerRedOutRedIn:
-    overrideState: 0
+    overrideState: 1
     value: 100
   mixerRedOutGreenIn:
-    overrideState: 0
+    overrideState: 1
     value: 0
   mixerRedOutBlueIn:
-    overrideState: 0
+    overrideState: 1
     value: 0
   mixerGreenOutRedIn:
     overrideState: 0
