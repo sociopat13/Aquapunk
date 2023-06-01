@@ -14,6 +14,8 @@ namespace Aquapunk
     public class Mob : Entity
     {
         #region fields
+        public float timeDeath;
+
         public Vector3 startPosition;
 
         private RPGCharacterController rpgCharacterController;
@@ -127,9 +129,15 @@ namespace Aquapunk
             _state = StateEntity.Death;
             print("death");
             GetComponentInChildren<Animator>().Play("Unarmed-Knockdown1");
-            //rpgCharacterController.Lock(true, true, true, 500000000000f, 50000000000000000f);
-            GetComponentInChildren<Animator>().StopPlayback();
+            StartCoroutine(DeathCorrutine());
         }
+
+        protected IEnumerator DeathCorrutine()
+        {
+            yield return new WaitForSeconds(timeDeath);
+
+            Destroy(gameObject);
+        } 
 
         protected virtual void BehaveAtTrigger()
         {

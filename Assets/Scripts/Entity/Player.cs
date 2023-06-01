@@ -195,7 +195,7 @@ namespace Aquapunk
             {
                 SortTrigger();
             }
-            if(_timeAttackCoolDown < 0 && endAttack)
+            if(_timeAttackCoolDown <= 0 && endAttack)
             {
                 Unarmed();
             }
@@ -208,6 +208,7 @@ namespace Aquapunk
 
         private void Start()
         {
+            FindObjectOfType<PlayerUI>().player = this;
             _rigidbody = GetComponent<Rigidbody>();
             FindObjectOfType<CameraModifier>().player = this;
             FindObjectOfType<PlayerUI>().OnAttackAction = () => Attack();

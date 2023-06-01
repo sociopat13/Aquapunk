@@ -9,6 +9,7 @@ namespace Aquapunk
 {
     public class PlayerUI : MonoBehaviour
     {
+        public Player player;
         public TextMeshProUGUI waterCounter;
         public HPBarUI hpbar;
 
@@ -25,13 +26,9 @@ namespace Aquapunk
 
         private void Update()
         {
-            if (isButtonPressed)
+            if (player.switchProcess)
             {
-                OnAttackAction.Invoke();
-            }
-            if (isRangeButtonPressed)
-            {
-                OnRangeAttack.Invoke();
+                OnAttackAction();
             }
         }
 
@@ -57,13 +54,13 @@ namespace Aquapunk
 
         public void OnBeginAttack()
         {
-            isButtonPressed = true;
+
             OnBeginAttackAction.Invoke();
         }
 
+
         public void OnEndAttack()
         {
-            isButtonPressed = false;
             OnEndAttackAction.Invoke();
         }
     }

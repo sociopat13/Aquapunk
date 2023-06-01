@@ -10,7 +10,7 @@ namespace Aquapunk
 {
     public class Entity : MonoBehaviour
     {
-
+        public bool switchProcess;
         protected bool endAttack;
         #region Fields
         //public Canvas canvasWorld;
@@ -134,8 +134,9 @@ namespace Aquapunk
 
         public void Armed()
         {
-            if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
+            //if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
 
+            endAttack = false;
             var doSwitch = false;
 
             // Create a new SwitchWeaponContext with the switch settings.
@@ -165,6 +166,7 @@ namespace Aquapunk
 
             // Perform the weapon switch using the SwitchWeaponContext created earlier.
             if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
+            if (rpgCharacterController.CanEndAction(HandlerTypes.SwitchWeapon)) { switchProcess = true; }
         }
 
         public void EndAttack()
@@ -176,6 +178,7 @@ namespace Aquapunk
 
         public void Unarmed()
         {
+            switchProcess = false;
             if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
 
             var doSwitch = false;
@@ -245,7 +248,8 @@ namespace Aquapunk
 
         public virtual void Attack()
         {
-            if (_timeAttackCoolDown <= 0 && _timeStanCoolDown <= 0)
+            if (_timeAttackCoolDown <= 0 && _timeStanCoolDown <= 0 && (rpgCharacterController.rightWeapon != Weapon.Unarmed
+                || rpgCharacterController.leftWeapon != Weapon.Unarmed))
             {
                 switch (typeAttack)
                 {
@@ -265,8 +269,9 @@ namespace Aquapunk
 
         protected virtual void MelleAttack()
         {
-            rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
+
             endAttack = false;
+            rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
 
             Collider[] enemysAtack = Physics.OverlapSphere(atackPoint.position + _attackOffset, _attackRange, layer);
             // animate
