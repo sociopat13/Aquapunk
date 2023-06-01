@@ -349,7 +349,7 @@ namespace Aquapunk
         protected virtual void ProcessStates()
         {
             if (_state != StateEntity.Idle && _rigidbody.velocity == Vector3.zero
-                && _timeAttackCoolDown <= 0 && _timeStanCoolDown <= 0f)
+                && _timeAttackCoolDown <= 0 && _timeStanCoolDown <= 0f && _state != StateEntity.Death)
             {
                 IdleState();
             }
@@ -407,7 +407,8 @@ namespace Aquapunk
         {
             Idle,
             Move,
-            Sprint
+            Sprint,
+            Death
         }
 
         public enum TypeAttack

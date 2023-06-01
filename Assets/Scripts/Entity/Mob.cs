@@ -7,6 +7,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using RPGCharacterAnims;
 using RPGCharacterAnims.Lookups;
+using RPGCharacterAnims.Actions;
 
 namespace Aquapunk
 {
@@ -122,12 +123,17 @@ namespace Aquapunk
             //    GameObject itemObject = Instantiate(item, transform.position, item.transform.rotation);
             //}
             StopAllCoroutines();
-            base.DeathObject();
+            //base.DeathObject();
+            _state = StateEntity.Death;
+            print("death");
+            GetComponentInChildren<Animator>().Play("Unarmed-Knockdown1");
+            //rpgCharacterController.Lock(true, true, true, 500000000000f, 50000000000000000f);
+            GetComponentInChildren<Animator>().StopPlayback();
         }
 
         protected virtual void BehaveAtTrigger()
         {
-            if (trigger != null && _timeStanCoolDown <= 0 && _timeAttackCoolDown <= 0)
+            if (trigger != null && _timeStanCoolDown <= 0 && _timeAttackCoolDown <= 0 && _state != StateEntity.Death)
             {
                 float distance = (trigger.transform.position - transform.position).magnitude;
                 if (distance <= _attackRange)
