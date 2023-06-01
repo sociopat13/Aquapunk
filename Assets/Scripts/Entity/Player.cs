@@ -103,19 +103,17 @@ namespace Aquapunk
         //}
 
 
-       // public override void Armed()
-       // {
-       //     GetComponent<RPGCharacterMovementController>().walkSpeed = 0;
-       //     GetComponent<RPGCharacterMovementController>().runSpeed = 0;
-       //     base.Attack();
-       // }
-       //
-       // public override void Unarmed()
-       // {
-       //     base.Unarmed();
-       //     GetComponent<RPGCharacterMovementController>().walkSpeed = walkSpeed;
-       //     GetComponent<RPGCharacterMovementController>().runSpeed = runSpeed;
-       // }
+        //public override void Armed()
+        //{
+        //    GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+        //    base.Attack();
+        //}
+        //
+        //public override void Unarmed()
+        //{
+        //    base.Unarmed();
+        //    GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        //}
 
 
         //public void SetStructure(StructureManager structure)
