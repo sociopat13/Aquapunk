@@ -181,7 +181,7 @@ MonoBehaviour:
   _timeForceCoolDown: 0
   _forceCoolDown: 0.3
   _attackOffset: {x: 0, y: 0, z: 0}
-  healthMax: 20
+  healthMax: 150
   healthCurrent: 0
   hpBar: {fileID: 0}
   timeDeath: 1.5
