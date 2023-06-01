@@ -14,6 +14,7 @@ namespace Aquapunk
     public class Mob : Entity
     {
         #region fields
+        private Vector3 deathPos;
         public float timeDeath;
 
         public Vector3 startPosition;
@@ -136,7 +137,11 @@ namespace Aquapunk
         {
             yield return new WaitForSeconds(timeDeath);
 
-            Destroy(gameObject);
+            GetComponent<RPGCharacterController>().animationSpeed = 0;
+            GetComponent<CapsuleCollider>().enabled = false;
+
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+            //Destroy(gameObject);
         } 
 
         protected virtual void BehaveAtTrigger()

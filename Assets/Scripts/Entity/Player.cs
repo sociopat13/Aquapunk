@@ -13,7 +13,8 @@ namespace Aquapunk
     public class Player : Entity
     {
         #region Fields
-
+        public float runSpeed = 1;
+        public float walkSpeed = 0.5f;
         
         private bool useInstant;
 
@@ -102,17 +103,19 @@ namespace Aquapunk
         //}
 
 
-        //public override void Attack()
-        //{
-        //    if (trigger)
-        //    {
-        //        entityMovenent.RotateTo(trigger.transform.position - transform.position, () =>
-        //        {
-        //            base.Attack();
-        //        });
-        //    }
-        //    base.Attack();
-        //}
+       // public override void Armed()
+       // {
+       //     GetComponent<RPGCharacterMovementController>().walkSpeed = 0;
+       //     GetComponent<RPGCharacterMovementController>().runSpeed = 0;
+       //     base.Attack();
+       // }
+       //
+       // public override void Unarmed()
+       // {
+       //     base.Unarmed();
+       //     GetComponent<RPGCharacterMovementController>().walkSpeed = walkSpeed;
+       //     GetComponent<RPGCharacterMovementController>().runSpeed = runSpeed;
+       // }
 
 
         //public void SetStructure(StructureManager structure)

@@ -132,7 +132,7 @@ namespace Aquapunk
             if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
         }
 
-        public void Armed()
+        public virtual void Armed()
         {
             //if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
 
@@ -176,7 +176,7 @@ namespace Aquapunk
 
 
 
-        public void Unarmed()
+        public virtual void Unarmed()
         {
             switchProcess = false;
             if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
