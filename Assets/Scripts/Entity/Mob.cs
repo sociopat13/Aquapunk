@@ -141,6 +141,8 @@ namespace Aquapunk
             GetComponent<CapsuleCollider>().enabled = false;
 
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+
+            this.enabled = false;
             //Destroy(gameObject);
         } 
 

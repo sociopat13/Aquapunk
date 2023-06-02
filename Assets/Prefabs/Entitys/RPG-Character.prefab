@@ -6189,13 +6189,14 @@ MonoBehaviour:
   _projetileSpawnOffser: {x: 0, y: 0, z: 0}
   flameEffect: {fileID: 0}
   _typeAttack: 1
+  _melleHitAnimTime: 0.35
   _forceRangeMultiplyRange: 10
   _forceRangeMultiplyMelee: 100
   _forceRangeMultiplyTick: 50
   _attackRange: 2
-  _attackDamage: 50
+  _attackDamage: 75
   _timeAttackCoolDown: 0
-  _attackCollDown: 1
+  _attackCollDown: 0.75
   _timeStanCoolDown: 0
   _stanCollDown: 0.3
   _timeForceCoolDown: 0

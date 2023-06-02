@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -41,7 +43,7 @@ namespace Aquapunk
 
         [SerializeField]
         protected TypeAttack _typeAttack;
-
+        [SerializeField]protected float _melleHitAnimTime = 1.1f;
         [SerializeField] protected float _forceRangeMultiplyRange = 10, 
             _forceRangeMultiplyMelee = 100, _forceRangeMultiplyTick = 50;
         [SerializeField] protected float _attackRange = 1.5f, _attackDamage = 20f;
@@ -67,6 +69,14 @@ namespace Aquapunk
         public float healthCurrent;
 
         public HPBar hpBar;
+
+        public float TimeAttackCoolDown { 
+            get 
+            {
+                return _timeAttackCoolDown;
+            } 
+            private set {} 
+        }
         #endregion
         #region Methods
         #region Class Methods
@@ -227,7 +237,6 @@ namespace Aquapunk
                             break;
                         default:
                             _timeStanCoolDown = _stanCollDown;
-                            //rpgCharacterController.StartAction(HandlerTypes.GetHit, new HitContext());
                             break;
                     }
                 }
@@ -248,9 +257,9 @@ namespace Aquapunk
 
         public virtual void Attack()
         {
-            if (_timeAttackCoolDown <= 0 && _timeStanCoolDown <= 0 && (rpgCharacterController.rightWeapon != Weapon.Unarmed
-                || rpgCharacterController.leftWeapon != Weapon.Unarmed))
+            if (_timeAttackCoolDown <= 0 && _timeStanCoolDown <= 0)
             {
+                _timeAttackCoolDown = _attackCollDown;
                 switch (typeAttack)
                 {
                     case TypeAttack.Melee:
@@ -263,7 +272,6 @@ namespace Aquapunk
                         RangeAttack();
                         break;
                 }
-                _timeAttackCoolDown = _attackCollDown;
             }
         }
 
@@ -272,6 +280,15 @@ namespace Aquapunk
 
             endAttack = false;
             rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
+
+
+            StartCoroutine(MelleHit());
+        }
+
+
+        private IEnumerator MelleHit()
+        {
+            yield return new WaitForSeconds(_melleHitAnimTime);
 
             Collider[] enemysAtack = Physics.OverlapSphere(atackPoint.position + _attackOffset, _attackRange, layer);
             // animate
@@ -296,7 +313,7 @@ namespace Aquapunk
                 RangeProjectile projectileObj = Instantiate(projectile, direction.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0,0,0,0)).GetComponent<RangeProjectile>();
                 direction.y = 0;
                 projectileObj.direction = direction + 
-                    new Vector3(Random.Range(0, projectileDeflection), Random.Range(0, projectileDeflection),Random.Range(0, projectileDeflection));
+                    new Vector3(UnityEngine.Random.Range(0, projectileDeflection), UnityEngine.Random.Range(0, projectileDeflection), UnityEngine.Random.Range(0, projectileDeflection));
                 projectileObj.owner = this;
                 //_rigidbody.AddForce((transform.position - trigger.transform.position).normalized * recoil);
             }
