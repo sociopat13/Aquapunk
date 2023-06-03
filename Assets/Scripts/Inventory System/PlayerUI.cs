@@ -21,48 +21,48 @@ namespace Aquapunk
         public Action OnBeginRengeAttack;
         public Action OnRangeAttack;
 
-        private bool isButtonPressed = false;
-        private bool isRangeButtonPressed = false;
+        private int shotCount;
+        private bool isRangeButtonPressed;
+        private bool isMelleButtonPressed;
 
         private void Update()
         {
-            if (player.switchProcess)
+            if (player.switchProcess && player._timeAttackCoolDown <= 0)
             {
                 OnAttackAction();
+                shotCount++;
+            }
+            if(shotCount >= 3 && !isRangeButtonPressed && !isMelleButtonPressed)
+            {
+                OnEndAttackAction.Invoke();
             }
         }
 
         public void OnBeginRangeAttack()
         {
             isRangeButtonPressed = true;
-
+            shotCount = 0;
             OnBeginRengeAttack.Invoke();
         }
 
         public void OnEndRangeAttack()
         {
             isRangeButtonPressed = false;
-            OnEndAttackAction.Invoke();
-            //StartCoroutine(EndRangeAttack());
-        }
-
-        private IEnumerator EndRangeAttack()
-        {
-            yield return new WaitForSeconds(2f);
-            OnEndAttackAction.Invoke();
         }
 
         public void OnBeginAttack()
         {
-
             OnBeginAttackAction.Invoke();
+
+            isMelleButtonPressed = true;
         }
 
 
         public void OnEndAttack()
         {
-            OnEndAttackAction.Invoke();
+            isMelleButtonPressed = false;
         }
+
     }
 }
 

@@ -202,10 +202,10 @@ namespace Aquapunk
             }
         }
 
-        public void RangeAttackNew()
-        {
-            rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
-        }
+        //public void RangeAttackNew()
+        //{
+        //    rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
+        //}
 
         private void Start()
         {
@@ -215,7 +215,7 @@ namespace Aquapunk
             FindObjectOfType<PlayerUI>().OnAttackAction = () => Attack();
             FindObjectOfType<PlayerUI>().OnBeginAttackAction = () => Armed();
             FindObjectOfType<PlayerUI>().OnEndAttackAction = () => EndAttack();
-            FindObjectOfType<PlayerUI>().OnRangeAttack = () => RangeAttackNew();
+            FindObjectOfType<PlayerUI>().OnRangeAttack = () => RangeArmed();
             FindObjectOfType<PlayerUI>().OnBeginRengeAttack = () => RangeArmed();
             camera = FindObjectOfType<CinemachineVirtualCamera>();
             camera.Follow = gameObject.transform;

@@ -7,6 +7,7 @@ using UnityEngine;
 using RPGCharacterAnims;
 using RPGCharacterAnims.Actions;
 using RPGCharacterAnims.Lookups;
+using UnityEngine.InputSystem.OnScreen;
 
 namespace Aquapunk
 {
@@ -47,9 +48,10 @@ namespace Aquapunk
         [SerializeField] protected float _forceRangeMultiplyRange = 10, 
             _forceRangeMultiplyMelee = 100, _forceRangeMultiplyTick = 50;
         [SerializeField] protected float _attackRange = 1.5f, _attackDamage = 20f;
-        [SerializeField] protected float _timeAttackCoolDown, _attackCollDown = 0.5f, 
+        public float _timeAttackCoolDown, _attackCollDown = 0.5f, 
             _timeStanCoolDown, _stanCollDown = 0.3f,
-            _timeForceCoolDown, _forceCoolDown = 0.3f;
+            _timeForceCoolDown, _forceCoolDown = 0.3f,
+            _timeProjectileCoolDown, _projectileCoolDown = 0.1f;
         [SerializeField] protected Vector3 _attackOffset;
 
         [Header("Level system")]
@@ -111,8 +113,16 @@ namespace Aquapunk
         {
             if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
 
+
+
+            FindAnyObjectByType<OnScreenStick>().enabled = false;
+            _rigidbody.velocity = Vector3.zero;
+            GetComponent<RPGCharacterController>().Lock(true, false, true, 1f, 1f);
+            GetComponent<RPGCharacterMovementController>().LockMovement();
+            endAttack = false;
             var doSwitch = false;
 
+            _typeAttack = TypeAttack.Range;
             // Create a new SwitchWeaponContext with the switch settings.
             var switchWeaponContext = new SwitchWeaponContext();
 
@@ -140,6 +150,9 @@ namespace Aquapunk
 
             // Perform the weapon switch using the SwitchWeaponContext created earlier.
             if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
+            if (rpgCharacterController.CanEndAction(HandlerTypes.SwitchWeapon)) { 
+                switchProcess = true;
+            }
         }
 
         public virtual void Armed()
@@ -149,6 +162,11 @@ namespace Aquapunk
             endAttack = false;
             var doSwitch = false;
 
+            FindAnyObjectByType<OnScreenStick>().enabled = false;
+            _rigidbody.velocity = Vector3.zero;
+            GetComponent<RPGCharacterController>().Lock(true, false, true, 1f, 1f);
+            GetComponent<RPGCharacterMovementController>().LockMovement();
+            _typeAttack = TypeAttack.Melee;
             // Create a new SwitchWeaponContext with the switch settings.
             var switchWeaponContext = new SwitchWeaponContext();
 
@@ -177,6 +195,7 @@ namespace Aquapunk
             // Perform the weapon switch using the SwitchWeaponContext created earlier.
             if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
             if (rpgCharacterController.CanEndAction(HandlerTypes.SwitchWeapon)) { switchProcess = true; }
+
         }
 
         public void EndAttack()
@@ -188,6 +207,8 @@ namespace Aquapunk
 
         public virtual void Unarmed()
         {
+            FindAnyObjectByType<OnScreenStick>().enabled = true;
+            GetComponent<RPGCharacterMovementController>()!.UnlockMovement();
             switchProcess = false;
             if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
 
@@ -278,7 +299,7 @@ namespace Aquapunk
         protected virtual void MelleAttack()
         {
 
-            endAttack = false;
+            
             rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
 
 
@@ -307,16 +328,21 @@ namespace Aquapunk
 
         protected virtual void RangeAttack()
         {
+            rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
+
             if (trigger)
             {
                 Vector3 direction = trigger.transform.position - transform.position;
-                RangeProjectile projectileObj = Instantiate(projectile, direction.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0,0,0,0)).GetComponent<RangeProjectile>();
-                direction.y = 0;
-                projectileObj.direction = direction + 
-                    new Vector3(UnityEngine.Random.Range(0, projectileDeflection), UnityEngine.Random.Range(0, projectileDeflection), UnityEngine.Random.Range(0, projectileDeflection));
-                projectileObj.owner = this;
-                //_rigidbody.AddForce((transform.position - trigger.transform.position).normalized * recoil);
+                rpgCharacterController.StartAction(HandlerTypes.Navigation, direction.normalized);
             }
+
+            //Vector3 direction = trigger.transform.position - transform.position;
+            RangeProjectile projectileObj = Instantiate(projectile, transform.forward.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0,0,0,0)).GetComponent<RangeProjectile>();
+            //direction.y = 0;
+            projectileObj.direction = transform.forward + 
+                new Vector3(UnityEngine.Random.Range(0, projectileDeflection), UnityEngine.Random.Range(0, projectileDeflection), UnityEngine.Random.Range(0, projectileDeflection));
+            projectileObj.owner = this;
+            //_rigidbody.AddForce((transform.position - trigger.transform.position).normalized * recoil);
         }
 
         protected virtual void RangeTickAttack()
