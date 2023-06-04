@@ -181,6 +181,8 @@ MonoBehaviour:
   _stanCollDown: 0.3
   _timeForceCoolDown: 0
   _forceCoolDown: 0.3
+  _timeProjectileCoolDown: 0
+  _projectileCoolDown: 0.1
   _attackOffset: {x: 0, y: 0, z: 0}
   healthMax: 150
   healthCurrent: 0
@@ -2136,6 +2138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f93422e3e033e4aa4d80c9c8d0d939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entity: {fileID: 2582887879798187118}
   leftHandObj: {fileID: 3549733796429597677}
   attachLeft: {fileID: 0}
   canBeUsed: 1
