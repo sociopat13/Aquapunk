@@ -109,16 +109,10 @@ namespace Aquapunk
         }
 
 
-        public void RangeArmed()
+        public virtual void RangeArmed()
         {
             if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
 
-
-
-            FindAnyObjectByType<OnScreenStick>().enabled = false;
-            _rigidbody.velocity = Vector3.zero;
-            GetComponent<RPGCharacterController>().Lock(true, false, true, 1f, 1f);
-            GetComponent<RPGCharacterMovementController>().LockMovement();
             endAttack = false;
             var doSwitch = false;
 
@@ -162,10 +156,7 @@ namespace Aquapunk
             endAttack = false;
             var doSwitch = false;
 
-            FindAnyObjectByType<OnScreenStick>().enabled = false;
-            _rigidbody.velocity = Vector3.zero;
-            GetComponent<RPGCharacterController>().Lock(true, false, true, 1f, 1f);
-            GetComponent<RPGCharacterMovementController>().LockMovement();
+            
             _typeAttack = TypeAttack.Melee;
             // Create a new SwitchWeaponContext with the switch settings.
             var switchWeaponContext = new SwitchWeaponContext();
@@ -207,8 +198,6 @@ namespace Aquapunk
 
         public virtual void Unarmed()
         {
-            FindAnyObjectByType<OnScreenStick>().enabled = true;
-            GetComponent<RPGCharacterMovementController>()!.UnlockMovement();
             switchProcess = false;
             if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
 
@@ -240,36 +229,6 @@ namespace Aquapunk
         {
             healthCurrent -= damage;
 
-            if(_timeForceCoolDown <= 0)
-            {
-                _rigidbody.velocity = Vector3.zero;
-
-                float forceRangeMultiply = _forceRangeMultiplyMelee;
-
-                if (entity)
-                {
-                    switch (entity.typeAttack)
-                    {
-                        case TypeAttack.Range:
-                            forceRangeMultiply = _forceRangeMultiplyRange;
-                            break;
-                        case TypeAttack.RangeTick:
-                            forceRangeMultiply = _forceRangeMultiplyTick;
-                            break;
-                        default:
-                            _timeStanCoolDown = _stanCollDown;
-                            break;
-                    }
-                }
-
-                //_rigidbody.AddForce((transform.position - entity.transform.position).normalized * forceRangeMultiply);
-                _timeForceCoolDown = _forceCoolDown;
-            }
-
-            if (hpBar)
-            {
-                hpBar.SetHP(healthCurrent / healthMax);
-            }
             if (healthCurrent <= 0)
             {
                 DeathObject();
@@ -280,16 +239,17 @@ namespace Aquapunk
         {
             if (_timeAttackCoolDown <= 0 && _timeStanCoolDown <= 0)
             {
-                _timeAttackCoolDown = _attackCollDown;
                 switch (typeAttack)
                 {
                     case TypeAttack.Melee:
+                        _attackCollDown = 1.3f;
                         MelleAttack();
                         break;
                     case TypeAttack.RangeTick:
                         RangeTickAttack();
                         break;
                     case TypeAttack.Range:
+                        _attackCollDown = 0.4f;
                         RangeAttack();
                         break;
                 }
@@ -298,19 +258,16 @@ namespace Aquapunk
 
         protected virtual void MelleAttack()
         {
-
-            
-            rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
-
-
-            StartCoroutine(MelleHit());
+            if(_timeAttackCoolDown <= 0)
+            {
+                _timeAttackCoolDown = _attackCollDown;
+                rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
+            }
         }
 
 
-        private IEnumerator MelleHit()
+        public void MelleHit()
         {
-            yield return new WaitForSeconds(_melleHitAnimTime);
-
             Collider[] enemysAtack = Physics.OverlapSphere(atackPoint.position + _attackOffset, _attackRange, layer);
             // animate
             // damage
@@ -328,21 +285,26 @@ namespace Aquapunk
 
         protected virtual void RangeAttack()
         {
-            rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
-
-            if (trigger)
+            if(_timeAttackCoolDown <= 0)
             {
-                Vector3 direction = trigger.transform.position - transform.position;
-                rpgCharacterController.StartAction(HandlerTypes.Navigation, direction.normalized);
-            }
+                rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
 
-            //Vector3 direction = trigger.transform.position - transform.position;
-            RangeProjectile projectileObj = Instantiate(projectile, transform.forward.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0,0,0,0)).GetComponent<RangeProjectile>();
-            //direction.y = 0;
-            projectileObj.direction = transform.forward + 
-                new Vector3(UnityEngine.Random.Range(0, projectileDeflection), UnityEngine.Random.Range(0, projectileDeflection), UnityEngine.Random.Range(0, projectileDeflection));
-            projectileObj.owner = this;
-            //_rigidbody.AddForce((transform.position - trigger.transform.position).normalized * recoil);
+                if (trigger)
+                {
+                    Vector3 direction = trigger.transform.position - transform.position;
+                    rpgCharacterController.StartAction(HandlerTypes.Navigation, direction.normalized);
+                }
+
+                //Vector3 direction = trigger.transform.position - transform.position;
+                RangeProjectile projectileObj = Instantiate(projectile, transform.forward.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0, 0, 0, 0)).GetComponent<RangeProjectile>();
+                //direction.y = 0;
+                projectileObj.direction = transform.forward +
+                    new Vector3(UnityEngine.Random.Range(0, projectileDeflection), UnityEngine.Random.Range(0, projectileDeflection), UnityEngine.Random.Range(0, projectileDeflection));
+                projectileObj.owner = this;
+                //_rigidbody.AddForce((transform.position - trigger.transform.position).normalized * recoil);
+                _timeAttackCoolDown = _attackCollDown;
+            }
+            
         }
 
         protected virtual void RangeTickAttack()

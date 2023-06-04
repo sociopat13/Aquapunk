@@ -1915,6 +1915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f93422e3e033e4aa4d80c9c8d0d939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entity: {fileID: 6815738945491980051}
   leftHandObj: {fileID: 0}
   attachLeft: {fileID: 0}
   canBeUsed: 1

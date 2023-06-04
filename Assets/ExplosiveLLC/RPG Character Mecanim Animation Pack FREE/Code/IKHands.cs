@@ -2,11 +2,13 @@
 using System.Collections;
 using RPGCharacterAnims.Lookups;
 using UnityEngine;
+using Aquapunk;
 
 namespace RPGCharacterAnims
 {
     public class IKHands : MonoBehaviour
     {
+		public Entity entity;
         private Animator animator;
         private RPGCharacterWeaponController rpgCharacterWeaponController;
         public Transform leftHandObj;
@@ -73,9 +75,16 @@ namespace RPGCharacterAnims
 			}
         }
 
+
+		public void Hit()
+        {
+			entity.MelleHit();
+        }
+
 		/// <summary>
 		/// Pauses IK while character uses Left Hand during an animation.
 		/// </summary>
+
 		public void SetIKPause(float pauseTime)
 		{
 			if (!canBeUsed || !isUsed) { return; }

@@ -13,10 +13,7 @@ namespace RPGCharacterAnims
 
         public static readonly TwoHandedSwordAttack[] TwoHandedSwordAttacks =
         {
-            TwoHandedSwordAttack.Attack1, TwoHandedSwordAttack.Attack2, TwoHandedSwordAttack.Attack3,
-            TwoHandedSwordAttack.Attack4, TwoHandedSwordAttack.Attack5, TwoHandedSwordAttack.Attack6,
-            TwoHandedSwordAttack.Attack7, TwoHandedSwordAttack.Attack8, TwoHandedSwordAttack.Attack9,
-            TwoHandedSwordAttack.Attack10, TwoHandedSwordAttack.Attack11
+            TwoHandedSwordAttack.Attack1
         };
 
         public static readonly RangeAttack[] rangeAttacks =

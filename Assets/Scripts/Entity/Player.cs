@@ -7,6 +7,7 @@ using UnityEngine;
 using RPGCharacterAnims;
 using RPGCharacterAnims.Actions;
 using RPGCharacterAnims.Lookups;
+using UnityEngine.InputSystem.OnScreen;
 
 namespace Aquapunk
 {
@@ -102,12 +103,32 @@ namespace Aquapunk
         //    }
         //}
 
+        public override void Unarmed()
+        {
+            FindAnyObjectByType<OnScreenStick>().enabled = true;
+            GetComponent<RPGCharacterMovementController>()!.UnlockMovement();
+            base.Unarmed();
+        }
 
-        //public override void Armed()
-        //{
-        //    GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
-        //    base.Attack();
-        //}
+        public override void Armed()
+        {
+            if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
+            FindAnyObjectByType<OnScreenStick>().enabled = false;
+            _rigidbody.velocity = Vector3.zero;
+            GetComponent<RPGCharacterController>().Lock(true, false, true, 1f, 1f);
+            GetComponent<RPGCharacterMovementController>().LockMovement();
+            base.Armed();
+        }
+
+        public override void RangeArmed()
+        {
+            if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
+            FindAnyObjectByType<OnScreenStick>().enabled = false;
+            _rigidbody.velocity = Vector3.zero;
+            GetComponent<RPGCharacterController>().Lock(true, false, true, 1f, 1f);
+            GetComponent<RPGCharacterMovementController>().LockMovement();
+            base.RangeArmed();
+        }
         //
         //public override void Unarmed()
         //{
@@ -196,7 +217,7 @@ namespace Aquapunk
             {
                 SortTrigger();
             }
-            if(_timeAttackCoolDown <= 0 && endAttack)
+            if(endAttack)
             {
                 Unarmed();
             }
