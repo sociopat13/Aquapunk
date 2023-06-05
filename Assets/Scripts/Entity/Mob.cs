@@ -14,9 +14,10 @@ namespace Aquapunk
     public class Mob : Entity
     {
         #region fields
+        public Vector3 offset;
         private Vector3 deathPos;
         public float timeDeath;
-
+        public ParticleSystem bloodParticle;
         public Vector3 startPosition;
 
         private RPGCharacterController rpgCharacterController;
@@ -103,6 +104,11 @@ namespace Aquapunk
                 if (entity != null)
                 {
                     trigger = entity.gameObject;
+                }
+                if (entity.typeAttack == TypeAttack.Range)
+                {
+                    
+                    Instantiate(bloodParticle, transform.position + offset, transform.rotation);
                 }
             }
             

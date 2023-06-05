@@ -6078,7 +6078,9 @@ MonoBehaviour:
   healthMax: 150
   healthCurrent: 0
   hpBar: {fileID: 0}
+  offset: {x: 0, y: 0.9, z: 0}
   timeDeath: 0.9
+  bloodParticle: {fileID: 19891620, guid: 67a02ea392505844bab240611d904cc0, type: 3}
   startPosition: {x: 0, y: 0, z: 0}
   dropItems:
   - {fileID: 1129776882994900, guid: 15bac5fb123c86746913ce62c593a2ff, type: 3}

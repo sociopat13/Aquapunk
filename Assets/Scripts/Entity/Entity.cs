@@ -8,11 +8,13 @@ using RPGCharacterAnims;
 using RPGCharacterAnims.Actions;
 using RPGCharacterAnims.Lookups;
 using UnityEngine.InputSystem.OnScreen;
+using DG.Tweening;
 
 namespace Aquapunk
 {
     public class Entity : MonoBehaviour
     {
+        public GameObject projectileTrale;
         public bool switchProcess;
         protected bool endAttack;
         #region Fields
@@ -284,6 +286,13 @@ namespace Aquapunk
             }
         }
 
+
+        public void RotateTo(Vector3 direction)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.DORotateQuaternion(Quaternion.Lerp(transform.rotation, lookRotation, 1), 0.1f);
+        }
+
         protected virtual void RangeAttack()
         {
             if(_timeAttackCoolDown <= 0)
@@ -301,11 +310,14 @@ namespace Aquapunk
                 if (trigger)
                 {
                     Vector3 direction = trigger.transform.position - transform.position;
-                    rpgCharacterController.StartAction(HandlerTypes.Navigation, direction.normalized);
+                    RotateTo(direction);
+                    //rpgCharacterController.StartAction(HandlerTypes.Navigation, direction.normalized);
                 }
 
                 RangeProjectile projectileObj = Instantiate(projectile, transform.forward.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0, 0, 0, 0)).GetComponent<RangeProjectile>();
-                
+                ProjectileTrack projectileTraleObj = Instantiate(projectileTrale, transform.position + _projetileSpawnOffser, transform.rotation).GetComponent<ProjectileTrack>();
+                projectileTraleObj.target = projectileObj.transform;
+
                 projectileObj.direction = transform.forward +
                     new Vector3(
                         UnityEngine.Random.Range(0, projectileDeflection), 
