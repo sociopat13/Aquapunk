@@ -20,5 +20,9 @@ public class ProjectileTrack : MonoBehaviour
             // Перемещаем объект
             transform.position = target.position+offset;
         }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

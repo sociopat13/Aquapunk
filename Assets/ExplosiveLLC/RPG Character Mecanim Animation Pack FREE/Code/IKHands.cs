@@ -8,6 +8,8 @@ namespace RPGCharacterAnims
 {
     public class IKHands : MonoBehaviour
     {
+
+		public GameObject moveTrale;
 		public Entity entity;
         private Animator animator;
         private RPGCharacterWeaponController rpgCharacterWeaponController;
@@ -43,6 +45,13 @@ namespace RPGCharacterAnims
 		/// <summary>
 		/// Smoothly blend IK on and off so there's no snapping into position.
 		/// </summary>
+		/// 
+
+		public void MovePatr()
+        {
+			Instantiate(moveTrale, transform.position, transform.rotation);
+        }
+
 		public void BlendIK(bool blendOn, float delay, float timeToBlend, Weapon weapon)
 		{
             // If using 2 handed weapon.

@@ -14,7 +14,6 @@ namespace Aquapunk
 {
     public class Entity : MonoBehaviour
     {
-        public GameObject moveTrale;
         public GameObject projectileTrale;
         public bool switchProcess;
         protected bool endAttack;

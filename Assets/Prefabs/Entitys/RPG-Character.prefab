@@ -6176,6 +6176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f24fc8f6453f12d4ea8e6efc13db3c05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveTrale: {fileID: 1320275964731592, guid: 0624c6f5a57851d48ba74b4f86ec13d7, type: 3}
+  projectileTrale: {fileID: 193226, guid: ed28e53c93fc7d2449d7c68bb8409223, type: 3}
   switchProcess: 0
   offsetHPBar: {x: 0, y: 0, z: 0}
   _state: 0
@@ -6186,6 +6188,8 @@ MonoBehaviour:
   atackPoint: {fileID: 6770558966651022180}
   enemys: []
   notBurn: 0
+  projectileMaxDeflection: 0
+  projectileMinDeflection: 0
   projectileDeflection: 0
   recoil: 0
   projectile: {fileID: 4774039754648382880, guid: 06b94fa49919ed94caf13ee55d95d804, type: 3}
@@ -6214,6 +6218,7 @@ MonoBehaviour:
   walkSpeed: 0.5
   camera: {fileID: 0}
   offsetCamera: {x: 0, y: 0, z: 0}
+  textWaterCounter: {fileID: 0}
 --- !u!1 &9193563239229574714
 GameObject:
   m_ObjectHideFlags: 0
