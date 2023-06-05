@@ -420350,10 +420350,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: RPG-Character-NPC
       objectReference: {fileID: 0}
-    - target: {fileID: 2582887879798187117, guid: cd41df4b3719f124090b28e43facb468, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
     - target: {fileID: 2582887879798683725, guid: cd41df4b3719f124090b28e43facb468, type: 3}
       propertyPath: m_RootOrder
       value: 0
