@@ -81,6 +81,20 @@ namespace RPGCharacterAnims
 			entity.MelleHit();
         }
 
+		public void Death()
+        {
+
+			transform.parent.GetComponent<RPGCharacterController>().EndAction(HandlerTypes.Navigation);
+			transform.parent.GetComponent<RPGCharacterController>().EndAction(HandlerTypes.Move);
+			transform.parent.GetComponent<CapsuleCollider>().enabled = false;
+
+			transform.parent.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+			transform.parent.GetComponent<RPGCharacterMovementController>().LockMovement();
+			transform.parent.GetComponent<RPGCharacterController>().Lock(true, true, true, 0.5f, 9999999999);
+
+			transform.parent.GetComponent<Mob>().enabled = false;
+		}
+
 		/// <summary>
 		/// Pauses IK while character uses Left Hand during an animation.
 		/// </summary>

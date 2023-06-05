@@ -49,7 +49,7 @@ namespace Aquapunk
         public IEnumerator TerritoryPatrol()
         {
             // Move to a random point if not attacking or stunned
-            while (isPatrolling)
+            while (isPatrolling && _state != StateEntity.Death)
             {
                 if (_timeStanCoolDown <= 0 && _timeAttackCoolDown <= 0)
                 {
@@ -92,11 +92,20 @@ namespace Aquapunk
 
         public override void setDamage(float damage, Entity entity)
         {
-            base.setDamage(damage, entity);
-            if(entity != null)
+            if(_state != StateEntity.Death)
             {
-                trigger = entity.gameObject;
+                base.setDamage(damage, entity);
+                if(healthCurrent > 0)
+                {
+
+                    GetComponentInChildren<Animator>().Play("Unarmed-GetHit-F1");
+                }
+                if (entity != null)
+                {
+                    trigger = entity.gameObject;
+                }
             }
+            
         }
 
         public override void SortTrigger()
@@ -125,12 +134,14 @@ namespace Aquapunk
             //{
             //    GameObject itemObject = Instantiate(item, transform.position, item.transform.rotation);
             //}
-            StopAllCoroutines();
+            //StopAllCoroutines();
+            StopPatrol();
             //base.DeathObject();
             _state = StateEntity.Death;
             print("death");
             GetComponentInChildren<Animator>().Play("Unarmed-Knockdown1");
-            StartCoroutine(DeathCorrutine());
+
+            //StartCoroutine(DeathCorrutine());
         }
 
         protected IEnumerator DeathCorrutine()
@@ -138,11 +149,9 @@ namespace Aquapunk
             yield return new WaitForSeconds(timeDeath);
 
             GetComponent<RPGCharacterController>().animationSpeed = 0;
-            GetComponent<CapsuleCollider>().enabled = false;
 
-            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+            GetComponent<RPGCharacterController>().enabled =false;
 
-            this.enabled = false;
             //Destroy(gameObject);
         } 
 

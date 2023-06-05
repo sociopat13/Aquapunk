@@ -16,6 +16,7 @@ namespace Aquapunk
         public Action OnAttackAction;
         public Action OnBeginAttackAction;
 
+        public Action OnEndRangeAttackAction;
         public Action OnEndAttackAction;
 
         public Action OnBeginRengeAttack;
@@ -32,7 +33,7 @@ namespace Aquapunk
                 OnAttackAction();
                 shotCount++;
             }
-            if(shotCount >= 3 && !isRangeButtonPressed && !isMelleButtonPressed)
+            if(shotCount >= 3 && !isRangeButtonPressed)
             {
                 OnEndAttackAction.Invoke();
             }
@@ -60,7 +61,7 @@ namespace Aquapunk
 
         public void OnEndAttack()
         {
-            isMelleButtonPressed = false;
+            OnEndAttackAction.Invoke();
         }
 
     }
