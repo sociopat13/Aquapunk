@@ -128,7 +128,7 @@ namespace RPGCharacterAnims.Actions
 
 			// If Instant Switch.
 			if (context.type == "instant") {
-				Debug.Log("Instant Switch");
+				//Debug.Log("Instant Switch");
 				if (changeLeft && changeRight) { weaponController.InstantWeaponSwitch(toRightWeapon); }
 				else if (changeLeft) { weaponController.InstantWeaponSwitch(toLeftWeapon); }
 				else if (changeRight) { weaponController.InstantWeaponSwitch(toRightWeapon); }

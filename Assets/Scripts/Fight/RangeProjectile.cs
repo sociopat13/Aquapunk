@@ -23,14 +23,15 @@ namespace Aquapunk
             Destroy(gameObject);
         }
 
-        private void OnTriggerEnter(Collider other)
+
+        private void OnCollisionEnter(Collision collision)
         {
-            if (other.gameObject.GetComponent<Entity>())
+            print("collision: " + collision.gameObject.name);
+            if (collision.gameObject.GetComponent<Entity>())
             {
-                other.gameObject.GetComponent<Entity>().setDamage(_damage, owner);
-                print("projectile damage");
-                DeathPrijectile();
+                collision.gameObject.GetComponent<Entity>().setDamage(_damage, owner);
             }
+            DeathPrijectile();
         }
 
         private void FixedUpdate()

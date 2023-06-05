@@ -185,6 +185,7 @@ namespace Aquapunk
 
             // Perform the weapon switch using the SwitchWeaponContext created earlier.
             if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
+
             if (rpgCharacterController.CanEndAction(HandlerTypes.SwitchWeapon)) { switchProcess = true; }
 
         }
@@ -276,9 +277,7 @@ namespace Aquapunk
                 if (enemy.gameObject != gameObject && !enemy.isTrigger
                     && _attackRange > (enemy.transform.position - transform.position).magnitude)
                 {
-                    print((enemy.transform.position - transform.position).magnitude);
                     enemy.GetComponent<Entity>().setDamage(_attackDamage, this);
-                    print(enemy.name);
                 }
             }
         }
@@ -288,18 +287,22 @@ namespace Aquapunk
             if(_timeAttackCoolDown <= 0)
             {
                 rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
-
+                Vector3 direction = transform.forward;
                 if (trigger)
                 {
-                    Vector3 direction = trigger.transform.position - transform.position;
+                    direction = trigger.transform.position - transform.position;
+                    print(transform.position);
+                    print(direction);
                     rpgCharacterController.StartAction(HandlerTypes.Navigation, direction.normalized);
                 }
 
-                //Vector3 direction = trigger.transform.position - transform.position;
                 RangeProjectile projectileObj = Instantiate(projectile, transform.forward.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0, 0, 0, 0)).GetComponent<RangeProjectile>();
-                //direction.y = 0;
-                projectileObj.direction = transform.forward +
-                    new Vector3(UnityEngine.Random.Range(0, projectileDeflection), UnityEngine.Random.Range(0, projectileDeflection), UnityEngine.Random.Range(0, projectileDeflection));
+                direction.y = 0;
+                projectileObj.direction = direction +
+                    new Vector3(
+                        UnityEngine.Random.Range(0, projectileDeflection), 
+                        UnityEngine.Random.Range(0, projectileDeflection), 
+                        UnityEngine.Random.Range(0, projectileDeflection));
                 projectileObj.owner = this;
                 //_rigidbody.AddForce((transform.position - trigger.transform.position).normalized * recoil);
                 _timeAttackCoolDown = _attackCollDown;
