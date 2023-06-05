@@ -163,6 +163,8 @@ MonoBehaviour:
   atackPoint: {fileID: 2582887879798683725}
   enemys: []
   notBurn: 0
+  projectileMaxDeflection: 0
+  projectileMinDeflection: 0
   projectileDeflection: 0
   recoil: 0
   projectile: {fileID: 0}
@@ -189,6 +191,8 @@ MonoBehaviour:
   hpBar: {fileID: 0}
   timeDeath: 0.9
   startPosition: {x: 0, y: 0, z: 0}
+  dropItems:
+  - {fileID: 1129776882994900, guid: 15bac5fb123c86746913ce62c593a2ff, type: 3}
   isPatrolling: 1
   agreed: 1
   radiusPatrol: 5

@@ -8,6 +8,7 @@ namespace Aquapunk
     {
         #region Fields
         public Item item;
+        public float coolDown = 0.3f;
         #endregion
         #region Methods
         #region ClassMethods
@@ -23,7 +24,17 @@ namespace Aquapunk
         #region UnityMethods
         private void OnTriggerEnter(Collider other)
         {
-            PickUpItem(other.GetComponent<Player>());
+            if(coolDown <= 0)
+            {
+                PickUpItem(other.GetComponent<Player>());
+            }
+        }
+        private void Update()
+        {
+            if(coolDown >= 0)
+            {
+                coolDown -= Time.deltaTime;
+            }
         }
         #endregion
         #endregion

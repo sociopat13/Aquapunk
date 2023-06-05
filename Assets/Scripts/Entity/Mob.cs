@@ -22,7 +22,7 @@ namespace Aquapunk
         private RPGCharacterController rpgCharacterController;
         private RPGCharacterNavigationController rpgNavigationController;
 
-        //public List<GameObject> dropItems;
+        public List<GameObject> dropItems;
 
         public bool isPatrolling = true;
         public bool agreed = true;
@@ -130,10 +130,12 @@ namespace Aquapunk
 
         protected override void DeathObject()
         {
-            //foreach(GameObject item in dropItems)
-            //{
-            //    GameObject itemObject = Instantiate(item, transform.position, item.transform.rotation);
-            //}
+            foreach(GameObject item in dropItems)
+            {
+                Vector3 spawnPoint = transform.position;
+                spawnPoint.y = item.transform.position.y;
+                GameObject itemObject = Instantiate(item, spawnPoint, item.transform.rotation);
+            }
             //StopAllCoroutines();
             StopPatrol();
             //base.DeathObject();
