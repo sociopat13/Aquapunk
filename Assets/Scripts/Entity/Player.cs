@@ -221,6 +221,10 @@ namespace Aquapunk
             {
                 Unarmed();
             }
+            if(_rigidbody.velocity.magnitude > 0.1f)
+            {
+                Instantiate(moveTrale, transform.position, transform.rotation);
+            }
         }
 
         //public void RangeAttackNew()
