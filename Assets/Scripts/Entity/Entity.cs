@@ -32,6 +32,8 @@ namespace Aquapunk
 
         public bool notBurn;
 
+        public float projectileMaxDeflection;
+        public float projectileMinDeflection;
         public float projectileDeflection;
         public float recoil;
         public GameObject projectile;
@@ -115,7 +117,7 @@ namespace Aquapunk
 
             endAttack = false;
             var doSwitch = false;
-
+            projectileDeflection = projectileMinDeflection;
             _typeAttack = TypeAttack.Range;
             // Create a new SwitchWeaponContext with the switch settings.
             var switchWeaponContext = new SwitchWeaponContext();
@@ -286,19 +288,25 @@ namespace Aquapunk
         {
             if(_timeAttackCoolDown <= 0)
             {
+                if(projectileDeflection < projectileMaxDeflection)
+                {
+                    projectileDeflection += 0.05f;
+                }
+                if(projectileDeflection >= projectileMaxDeflection)
+                {
+                    projectileDeflection = projectileMinDeflection;
+                }
+
                 rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
-                Vector3 direction = transform.forward;
                 if (trigger)
                 {
-                    direction = trigger.transform.position - transform.position;
-                    print(transform.position);
-                    print(direction);
+                    Vector3 direction = trigger.transform.position - transform.position;
                     rpgCharacterController.StartAction(HandlerTypes.Navigation, direction.normalized);
                 }
 
                 RangeProjectile projectileObj = Instantiate(projectile, transform.forward.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0, 0, 0, 0)).GetComponent<RangeProjectile>();
-                direction.y = 0;
-                projectileObj.direction = direction +
+                
+                projectileObj.direction = transform.forward +
                     new Vector3(
                         UnityEngine.Random.Range(0, projectileDeflection), 
                         UnityEngine.Random.Range(0, projectileDeflection), 

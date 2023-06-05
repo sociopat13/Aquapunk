@@ -32,8 +32,8 @@ namespace Aquapunk
         //public List<Item> KitItems;
         //public SetPostItem setNewItem;
 
-        //public TextMeshProUGUI textWaterCounter;
-        //public float WaterCounter { get; set; }
+        public TextMeshProUGUI textWaterCounter;
+        public float WaterCounter { get; set; }
         #endregion
         #region Methods
         #region Class Methods
@@ -51,10 +51,10 @@ namespace Aquapunk
         //}
 
 
-        //public void UpdateWaterCount()
-        //{
-        //    textWaterCounter.text = WaterCounter.ToString();
-        //}
+        public void UpdateWaterCount()
+        {
+            textWaterCounter.text = WaterCounter.ToString();
+        }
 
         //public void UpdateHPBar(float value)
         //{

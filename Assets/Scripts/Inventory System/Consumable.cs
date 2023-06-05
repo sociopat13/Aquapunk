@@ -13,16 +13,16 @@ namespace Aquapunk
         #endregion
         #region Methods
         #region ClassMethods
-        //public override void PickUp(Player player)
-        //{
-        //    switch (consumableType)
-        //    {
-        //        case ConsumableType.water:
-        //            player.WaterCounter += value;
-        //            player.UpdateWaterCount();
-        //            break;
-        //    }
-        //}
+        public override void PickUp(Player player)
+        {
+            switch (consumableType)
+            {
+                case ConsumableType.water:
+                    player.WaterCounter += value;
+                    player.UpdateWaterCount();
+                    break;
+            }
+        }
         #endregion
         #endregion
         #region Enums
