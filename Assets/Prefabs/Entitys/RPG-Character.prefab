@@ -6193,10 +6193,10 @@ MonoBehaviour:
   projectileDeflection: 0
   recoil: 0
   projectile: {fileID: 4774039754648382880, guid: 06b94fa49919ed94caf13ee55d95d804, type: 3}
-  _projetileSpawnOffser: {x: 0, y: 1, z: 0}
+  _projetileSpawnOffser: {x: 0, y: 1.35, z: 0}
   flameEffect: {fileID: 0}
   _typeAttack: 1
-  _melleHitAnimTime: 0.35
+  _melleHitAnimTime: 0.5
   _forceRangeMultiplyRange: 10
   _forceRangeMultiplyMelee: 100
   _forceRangeMultiplyTick: 50

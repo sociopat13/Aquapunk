@@ -6059,7 +6059,7 @@ MonoBehaviour:
   projectileDeflection: 0
   recoil: 0
   projectile: {fileID: 0}
-  _projetileSpawnOffser: {x: 0, y: 0, z: 0}
+  _projetileSpawnOffser: {x: 0, y: 1, z: 0}
   flameEffect: {fileID: 0}
   _typeAttack: 1
   _melleHitAnimTime: 0.35

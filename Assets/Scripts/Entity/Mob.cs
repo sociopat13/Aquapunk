@@ -105,11 +105,7 @@ namespace Aquapunk
                 {
                     trigger = entity.gameObject;
                 }
-                if (entity.typeAttack == TypeAttack.Range)
-                {
-                    
-                    Instantiate(bloodParticle, transform.position + offset, transform.rotation);
-                }
+                Instantiate(bloodParticle, transform.position + offset, transform.rotation);
             }
             
         }
