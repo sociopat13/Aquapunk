@@ -218,7 +218,7 @@ namespace Aquapunk
             {
                 SortTrigger();
             }
-            if(endAttack && _timeAttackCoolDown <= 0)
+            if(endAttack && _timeAttackCoolDown <= 0 && switchProcess)
             {
                 Unarmed();
             }

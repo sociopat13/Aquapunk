@@ -138,7 +138,8 @@ namespace RPGCharacterAnims
 		{
 			var weaponType = (Weapon)weapon;
 			switch (weaponType) {
-				case Weapon.TwoHandSword: blendToTransform = rpgCharacterWeaponController.twoHandSword.transform.GetChild(0).transform; break;
+				case Weapon.TwoHandSword: blendToTransform = rpgCharacterWeaponController.twoHandSword.transform; break;
+				case Weapon.Range: blendToTransform = rpgCharacterWeaponController.range.transform.GetChild(0).transform; break;
 			}
 		}
     }
