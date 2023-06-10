@@ -221,6 +221,10 @@ namespace Aquapunk
             {
                 Unarmed();
             }
+            if (switchProcess && trigger!=null)
+            {
+                RotateTo(trigger.transform.position - transform.position);
+            }
         }
 
         //public void RangeAttackNew()
