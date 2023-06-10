@@ -148,9 +148,7 @@ namespace Aquapunk
 
             // Perform the weapon switch using the SwitchWeaponContext created earlier.
             if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
-            if (rpgCharacterController.CanEndAction(HandlerTypes.SwitchWeapon)) { 
-                switchProcess = true;
-            }
+            switchProcess = true;
         }
 
         public virtual void Armed()
@@ -190,7 +188,7 @@ namespace Aquapunk
             // Perform the weapon switch using the SwitchWeaponContext created earlier.
             if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
 
-            if (rpgCharacterController.CanEndAction(HandlerTypes.SwitchWeapon)) { switchProcess = true; }
+           switchProcess = true;
 
         }
 
@@ -229,6 +227,7 @@ namespace Aquapunk
 
             // Perform the weapon switch using the SwitchWeaponContext created earlier.
             if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
+            
         }
         public virtual void setDamage(float damage, Entity entity)
         {

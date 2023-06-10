@@ -31,9 +31,12 @@ namespace Aquapunk
             if (player.switchProcess && player._timeAttackCoolDown <= 0)
             {
                 OnAttackAction();
-                shotCount++;
+                if(shotCount < 3)
+                {
+                    shotCount++;
+                }
             }
-            if(shotCount >= 3 && !isRangeButtonPressed)
+            if(shotCount >= 3 && !isRangeButtonPressed && !isMelleButtonPressed)
             {
                 OnEndAttackAction.Invoke();
             }

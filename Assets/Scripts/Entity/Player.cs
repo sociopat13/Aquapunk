@@ -108,6 +108,7 @@ namespace Aquapunk
             FindAnyObjectByType<OnScreenStick>().enabled = true;
             GetComponent<RPGCharacterMovementController>()!.UnlockMovement();
             base.Unarmed();
+            Debug.Log("end switch");
         }
 
         public override void Armed()
