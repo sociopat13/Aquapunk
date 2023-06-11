@@ -14,11 +14,12 @@ namespace Aquapunk
     public class Player : Entity
     {
         #region Fields
+        PlayerUI playerUI;
         public float runSpeed = 1;
         public float walkSpeed = 0.5f;
         
         private bool useInstant;
-
+        public bool isAttack;
         //public StructureManager structureBuilding;
 
         public CinemachineVirtualCamera camera;
@@ -108,20 +109,28 @@ namespace Aquapunk
             FindAnyObjectByType<OnScreenStick>().enabled = true;
             GetComponent<RPGCharacterMovementController>()!.UnlockMovement();
             base.Unarmed();
-            Debug.Log("end switch");
+            _timeAttackCoolDown = _attackCollDown;
+            isAttack = false;
         }
 
-        public override void Armed()
+        protected override void Armed()
         {
+
+            isAttack = true;
             if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
             FindAnyObjectByType<OnScreenStick>().enabled = false;
             _rigidbody.velocity = Vector3.zero;
             GetComponent<RPGCharacterController>().Lock(true, false, true, 1f, 1f);
             GetComponent<RPGCharacterMovementController>().LockMovement();
             base.Armed();
+
+            if (rpgCharacterController.TryEndAction(HandlerTypes.SwitchWeapon)) {
+                Attack(); 
+            }
+
         }
 
-        public override void RangeArmed()
+        protected override void RangeArmed()
         {
             if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
             FindAnyObjectByType<OnScreenStick>().enabled = false;
@@ -129,6 +138,7 @@ namespace Aquapunk
             GetComponent<RPGCharacterController>().Lock(true, false, true, 1f, 1f);
             GetComponent<RPGCharacterMovementController>().LockMovement();
             base.RangeArmed();
+
         }
         //
         //public override void Unarmed()
@@ -173,26 +183,22 @@ namespace Aquapunk
             Destroy(gameObject);
         }
 
-        public override void SortTrigger()
-        {
-            base.SortTrigger();
-            if (enemys.Count > 0)
-            {
-                foreach (GameObject entity in enemys)
-                {
-                    if (entity && trigger != null && 
-                        (entity.transform.position - transform.position).magnitude < 
-                        (trigger.transform.position - transform.position).magnitude)
-                    {
-                        trigger = entity;
-                    }
-                    else
-                    {
-                        trigger = entity;
-                    }
-                }
-            }
-        }
+        //public override void SortTrigger(GameObject gameObject)
+        //{
+        //    base.SortTrigger(gameObject);
+        //    if (enemys.Count > 0)
+        //    {
+        //        foreach (GameObject entity in enemys)
+        //        {
+        //            if (entity && trigger != null && 
+        //                (entity.transform.position - transform.position).magnitude < 
+        //                (trigger.transform.position - transform.position).magnitude)
+        //            {
+        //                trigger = entity;
+        //            }
+        //        }
+        //    }
+        //}
 
         #endregion
         #region Unity Methods
@@ -216,13 +222,13 @@ namespace Aquapunk
             ProcessStates();
             if(trigger == null && enemys.Count > 0)
             {
-                SortTrigger();
+                SortTrigger(null);
             }
-            if(endAttack && _timeAttackCoolDown <= 0 && switchProcess)
-            {
-                Unarmed();
-            }
-            if (switchProcess && trigger!=null)
+            //if(endAttack && _timeAttackCoolDown <= 0 && switchProcess)
+            //{
+            //    Unarmed();
+            //}
+            if (playerUI.isButtonMelleAttackPressed && trigger!=null)
             {
                 RotateTo(trigger.transform.position - transform.position);
             }
@@ -235,18 +241,17 @@ namespace Aquapunk
 
         private void Start()
         {
-            FindObjectOfType<PlayerUI>().player = this;
             _rigidbody = GetComponent<Rigidbody>();
             FindObjectOfType<CameraModifier>().player = this;
-            FindObjectOfType<PlayerUI>().OnAttackAction = () => Attack();
-            FindObjectOfType<PlayerUI>().OnBeginAttackAction = () => Armed();
-            FindObjectOfType<PlayerUI>().OnEndAttackAction = () => EndAttack();
-            FindObjectOfType<PlayerUI>().OnRangeAttack = () => RangeArmed();
-            FindObjectOfType<PlayerUI>().OnBeginRengeAttack = () => RangeArmed();
             camera = FindObjectOfType<CinemachineVirtualCamera>();
             camera.Follow = gameObject.transform;
             camera.LookAt = gameObject.transform;
             FindObjectOfType<PlayerInfo>().player = this;
+            playerUI = FindAnyObjectByType<PlayerUI>();
+            playerUI.melleAttack = () => Armed();
+            playerUI.onBeginRangeAttackAction = () => RangeArmed();
+            playerUI.rangeAttack = () => Attack();
+            playerUI.player = this;
             //canvasWorld = FindObjectOfType<WorldCanvas>().GetComponent<Canvas>();
             //textWaterCounter = FindObjectOfType<PlayerUI>().waterCounter;
             //HPBar = FindObjectOfType<PlayerUI>().hpbar;

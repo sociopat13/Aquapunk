@@ -90,6 +90,15 @@ namespace RPGCharacterAnims
 			entity.MelleHit();
         }
 
+		public void EndHit()
+        {
+			Player player = transform.parent.GetComponent<Player>();
+            if (player)
+            {
+				player.Unarmed();
+            }
+        }
+
 		public void Death()
         {
 

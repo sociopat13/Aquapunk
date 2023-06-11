@@ -10,61 +10,61 @@ namespace Aquapunk
     public class PlayerUI : MonoBehaviour
     {
         public Player player;
-        public TextMeshProUGUI waterCounter;
-        public HPBarUI hpbar;
 
-        public Action OnAttackAction;
-        public Action OnBeginAttackAction;
+        public Action melleAttack;
+        public Action rangeAttack;
+        public Action onBeginRangeAttackAction;
 
-        public Action OnEndRangeAttackAction;
-        public Action OnEndAttackAction;
+        public bool isButtonMelleAttackPressed;
+        public bool isButtonRangeAttackPressed;
 
-        public Action OnBeginRengeAttack;
-        public Action OnRangeAttack;
-
-        private int shotCount;
-        private bool isRangeButtonPressed;
-        private bool isMelleButtonPressed;
-
+        private bool isRangeAttack;
+        [SerializeField]private float shotCount;
         private void Update()
         {
-            if (player.switchProcess && player._timeAttackCoolDown <= 0)
+            if (isButtonMelleAttackPressed && !player.isAttack && player._timeAttackCoolDown <= 0)
             {
-                OnAttackAction();
-                if(shotCount < 3)
+                Debug.Log("switch");
+                melleAttack.Invoke();
+            }
+            if (isRangeAttack && player._timeAttackCoolDown <= 0)
+            {
+                rangeAttack.Invoke();
+                if (shotCount != 3)
                 {
-                    shotCount++;
+                    shotCount+=1;
                 }
             }
-            if(shotCount >= 3 && !isRangeButtonPressed && !isMelleButtonPressed)
+            if (shotCount >= 3 && !isButtonRangeAttackPressed)
             {
-                OnEndAttackAction.Invoke();
+                isRangeAttack = false;
+                player.Unarmed();
             }
         }
 
         public void OnBeginRangeAttack()
         {
-            isRangeButtonPressed = true;
+            onBeginRangeAttackAction.Invoke();
+            isRangeAttack = true;
             shotCount = 0;
-            OnBeginRengeAttack.Invoke();
+            isButtonRangeAttackPressed = true;
         }
 
         public void OnEndRangeAttack()
         {
-            isRangeButtonPressed = false;
+            isButtonRangeAttackPressed = false;
         }
 
         public void OnBeginAttack()
         {
-            OnBeginAttackAction.Invoke();
-
-            isMelleButtonPressed = true;
+            isButtonMelleAttackPressed = true;
         }
 
 
         public void OnEndAttack()
         {
-            OnEndAttackAction.Invoke();
+            isButtonMelleAttackPressed = false;
+
         }
 
     }

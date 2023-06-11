@@ -29,7 +29,7 @@ public static class SuperCollider
 				return true;
 			}
 
-			Debug.LogError(string.Format("'{0}' is missing BSPTree script.", collider.gameObject.name));
+			//Debug.LogError(string.Format("'{0}' is missing BSPTree script.", collider.gameObject.name));
 			closestPointOnSurface = Vector3.zero;
 			return false;
 		}

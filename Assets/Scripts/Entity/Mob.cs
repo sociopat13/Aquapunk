@@ -110,25 +110,25 @@ namespace Aquapunk
             
         }
 
-        public override void SortTrigger()
-        {
-            base.SortTrigger();
-            if(enemys.Count > 0)
-            {
-                foreach (GameObject entity in enemys)
-                {
-                    if(entity != null)
-                    {
-                        switch (entity.GetComponent<Entity>().GetType().ToString())
-                        {
-                            case "Aquapunk.Player":
-                                trigger = entity;
-                                break;
-                        }
-                    }
-                }
-            }
-        }
+        //public override void SortTrigger()
+        //{
+        //    base.SortTrigger();
+        //    if(enemys.Count > 0)
+        //    {
+        //        foreach (GameObject entity in enemys)
+        //        {
+        //            if(entity != null)
+        //            {
+        //                switch (entity.GetComponent<Entity>().GetType().ToString())
+        //                {
+        //                    case "Aquapunk.Player":
+        //                        trigger = entity;
+        //                        break;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         protected override void DeathObject()
         {
@@ -163,15 +163,16 @@ namespace Aquapunk
         {
             if (trigger != null && _timeStanCoolDown <= 0 && _timeAttackCoolDown <= 0 && _state != StateEntity.Death)
             {
+                
                 float distance = (trigger.transform.position - transform.position).magnitude;
                 if (distance <= _attackRange)
                 {
-
                     Armed();
-                    Vector3 targetDirection = trigger.transform.position - transform.position;
-                    targetDirection.y = 0; 
 
-                    transform.rotation = Quaternion.LookRotation(targetDirection);
+                    Vector3 targetDirection = trigger.transform.position - transform.position;
+                    targetDirection.y = 0;
+
+                    RotateTo(targetDirection);
                     IdleState();
                     Attack();
                 }
@@ -180,7 +181,7 @@ namespace Aquapunk
                     Unarmed();
                     MoveState();
                     //_mobMovement.Movement(trigger.transform.position - transform.position);
-                    rpgCharacterController.StartAction(HandlerTypes.Navigation, RandomOffset(trigger.transform.position));
+                    rpgCharacterController.StartAction(HandlerTypes.Navigation, trigger.transform.position);
                 }
             }
         }

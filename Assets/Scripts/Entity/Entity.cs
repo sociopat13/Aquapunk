@@ -15,8 +15,6 @@ namespace Aquapunk
     public class Entity : MonoBehaviour
     {
         public GameObject projectileTrale;
-        public bool switchProcess;
-        protected bool endAttack;
         #region Fields
         //public Canvas canvasWorld;
         public Vector3 offsetHPBar;
@@ -113,11 +111,10 @@ namespace Aquapunk
         }
 
 
-        public virtual void RangeArmed()
+        protected virtual void RangeArmed()
         {
             if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
 
-            endAttack = false;
             var doSwitch = false;
             projectileDeflection = projectileMinDeflection;
             _typeAttack = TypeAttack.Range;
@@ -148,14 +145,12 @@ namespace Aquapunk
 
             // Perform the weapon switch using the SwitchWeaponContext created earlier.
             if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
-            switchProcess = true;
         }
 
-        public virtual void Armed()
+        protected virtual void Armed()
         {
             //if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
 
-            endAttack = false;
             var doSwitch = false;
 
             
@@ -187,21 +182,10 @@ namespace Aquapunk
 
             // Perform the weapon switch using the SwitchWeaponContext created earlier.
             if (doSwitch) { rpgCharacterController.TryStartAction(HandlerTypes.SwitchWeapon, switchWeaponContext); }
-
-           switchProcess = true;
-
         }
-
-        public void EndAttack()
-        {
-            endAttack = true;
-        }
-
-
 
         public virtual void Unarmed()
         {
-            switchProcess = false;
             if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
 
             var doSwitch = false;
@@ -246,7 +230,7 @@ namespace Aquapunk
                 switch (typeAttack)
                 {
                     case TypeAttack.Melee:
-                        _attackCollDown = 1.3f;
+                        _attackCollDown = 0.1f;
                         MelleAttack();
                         break;
                     case TypeAttack.RangeTick:
@@ -335,8 +319,38 @@ namespace Aquapunk
             flame.GetComponent<FlameScript>().rider = transform;
         }
 
-        public virtual void SortTrigger()
+        public virtual void SortTrigger(GameObject gameObject = null)
         {
+            if(trigger == null)
+            {
+                trigger = gameObject;
+            }
+            else if(trigger != null && enemys.Count > 1)
+            {
+                foreach(GameObject entity in enemys)
+                {
+                    Entity type = entity.GetComponent<Entity>();
+                    switch (type)
+                    {
+                        case Player _:
+                            //if (trigger.GetComponent<Entity>().GetType().ToString() == "Aquapunk.Mob")
+                            //{
+                                trigger = entity;
+                                Debug.Log("PLAYER!!!");
+                            //}
+                            break;
+                        case Mob _:
+                            if (entity && trigger != null &&
+                                (entity.transform.position - transform.position).magnitude <
+                                (trigger.transform.position - transform.position).magnitude )
+                                //&& trigger.GetComponent<Entity>().GetType().ToString() != "Aquapunk.Player")
+                            {
+                                trigger = entity;
+                            }
+                            break;
+                    }
+                }
+            }
             if (enemys.Count == 0)
             {
                 trigger = null;
@@ -414,7 +428,7 @@ namespace Aquapunk
             if (other.GetComponent<Entity>())
             {
                 enemys.Add(other.gameObject);
-                trigger = other.gameObject;
+                SortTrigger(other.gameObject);
             }
         }
 
@@ -423,7 +437,7 @@ namespace Aquapunk
             if (enemys.Contains(other.gameObject))
             {
                 enemys.Remove(other.gameObject);
-                trigger = null;
+                SortTrigger(other.gameObject);
             }
         }
 
