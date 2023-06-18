@@ -84,6 +84,16 @@ namespace RPGCharacterAnims
 			}
         }
 
+		public void Shot()
+        {
+			entity.RangeShot();
+        }
+
+		public void EndShot()
+        {
+			entity.endShot = true;
+			entity._timeAttackCoolDown = 0;
+        }
 
 		public void Hit()
         {

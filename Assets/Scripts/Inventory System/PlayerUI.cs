@@ -18,7 +18,7 @@ namespace Aquapunk
         public bool isButtonMelleAttackPressed;
         public bool isButtonRangeAttackPressed;
 
-        private bool isRangeAttack;
+        public bool isRangeAttack;
         [SerializeField]private float shotCount;
         private void Update()
         {
@@ -27,6 +27,12 @@ namespace Aquapunk
                 Debug.Log("switch");
                 melleAttack.Invoke();
             }
+
+            if (shotCount >= 3 && !isButtonRangeAttackPressed && isRangeAttack && player.endShot)
+            {
+                isRangeAttack = false;
+                player.Unarmed();
+            }
             if (isRangeAttack && player._timeAttackCoolDown <= 0)
             {
                 rangeAttack.Invoke();
@@ -34,11 +40,6 @@ namespace Aquapunk
                 {
                     shotCount+=1;
                 }
-            }
-            if (shotCount >= 3 && !isButtonRangeAttackPressed)
-            {
-                isRangeAttack = false;
-                player.Unarmed();
             }
         }
 

@@ -14,6 +14,7 @@ namespace Aquapunk
     public class Mob : Entity
     {
         #region fields
+        private Player killer;
         public Vector3 offset;
         private Vector3 deathPos;
         public float timeDeath;
@@ -105,6 +106,10 @@ namespace Aquapunk
                 {
                     trigger = entity.gameObject;
                 }
+                if (healthCurrent <= 0 && entity.GetComponent<Player>())
+                {
+                    killer = entity.GetComponent<Player>();
+                }
                 Instantiate(bloodParticle, transform.position + offset, transform.rotation);
             }
             
@@ -132,18 +137,21 @@ namespace Aquapunk
 
         protected override void DeathObject()
         {
-            foreach(GameObject item in dropItems)
+
+            //StopAllCoroutines();
+            StopPatrol();
+            foreach (GameObject item in dropItems)
             {
                 Vector3 spawnPoint = transform.position;
                 spawnPoint.y = item.transform.position.y;
                 GameObject itemObject = Instantiate(item, spawnPoint, item.transform.rotation);
             }
-            //StopAllCoroutines();
-            StopPatrol();
             //base.DeathObject();
             _state = StateEntity.Death;
-            print("death");
+            if (killer) { killer.GetComponent<Player>().Kill(this); }
+            print("DEATH");
             GetComponentInChildren<Animator>().Play("Unarmed-Knockdown1");
+            rpgCharacterController.StartAction(HandlerTypes.Knockback, new HitContext((int)KnockbackType.Knockback1, Vector3.back));
 
             //StartCoroutine(DeathCorrutine());
         }
@@ -152,12 +160,11 @@ namespace Aquapunk
         {
             yield return new WaitForSeconds(timeDeath);
 
-            GetComponent<RPGCharacterController>().animationSpeed = 0;
-
             GetComponent<RPGCharacterController>().enabled =false;
+            GetComponent<Mob>().enabled = false;
 
             //Destroy(gameObject);
-        } 
+        }
 
         protected virtual void BehaveAtTrigger()
         {

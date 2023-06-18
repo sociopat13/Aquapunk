@@ -26,7 +26,6 @@ namespace Aquapunk
 
         private void OnCollisionEnter(Collision collision)
         {
-            print("collision: " + collision.gameObject.name);
             if (collision.gameObject.GetComponent<Entity>())
             {
                 collision.gameObject.GetComponent<Entity>().setDamage(_damage, owner);

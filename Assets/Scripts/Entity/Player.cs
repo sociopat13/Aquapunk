@@ -106,8 +106,8 @@ namespace Aquapunk
 
         public override void Unarmed()
         {
-            FindAnyObjectByType<OnScreenStick>().enabled = true;
-            GetComponent<RPGCharacterMovementController>()!.UnlockMovement();
+            
+            GetComponent<RPGCharacterMovementController>().runSpeed = 1;
             base.Unarmed();
             _timeAttackCoolDown = _attackCollDown;
             isAttack = false;
@@ -115,28 +115,26 @@ namespace Aquapunk
 
         protected override void Armed()
         {
-
-            isAttack = true;
             if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
-            FindAnyObjectByType<OnScreenStick>().enabled = false;
+            isAttack = true;
+
+            GetComponent<RPGCharacterMovementController>().runSpeed = 0;
             _rigidbody.velocity = Vector3.zero;
-            GetComponent<RPGCharacterController>().Lock(true, false, true, 1f, 1f);
-            GetComponent<RPGCharacterMovementController>().LockMovement();
             base.Armed();
 
-            if (rpgCharacterController.TryEndAction(HandlerTypes.SwitchWeapon)) {
-                Attack(); 
-            }
 
+
+            if (rpgCharacterController.TryEndAction(HandlerTypes.SwitchWeapon))
+            {
+                Attack();
+            }
         }
 
         protected override void RangeArmed()
         {
             if (!rpgCharacterController.HandlerExists(HandlerTypes.SwitchWeapon)) { return; }
-            FindAnyObjectByType<OnScreenStick>().enabled = false;
+            GetComponent<RPGCharacterMovementController>().runSpeed = 0;
             _rigidbody.velocity = Vector3.zero;
-            GetComponent<RPGCharacterController>().Lock(true, false, true, 1f, 1f);
-            GetComponent<RPGCharacterMovementController>().LockMovement();
             base.RangeArmed();
 
         }
@@ -181,6 +179,16 @@ namespace Aquapunk
             print("death " + name);
             //Destroy(hpBar);
             Destroy(gameObject);
+        }
+
+        public void Kill(Entity entity)
+        {
+            if(trigger.GetComponent<Entity>() == entity)
+            {
+                trigger = null;
+            }
+            enemys.Remove(entity.gameObject);
+            SortTrigger(entity.gameObject);
         }
 
         //public override void SortTrigger(GameObject gameObject)
@@ -228,7 +236,7 @@ namespace Aquapunk
             //{
             //    Unarmed();
             //}
-            if (playerUI.isButtonMelleAttackPressed && trigger!=null)
+            if ((playerUI.isButtonMelleAttackPressed || playerUI.isRangeAttack) && trigger!=null)
             {
                 RotateTo(trigger.transform.position - transform.position);
             }

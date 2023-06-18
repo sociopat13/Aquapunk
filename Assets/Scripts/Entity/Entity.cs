@@ -14,6 +14,7 @@ namespace Aquapunk
 {
     public class Entity : MonoBehaviour
     {
+        public bool endShot = true;
         public GameObject projectileTrale;
         #region Fields
         //public Canvas canvasWorld;
@@ -22,7 +23,7 @@ namespace Aquapunk
         [SerializeField] protected StateEntity _state = StateEntity.Idle;
 
         [Header("Attack")]
-        protected RPGCharacterController rpgCharacterController;
+        public RPGCharacterController rpgCharacterController;
         public GameObject trigger = null;
 
         public LayerMask layer;
@@ -104,7 +105,7 @@ namespace Aquapunk
         protected void CoolDown(out float coolDown, float postCoolDown)
         {
             coolDown = postCoolDown;
-            if (coolDown > 0f)
+            if (coolDown >= 0f)
             {
                 coolDown -= Time.fixedDeltaTime;
             }
@@ -230,7 +231,7 @@ namespace Aquapunk
                 switch (typeAttack)
                 {
                     case TypeAttack.Melee:
-                        _attackCollDown = 0.1f;
+                        _attackCollDown = 0.04f;
                         MelleAttack();
                         break;
                     case TypeAttack.RangeTick:
@@ -270,17 +271,18 @@ namespace Aquapunk
         }
 
 
-        public void RotateTo(Vector3 direction)
+        public void RotateTo(Vector3 direction, Action action = null)
         {
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            transform.DORotateQuaternion(Quaternion.Lerp(transform.rotation, lookRotation, 1), 0.1f);
+            transform.DORotateQuaternion(Quaternion.Lerp(transform.rotation, lookRotation, 1), 0.1f).OnComplete(() => action.Invoke());
         }
 
         protected virtual void RangeAttack()
         {
             if(_timeAttackCoolDown <= 0)
             {
-                if(projectileDeflection < projectileMaxDeflection)
+                
+                if (projectileDeflection < projectileMaxDeflection)
                 {
                     projectileDeflection += 0.05f;
                 }
@@ -289,28 +291,49 @@ namespace Aquapunk
                     projectileDeflection = projectileMinDeflection;
                 }
 
-                rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
-                if (trigger)
+                if (trigger != null)
                 {
                     Vector3 direction = trigger.transform.position - transform.position;
-                    RotateTo(direction);
+                    RotateTo(direction,
+                        () => {
+                            rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
+                            _timeAttackCoolDown = _attackCollDown;
+                            endShot = false;
+                        });
+
                     //rpgCharacterController.StartAction(HandlerTypes.Navigation, direction.normalized);
+                    print("1");
+                }
+                else
+                {
+                    print("2");
+                    rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
+                    _timeAttackCoolDown = _attackCollDown;
+                    endShot = false;
+
+                    if (rpgCharacterController.CanEndAction(HandlerTypes.Attack)) { print("все!"); }
                 }
 
-                RangeProjectile projectileObj = Instantiate(projectile, transform.forward.normalized + _projetileSpawnOffser + transform.position, new Quaternion(0, 0, 0, 0)).GetComponent<RangeProjectile>();
-                ProjectileTrack projectileTraleObj = Instantiate(projectileTrale, transform.position + _projetileSpawnOffser, transform.rotation).GetComponent<ProjectileTrack>();
-                projectileTraleObj.target = projectileObj.transform;
-
-                projectileObj.direction = transform.forward +
-                    new Vector3(
-                        UnityEngine.Random.Range(0, projectileDeflection), 
-                        UnityEngine.Random.Range(0, projectileDeflection), 
-                        UnityEngine.Random.Range(0, projectileDeflection));
-                projectileObj.owner = this;
-                //_rigidbody.AddForce((transform.position - trigger.transform.position).normalized * recoil);
-                _timeAttackCoolDown = _attackCollDown;
             }
-            
+
+        }
+
+        public void RangeShot()
+        {
+            Vector3 spwnProjectilePoint = transform.position;
+            spwnProjectilePoint.y = 0 + transform.position.y;
+
+            RangeProjectile projectileObj = Instantiate(projectile, spwnProjectilePoint + _projetileSpawnOffser, new Quaternion(0, 0, 0, 0)).GetComponent<RangeProjectile>();
+            ProjectileTrack projectileTraleObj = Instantiate(projectileTrale, transform.position + _projetileSpawnOffser, transform.rotation).GetComponent<ProjectileTrack>();
+            projectileTraleObj.target = projectileObj.transform;
+
+            projectileObj.direction = transform.forward +
+                new Vector3(
+                    UnityEngine.Random.Range(0, projectileDeflection),
+                    UnityEngine.Random.Range(0, projectileDeflection),
+                    UnityEngine.Random.Range(0, projectileDeflection)).normalized;
+            projectileObj.owner = this;
+            //_rigidbody.AddForce((transform.position - trigger.transform.position).normalized * recoil);
         }
 
         protected virtual void RangeTickAttack()
@@ -319,11 +342,11 @@ namespace Aquapunk
             flame.GetComponent<FlameScript>().rider = transform;
         }
 
-        public virtual void SortTrigger(GameObject gameObject = null)
+        public virtual void SortTrigger(GameObject gameObjectObj = null)
         {
-            if(trigger == null)
+            if(trigger == null && gameObjectObj != null && gameObjectObj.GetComponent<Entity>()._state != StateEntity.Death)
             {
-                trigger = gameObject;
+                trigger = gameObjectObj;
             }
             else if(trigger != null && enemys.Count > 1)
             {
@@ -336,7 +359,6 @@ namespace Aquapunk
                             //if (trigger.GetComponent<Entity>().GetType().ToString() == "Aquapunk.Mob")
                             //{
                                 trigger = entity;
-                                Debug.Log("PLAYER!!!");
                             //}
                             break;
                         case Mob _:
@@ -351,7 +373,7 @@ namespace Aquapunk
                     }
                 }
             }
-            if (enemys.Count == 0)
+            if (enemys.Count == 0 || gameObjectObj.GetComponent<Entity>()._state == StateEntity.Death && trigger.gameObject == gameObjectObj)
             {
                 trigger = null;
             }
@@ -425,7 +447,7 @@ namespace Aquapunk
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.GetComponent<Entity>())
+            if (other.GetComponent<Entity>() && !other.isTrigger)
             {
                 enemys.Add(other.gameObject);
                 SortTrigger(other.gameObject);

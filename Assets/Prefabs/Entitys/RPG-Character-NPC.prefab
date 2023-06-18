@@ -6046,6 +6046,7 @@ MonoBehaviour:
   projectileTrale: {fileID: 0}
   offsetHPBar: {x: 0, y: 0, z: 0}
   _state: 0
+  rpgCharacterController: {fileID: 0}
   trigger: {fileID: 0}
   layer:
     serializedVersion: 2
