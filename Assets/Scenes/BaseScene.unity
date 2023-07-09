@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1781066, g: 0.2230035, b: 0.30509064, a: 1}
+  m_IndirectSpecularColor: {r: 0.17810667, g: 0.2230038, b: 0.30509093, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -68590,10 +68590,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5380554280320961920, guid: 83805693f5a9e774e99941fcef9dc396, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5380554280320961921, guid: 83805693f5a9e774e99941fcef9dc396, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -68638,17 +68634,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5380554280320961923, guid: 83805693f5a9e774e99941fcef9dc396, type: 3}
+      propertyPath: sharedProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: a3ba4697ca56b1145a041c463346bf07, type: 2}
     - target: {fileID: 5380554280320961924, guid: 83805693f5a9e774e99941fcef9dc396, type: 3}
       propertyPath: m_Name
       value: Main Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 5380554280320961924, guid: 83805693f5a9e774e99941fcef9dc396, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5380554280320961926, guid: 83805693f5a9e774e99941fcef9dc396, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5380554280320961926, guid: 83805693f5a9e774e99941fcef9dc396, type: 3}
       propertyPath: near clip plane
