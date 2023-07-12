@@ -51,11 +51,6 @@ namespace Aquapunk
         //    }
         //}
 
-        public void GoToOnly(Vector3 point)
-        {
-            MoveState();
-            rpgCharacterController.StartAction(HandlerTypes.Navigation, point);
-        }
 
         public void UpdateWaterCount()
         {

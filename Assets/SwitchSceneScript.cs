@@ -21,7 +21,6 @@ namespace Aquapunk
         {
             switchScenePanel.SetActive(false);
             playerUI.SetActive(true);
-            FindObjectOfType<PlayerInfo>().player.GoToOnly(new Vector3(43,0.8f,-167));
         }
         private void OnTriggerEnter(Collider other)
         {
