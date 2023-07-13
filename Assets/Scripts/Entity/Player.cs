@@ -55,6 +55,7 @@ namespace Aquapunk
         public void UpdateWaterCount()
         {
             textWaterCounter.text = WaterCounter.ToString();
+            FindObjectOfType<LoadManager>().SaveGame();
         }
 
         //public void UpdateHPBar(float value)
