@@ -117,7 +117,7 @@ namespace RPGCharacterAnims
 			transform.parent.GetComponent<CapsuleCollider>()!.enabled = false;
 
 			transform.parent.GetComponent<Rigidbody>()!.constraints = RigidbodyConstraints.FreezePosition;
-			transform.parent.GetComponent<RPGCharacterMovementController>()!.LockMovement();
+			//transform.parent.GetComponent<RPGCharacterMovementController>()!.LockMovement();
 			transform.parent.GetComponent<RPGCharacterController>()!.Lock(true, true, true, 0.5f, 9999999999);
 
 			transform.parent.GetComponent<Mob>().enabled = false;

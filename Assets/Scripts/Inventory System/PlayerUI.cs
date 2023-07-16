@@ -24,7 +24,6 @@ namespace Aquapunk
         {
             if (isButtonMelleAttackPressed && !player.isAttack && player._timeAttackCoolDown <= 0)
             {
-                Debug.Log("switch");
                 melleAttack.Invoke();
             }
 

@@ -302,11 +302,9 @@ namespace Aquapunk
                         });
 
                     //rpgCharacterController.StartAction(HandlerTypes.Navigation, direction.normalized);
-                    print("1");
                 }
                 else
                 {
-                    print("2");
                     rpgCharacterController.StartAction(HandlerTypes.Attack, new AttackContext("Attack", Side.None));
                     _timeAttackCoolDown = _attackCollDown;
                     endShot = false;
@@ -348,35 +346,41 @@ namespace Aquapunk
             {
                 trigger = gameObjectObj;
             }
-            else if(trigger != null && enemys.Count > 1)
+            if(trigger != null)
             {
-                foreach(GameObject entity in enemys)
+                if (enemys.Count > 1)
                 {
-                    Entity type = entity.GetComponent<Entity>();
-                    switch (type)
+                    foreach (GameObject entity in enemys)
                     {
-                        case Player _:
-                            //if (trigger.GetComponent<Entity>().GetType().ToString() == "Aquapunk.Mob")
-                            //{
+                        Entity type = entity.GetComponent<Entity>();
+                        switch (type)
+                        {
+                            case Player _:
+                                //if (trigger.GetComponent<Entity>().GetType().ToString() == "Aquapunk.Mob")
+                                //{
                                 trigger = entity;
-                            //}
-                            break;
-                        case Mob _:
-                            if (entity && trigger != null &&
-                                (entity.transform.position - transform.position).magnitude <
-                                (trigger.transform.position - transform.position).magnitude )
+                                //}
+                                break;
+                            case Mob _:
+                                if (entity && trigger != null &&
+                                    (entity.transform.position - transform.position).magnitude <
+                                    (trigger.transform.position - transform.position).magnitude)
                                 //&& trigger.GetComponent<Entity>().GetType().ToString() != "Aquapunk.Player")
-                            {
-                                trigger = entity;
-                            }
-                            break;
+                                {
+                                    trigger = entity;
+                                }
+                                break;
+                        }
                     }
                 }
+                if (enemys != null 
+                    || gameObjectObj.GetComponent<Entity>()!._state == StateEntity.Death 
+                    && trigger.gameObject == gameObjectObj)
+                {
+                    trigger = null;
+                }
             }
-            if (enemys.Count == 0 || gameObjectObj.GetComponent<Entity>()._state == StateEntity.Death && trigger.gameObject == gameObjectObj)
-            {
-                trigger = null;
-            }
+            
         }
 
         protected virtual void DeathObject()
