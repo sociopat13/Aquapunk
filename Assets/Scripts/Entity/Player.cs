@@ -13,7 +13,9 @@ namespace Aquapunk
 {
     public class Player : Entity
     {
+
         #region Fields
+
         PlayerUI playerUI;
         public float runSpeed = 1;
         public float walkSpeed = 0.5f;

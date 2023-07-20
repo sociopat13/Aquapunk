@@ -87,7 +87,11 @@ namespace RPGCharacterAnims
 		public void Shot()
         {
 			entity.RangeShot();
-        }
+			if (entity.shotCount != 3)
+			{
+				entity.shotCount += 1;
+			}
+		}
 
 		public void EndShot()
         {

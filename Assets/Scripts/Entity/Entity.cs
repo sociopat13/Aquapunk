@@ -14,6 +14,8 @@ namespace Aquapunk
 {
     public class Entity : MonoBehaviour
     {
+        public float shotCount;
+
         public bool endShot = true;
         public GameObject projectileTrale;
         #region Fields
