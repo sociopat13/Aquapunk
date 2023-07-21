@@ -149,6 +149,7 @@ namespace Aquapunk
             //base.DeathObject();
             _state = StateEntity.Death;
             if (killer) { killer.GetComponent<Player>().Kill(this); }
+            GetComponent<RPGCharacterNavigationController>().enabled = false;
             GetComponentInChildren<Animator>().Play("Unarmed-Knockdown1");
             rpgCharacterController.StartAction(HandlerTypes.Knockback, new HitContext((int)KnockbackType.Knockback1, Vector3.back));
 
